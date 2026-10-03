@@ -1,0 +1,77 @@
+{% doc %}
+  @prompt
+    Create a custom CSS code block that hides the page title on the "How to use the pump" page. The code should target and hide the main page title element that appears at the top of the page template.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-custom-css-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+  }
+
+  {% if block.settings.enable_css %}
+    {{ block.settings.custom_css }}
+  {% endif %}
+{% endstyle %}
+
+<div class="ai-custom-css-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.enable_css %}
+    {% if block.settings.show_info %}
+      <div style="padding: 12px; background-color: #f0f0f0; border-left: 4px solid {{ settings.colors_accent }}; margin: 20px 0; font-size: 14px; color: {{ settings.colors_text }};">
+        <strong>Custom CSS Active:</strong> The CSS code below is currently applied to this page.
+      </div>
+    {% endif %}
+  {% else %}
+    <div style="padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; margin: 20px 0; font-size: 14px; color: #856404;">
+      <strong>Custom CSS Disabled:</strong> Enable the CSS in the block settings to apply your custom styles.
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Custom CSS code",
+  "tag": null,
+  "class": "custom-css-block",
+  "settings": [
+    {
+      "type": "header",
+      "content": "CSS settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_css",
+      "label": "Enable custom CSS",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_info",
+      "label": "Show status message",
+      "default": false,
+      "info": "Display a message indicating whether the CSS is active"
+    },
+    {
+      "type": "header",
+      "content": "Custom CSS code"
+    },
+    {
+      "type": "html",
+      "id": "custom_css",
+      "label": "CSS code",
+      "default": ".page-title,\n.page-header__title,\n.main-page-title,\n[class*=\"page\"][class*=\"title\"] {\n  display: none !important;\n}",
+      "info": "Add your custom CSS code here. The code will be applied when enabled."
+    },
+    {
+      "type": "paragraph",
+      "content": "To hide the page title on this specific page, use CSS selectors that target the title element. Common selectors include .page-title, .page-header__title, or h1.main-title."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom CSS code"
+    }
+  ]
+}
+{% endschema %}

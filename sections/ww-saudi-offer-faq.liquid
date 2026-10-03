@@ -1,0 +1,26 @@
+{{ 'ww-saudi-pdp.css' | asset_url | stylesheet_tag }}
+<section class="wwsa wwsa-guarantee" dir="rtl">
+  <div class="wwsa-wrap"><h2>{{ section.settings.guarantee_prefix }} <mark>{{ section.settings.guarantee_highlight }}</mark></h2><div class="wwsa-guarantee__card"><span class="wwsa-guarantee__seal">{{ section.settings.seal_number }}<small>{{ section.settings.seal_label }}</small></span><div><strong>{{ section.settings.guarantee_title }}</strong><p>{{ section.settings.guarantee_text }}</p></div></div><div class="wwsa-guarantee__trust"><span>✓ {{ section.settings.trust_1 }}</span><span>✓ {{ section.settings.trust_2 }}</span><span>✓ {{ section.settings.trust_3 }}</span></div></div>
+</section>
+
+<section class="wwsa wwsa-section wwsa-offer" dir="rtl">
+  <div class="wwsa-wrap"><h2>{{ section.settings.offer_prefix }} <mark>{{ section.settings.offer_highlight }}</mark></h2><div class="wwsa-offer__variants">{% for variant in product.variants limit: 2 %}<article class="wwsa-offer__variant{% if forloop.first %} is-featured{% endif %}">{% assign vimage = variant.featured_image | default: product.featured_image %}{% if vimage != blank %}{{ vimage | image_url: width: 300 | image_tag: loading: 'lazy', alt: variant.title }}{% endif %}<strong>{{ variant.title }}</strong><b>{{ variant.price | money }}</b>{% if variant.compare_at_price > variant.price %}<s>{{ variant.compare_at_price | money }}</s>{% endif %}<span>✓ {{ section.settings.offer_perk_1 }}</span><span>✓ {{ section.settings.offer_perk_2 }}</span><a href="#wwsa-product-form-{{ section.id }}" data-scroll-hero>{{ section.settings.offer_button }}</a></article>{% endfor %}</div></div>
+</section>
+
+<section class="wwsa wwsa-section wwsa-faq" dir="rtl" id="wwsa-faq-{{ section.id }}">
+  <div class="wwsa-wrap"><h2>{{ section.settings.faq_prefix }} <mark>{{ section.settings.faq_highlight }}</mark></h2><div class="wwsa-faq__list">{% for block in section.blocks %}<details {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first %} open{% endif %}><summary>{{ block.settings.question }}<span>+</span></summary><div>{{ block.settings.answer }}</div></details>{% endfor %}</div></div>
+</section>
+<script>document.querySelectorAll('[data-scroll-hero]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector('.wwsa-hero')?.scrollIntoView({behavior:'smooth'});}));</script>
+{% schema %}
+{
+  "name":"WW Saudi — Offer and FAQ",
+  "settings":[
+    {"type":"header","content":"Guarantee"},{"type":"text","id":"guarantee_prefix","label":"Heading prefix","default":"جربيها بدون"},{"type":"text","id":"guarantee_highlight","label":"Highlighted text","default":"أي مخاطرة"},{"type":"text","id":"seal_number","label":"Seal number","default":"6"},{"type":"text","id":"seal_label","label":"Seal label","default":"شهور ضمان"},{"type":"text","id":"guarantee_title","label":"Guarantee title","default":"ضمان 6 أشهر"},{"type":"textarea","id":"guarantee_text","label":"Guarantee text","default":"إذا حصل عطل في المضخة، تواصلي معنا وسنساعدك."},{"type":"text","id":"trust_1","label":"Trust point 1","default":"دفع آمن"},{"type":"text","id":"trust_2","label":"Trust point 2","default":"دعم حقيقي"},{"type":"text","id":"trust_3","label":"Trust point 3","default":"توصيل سريع"},
+    {"type":"header","content":"Offer"},{"type":"text","id":"offer_prefix","label":"Heading prefix","default":"امنحي حليبك"},{"type":"text","id":"offer_highlight","label":"Highlighted text","default":"طريقة أسهل للخروج"},{"type":"text","id":"offer_perk_1","label":"Perk 1","default":"عدة المقاسات مجاناً"},{"type":"text","id":"offer_perk_2","label":"Perk 2","default":"شحن مجاني"},{"type":"text","id":"offer_button","label":"Button label","default":"اختاري عرضك"},
+    {"type":"header","content":"FAQ"},{"type":"text","id":"faq_prefix","label":"FAQ heading","default":"أسئلة تسألها"},{"type":"text","id":"faq_highlight","label":"Highlighted text","default":"الأمهات"},{"type":"checkbox","id":"open_first","label":"Open first question","default":false}
+  ],
+  "blocks":[{"type":"faq","name":"FAQ item","settings":[{"type":"text","id":"question","label":"Question","default":"هل أختار مضخة مفردة أو مزدوجة؟"},{"type":"richtext","id":"answer","label":"Answer","default":"<p>اختاري ما يناسب عدد جلساتك وروتينك اليومي. المضخة المزدوجة توفر وقتاً أكثر.</p>"}]}],
+  "max_blocks":10,
+  "presets":[{"name":"WW Saudi — Offer and FAQ","blocks":[{"type":"faq"},{"type":"faq","settings":{"question":"هل ستؤثر على إدرار الحليب؟"}},{"type":"faq","settings":{"question":"كيف أعرف المقاس المناسب؟"}},{"type":"faq","settings":{"question":"ماذا لو تعطلت؟"}},{"type":"faq","settings":{"question":"هل هي هادئة؟"}},{"type":"faq","settings":{"question":"كم يستغرق التوصيل؟"}}]}]
+}
+{% endschema %}

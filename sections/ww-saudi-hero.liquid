@@ -1,0 +1,167 @@
+{{ 'ww-saudi-pdp.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'wwsa-product-form-' | append: section.id
+  assign fallback_gallery = 'ww-sa-img-02.jpg,ww-sa-img-04.jpg,ww-sa-img-05.jpg,ww-sa-img-06.jpg,ww-sa-img-07.jpg,ww-sa-img-08.jpg' | split: ','
+-%}
+
+<section class="wwsa wwsa-hero" dir="rtl" data-section-id="{{ section.id }}">
+  <div class="wwsa-wrap wwsa-hero__grid">
+    <div class="wwsa-gallery">
+      <div class="wwsa-gallery__main">
+        {%- assign primary_media = product.featured_media.preview_image | default: product.featured_image -%}
+        {%- if primary_media != blank -%}
+          {{ primary_media | image_url: width: 1400 | image_tag: id: 'wwsa-main-' | append: section.id, loading: 'eager', widths: '480,720,960,1200,1400', sizes: '(min-width: 900px) 50vw, 100vw', alt: product.title }}
+        {%- else -%}
+          <img id="wwsa-main-{{ section.id }}" src="{{ 'ww-sa-img-02.jpg' | asset_url }}" alt="{{ product.title | escape }}" width="1200" height="1200" loading="eager">
+        {%- endif -%}
+        <button class="wwsa-gallery__nav wwsa-gallery__nav--prev" type="button" aria-label="الصورة السابقة">‹</button>
+        <button class="wwsa-gallery__nav wwsa-gallery__nav--next" type="button" aria-label="الصورة التالية">›</button>
+        <span class="wwsa-badge"><strong>{{ section.settings.badge_number }}</strong>{{ section.settings.badge_text }}</span>
+      </div>
+      <div class="wwsa-gallery__thumbs" aria-label="صور المنتج">
+        {%- assign gallery_count = 0 -%}
+        {%- for media in product.media limit: 6 -%}
+          {%- assign gallery_count = gallery_count | plus: 1 -%}
+          <button class="wwsa-gallery__thumb{% if forloop.first %} is-active{% endif %}" type="button" data-image="{{ media.preview_image | image_url: width: 1400 }}" aria-label="عرض الصورة {{ forloop.index }}">
+            {{ media.preview_image | image_url: width: 220 | image_tag: loading: 'lazy', alt: media.alt | default: product.title }}
+          </button>
+        {%- endfor -%}
+        {%- if gallery_count == 0 -%}
+          {%- for fallback in fallback_gallery -%}
+            <button class="wwsa-gallery__thumb{% if forloop.first %} is-active{% endif %}" type="button" data-image="{{ fallback | asset_url }}" aria-label="عرض الصورة {{ forloop.index }}">
+              <img src="{{ fallback | asset_url }}" alt="{{ product.title | escape }}" width="220" height="220" loading="lazy">
+            </button>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="wwsa-hero__content">
+      <div class="wwsa-rating"><span class="wwsa-rating__stars">★★★★★ {{ section.settings.rating }}</span><span class="wwsa-rating__proof">{{ section.settings.social_proof }}</span></div>
+      <h1>{{ section.settings.heading_prefix }} <mark>{{ section.settings.heading_highlight }}</mark> {{ section.settings.heading_suffix | default: product.title }}</h1>
+      <p class="wwsa-hero__promise">{{ section.settings.promise }}</p>
+      <div class="wwsa-features">
+        {%- for i in (1..4) -%}
+          {%- assign key = 'feature_' | append: i -%}
+          {%- assign text = section.settings[key] -%}
+          {%- if text != blank -%}<div><span class="wwsa-feature-icon">✓</span><strong>{{ text }}</strong></div>{%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="wwsa-specs">
+        <div><strong>{{ section.settings.spec_1_value }}</strong><span>{{ section.settings.spec_1_label }}</span></div>
+        <div><strong>{{ section.settings.spec_2_value }}</strong><span>{{ section.settings.spec_2_label }}</span></div>
+        <div><strong>{{ section.settings.spec_3_value }}</strong><span>{{ section.settings.spec_3_label }}</span></div>
+      </div>
+
+      {% form 'product', product, id: form_id, class: 'wwsa-product-form' %}
+        <div class="wwsa-variants" role="radiogroup" aria-label="{{ section.settings.variant_label | escape }}">
+          {%- for variant in product.variants -%}
+            <label class="wwsa-variant{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card>
+              <input type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
+              {%- assign variant_image = variant.featured_image | default: product.featured_image -%}
+              {%- if variant_image != blank -%}{{ variant_image | image_url: width: 240 | image_tag: class: 'wwsa-variant__image', loading: 'lazy', alt: variant.title }}{%- endif -%}
+              <div class="wwsa-variant__body">
+                <strong class="wwsa-variant__title">{{ variant.title }}</strong>
+                <div class="wwsa-variant__price-wrap"><span class="wwsa-variant__price">{{ variant.price | money }}</span>{% if variant.compare_at_price > variant.price %}<s class="wwsa-variant__compare">{{ variant.compare_at_price | money }}</s><span class="wwsa-variant__save">{{ 'وفر ' }}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}%</span>{% endif %}</div>
+                <div class="wwsa-variant__perks">✓ {{ section.settings.variant_perk_1 }}<br>✓ {{ section.settings.variant_perk_2 }}</div>
+              </div>
+              {%- if forloop.first -%}<span class="wwsa-badge wwsa-badge--small">{{ section.settings.popular_badge }}</span>{%- endif -%}
+            </label>
+          {%- endfor -%}
+        </div>
+
+        <div class="wwsa-gifts">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'gift' -%}
+              <div class="wwsa-gift" {{ block.shopify_attributes }}>
+                {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- elsif block.settings.product != blank and block.settings.product.featured_image != blank -%}{{ block.settings.product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- endif -%}
+                <span><strong>{{ block.settings.title | default: block.settings.product.title }}</strong><small>{{ block.settings.price_text }}</small></span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <p class="wwsa-offer-note">🎁 {{ section.settings.offer_note }}</p>
+        <button class="wwsa-btn wwsa-btn--primary" type="submit" name="add"{% unless current_variant.available %} disabled{% endunless %}>{{ section.settings.add_to_cart_label }}</button>
+        {%- if section.settings.whatsapp_number != blank -%}
+          <a class="wwsa-btn wwsa-btn--whatsapp" target="_blank" rel="noopener" href="https://wa.me/{{ section.settings.whatsapp_number | remove: ' ' | remove: '+' }}?text={{ section.settings.whatsapp_message | url_encode }}">{{ section.settings.whatsapp_label }}</a>
+        {%- endif -%}
+      {% endform %}
+
+      <div class="wwsa-guarantee-box"><strong>{{ section.settings.guarantee_title }}</strong><span>{{ section.settings.guarantee_text }}</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wwsa wwsa-sticky" data-wwsa-sticky>
+  <div class="wwsa-sticky__inner"><div class="wwsa-sticky__price"><strong data-sticky-price>{{ current_variant.price | money }}</strong><small data-sticky-title>{{ current_variant.title }}</small></div>
+  <button class="wwsa-btn wwsa-btn--primary" type="button" data-submit-form="{{ form_id }}">{{ section.settings.sticky_label }}</button></div>
+</div>
+
+<script>
+(() => {
+  const root = document.querySelector('[data-section-id="{{ section.id }}"]');
+  if (!root || root.dataset.ready) return; root.dataset.ready = 'true';
+  const main = root.querySelector('#wwsa-main-{{ section.id }}');
+  const thumbs = [...root.querySelectorAll('.wwsa-gallery__thumb')];
+  let active = 0;
+  function show(i){ if(!thumbs.length || !main) return; active=(i+thumbs.length)%thumbs.length; main.src=thumbs[active].dataset.image; thumbs.forEach((t,n)=>t.classList.toggle('is-active',n===active)); }
+  thumbs.forEach((t,i)=>t.addEventListener('click',()=>show(i)));
+  root.querySelector('.wwsa-gallery__nav--prev')?.addEventListener('click',()=>show(active-1));
+  root.querySelector('.wwsa-gallery__nav--next')?.addEventListener('click',()=>show(active+1));
+  root.querySelectorAll('[data-variant-card]').forEach(card => card.addEventListener('click', () => {
+    root.querySelectorAll('[data-variant-card]').forEach(x=>x.classList.remove('is-selected')); card.classList.add('is-selected');
+    const input=card.querySelector('input'); if(input){ input.checked=true; input.dispatchEvent(new Event('change',{bubbles:true})); }
+    document.querySelector('[data-sticky-price]').textContent=card.querySelector('.wwsa-variant__price')?.textContent || '';
+    document.querySelector('[data-sticky-title]').textContent=card.querySelector('.wwsa-variant__title')?.textContent || '';
+  }));
+  document.querySelector('[data-submit-form="{{ form_id }}"]')?.addEventListener('click',()=>document.getElementById('{{ form_id }}')?.requestSubmit());
+})();
+</script>
+
+{% schema %}
+{
+  "name": "WW Saudi — Product hero",
+  "tag": "section",
+  "class": "wwsa-section-host",
+  "settings": [
+    {"type":"header","content":"Hero copy"},
+    {"type":"text","id":"rating","label":"Rating","default":"4.8/5"},
+    {"type":"text","id":"social_proof","label":"Social proof","default":"محبوبة من آلاف الأمهات في السعودية"},
+    {"type":"text","id":"heading_prefix","label":"Heading prefix","default":"حليب أكثر"},
+    {"type":"text","id":"heading_highlight","label":"Highlighted text","default":"خلال أسبوع"},
+    {"type":"text","id":"heading_suffix","label":"Heading suffix","default":"مع مضخة WeeWonders"},
+    {"type":"textarea","id":"promise","label":"Supporting copy","default":"بدون ألم، بدون ساعات ضخ طويلة، وبدون إعدادات معقدة."},
+    {"type":"text","id":"feature_1","label":"Feature 1","default":"4 مقاسات + أداة تساعدك تختارين المناسب"},
+    {"type":"text","id":"feature_2","label":"Feature 2","default":"تفرغ الحليب بالكامل لتدعم الإدرار"},
+    {"type":"text","id":"feature_3","label":"Feature 3","default":"ألم أقل من أول يوم"},
+    {"type":"text","id":"feature_4","label":"Feature 4","default":"بدون يدين، هادئة ولا تسرب"},
+    {"type":"header","content":"Specs and offer"},
+    {"type":"text","id":"spec_1_value","label":"Spec 1 value","default":"5–6"},{"type":"text","id":"spec_1_label","label":"Spec 1 label","default":"جلسات لكل شحنة"},
+    {"type":"text","id":"spec_2_value","label":"Spec 2 value","default":"180 مل"},{"type":"text","id":"spec_2_label","label":"Spec 2 label","default":"كوب مانع للتسرب"},
+    {"type":"text","id":"spec_3_value","label":"Spec 3 value","default":"4 أوضاع"},{"type":"text","id":"spec_3_label","label":"Spec 3 label","default":"12 مستوى لكل وضع"},
+    {"type":"text","id":"variant_label","label":"Variant group label","default":"اختاري مجموعتك"},
+    {"type":"text","id":"variant_perk_1","label":"Variant perk 1","default":"عدة المقاسات مجاناً"},
+    {"type":"text","id":"variant_perk_2","label":"Variant perk 2","default":"شحن مجاني"},
+    {"type":"text","id":"popular_badge","label":"Popular badge","default":"الأكثر طلباً"},
+    {"type":"text","id":"offer_note","label":"Offer note","default":"عدة المقاسات مجانية في كل علبة"},
+    {"type":"text","id":"add_to_cart_label","label":"Add to cart label","default":"جربيها الآن بدون مخاطرة"},
+    {"type":"header","content":"WhatsApp"},
+    {"type":"text","id":"whatsapp_number","label":"WhatsApp number (country code, no +)"},
+    {"type":"text","id":"whatsapp_label","label":"WhatsApp button label","default":"اطلبي عبر واتساب"},
+    {"type":"textarea","id":"whatsapp_message","label":"WhatsApp prefilled message","default":"مرحباً، أريد طلب مضخة WeeWonders"},
+    {"type":"header","content":"Guarantee and badges"},
+    {"type":"text","id":"badge_number","label":"Badge number","default":"6"},
+    {"type":"text","id":"badge_text","label":"Badge text","default":"شهور ضمان"},
+    {"type":"text","id":"guarantee_title","label":"Guarantee title","default":"ضمان 6 أشهر"},
+    {"type":"text","id":"guarantee_text","label":"Guarantee text","default":"إذا توقفت عن العمل أو حصل أي عطل، نحن معك."},
+    {"type":"text","id":"sticky_label","label":"Sticky CTA label","default":"جربيها الآن بدون مخاطرة"}
+  ],
+  "blocks": [
+    {"type":"gift","name":"Included gift","settings":[{"type":"product","id":"product","label":"Gift product"},{"type":"image_picker","id":"image","label":"Image override"},{"type":"text","id":"title","label":"Label"},{"type":"text","id":"price_text","label":"Price text","default":"مجاناً"}]}
+  ],
+  "max_blocks": 6,
+  "presets": [{"name":"WW Saudi — Product hero","blocks":[{"type":"gift"},{"type":"gift"},{"type":"gift"},{"type":"gift"}]}]
+}
+{% endschema %}

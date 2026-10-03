@@ -1,0 +1,65 @@
+{% doc %}
+  @prompt
+    Create a custom CSS code block that hides the page title on the "How to use the pump" page. The code should target and hide the main page title element that appears at the top of the page template.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-custom-css-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+  }
+
+  {% if block.settings.enable_css %}
+    {{ block.settings.custom_css }}
+  {% endif %}
+{% endstyle %}
+
+<div class="ai-custom-css-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.show_info %}
+    <div style="padding: 20px; background-color: #f4f4f4; border-radius: 8px; margin: 20px 0; text-align: center; color: #666; font-size: 14px;">
+      <p style="margin: 0;">Custom CSS is active on this page</p>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Custom CSS code",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "CSS code"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_css",
+      "label": "Enable custom CSS",
+      "default": true
+    },
+    {
+      "type": "html",
+      "id": "custom_css",
+      "label": "CSS code",
+      "default": ".page-title { display: none !important; }"
+    },
+    {
+      "type": "header",
+      "content": "Display options"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_info",
+      "label": "Show info message",
+      "info": "Display a message indicating custom CSS is active",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom CSS code"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,91 @@
+{
+  "sections": {
+    "saudi_hero": {
+      "type": "ww-saudi-hero",
+      "blocks": {
+        "gift_1": {"type":"gift","settings":{"title":"حقيبة تخزين","price_text":"مجاناً"}},
+        "gift_2": {"type":"gift","settings":{"title":"مسخن رضاعة","price_text":"مجاناً"}},
+        "gift_3": {"type":"gift","settings":{"title":"وسادة رضاعة","price_text":"مجاناً"}},
+        "gift_4": {"type":"gift","settings":{"title":"أكياس حفظ الحليب","price_text":"مجاناً"}}
+      },
+      "block_order": ["gift_1","gift_2","gift_3","gift_4"],
+      "settings": {}
+    },
+    "saudi_videos": {
+      "type": "ww-saudi-videos",
+      "blocks": {
+        "video_1":{"type":"video","settings":{"label":"تجربة أم","name":"نورة","rating":"★★★★★"}},
+        "video_2":{"type":"video","settings":{"label":"رأي طبيبة","name":"د. فرح رسلان","rating":"★★★★★"}},
+        "video_3":{"type":"video","settings":{"label":"تجربة رضاعة","name":"د. ثريا","rating":"★★★★★"}},
+        "video_4":{"type":"video","settings":{"label":"لماذا WeeWonders","name":"د. إيليت","rating":"★★★★★"}},
+        "video_5":{"type":"video","settings":{"label":"تجربة أم","name":"جنى","rating":"★★★★★"}}
+      },
+      "block_order":["video_1","video_2","video_3","video_4","video_5"],
+      "settings":{}
+    },
+    "saudi_journey": {
+      "type": "ww-saudi-journey",
+      "blocks": {
+        "step_1":{"type":"step","settings":{"title":"اليوم الأول","text":"تعرفي على المقاس والإعدادات المناسبة لك."}},
+        "step_2":{"type":"step","settings":{"title":"الأسبوع الأول","text":"روتين أسهل وراحة أكثر مع كل جلسة."}},
+        "step_3":{"type":"step","settings":{"title":"الأسبوع الثاني","text":"تفريغ أفضل وإشارة أوضح للجسم."}},
+        "step_4":{"type":"step","settings":{"title":"الأسبوع الثالث","text":"يصبح الضخ جزءاً طبيعياً من يومك."}},
+        "step_5":{"type":"step","settings":{"title":"نهاية الشهر","text":"استمري على الروتين الأنسب لجسمك."}}
+      },
+      "block_order":["step_1","step_2","step_3","step_4","step_5"],
+      "settings":{}
+    },
+    "saudi_proof": {
+      "type": "ww-saudi-proof",
+      "blocks": {
+        "fit_1":{"type":"fit_feature","settings":{"icon":"◷","title":"مقاس مناسب لك","text":"4 مقاسات + أداة قياس داخل العلبة."}},
+        "fit_2":{"type":"fit_feature","settings":{"icon":"♫","title":"هادئة جداً","text":"صوت منخفض يساعدك تضخين براحة."}},
+        "fit_3":{"type":"fit_feature","settings":{"icon":"♢","title":"مانعة للتسرب","text":"ثبات أفضل حتى مع الحركة."}},
+        "fit_4":{"type":"fit_feature","settings":{"icon":"▭","title":"حرة اليدين","text":"ارتديها وواصلي يومك."}},
+        "review_1":{"type":"review","settings":{"label":"بدون ألم","name":"ملاك","rating":"★★★★★","text":"خلال عشر دقائق جمعت كمية ممتازة وبدون ألم."}},
+        "review_2":{"type":"review","settings":{"label":"إدرار أفضل","name":"عميلة موثقة","rating":"★★★★★","text":"استخدمتها باستمرار ولاحظت فرقاً في راحتي وروتيني."}},
+        "review_3":{"type":"review","settings":{"label":"مجهود أقل","name":"عميلة موثقة","rating":"★★★★★","text":"فعالة وسريعة وسهلة الاستخدام."}},
+        "review_4":{"type":"review","settings":{"label":"حرية أكبر","name":"أم عاملة","rating":"★★★★★","text":"أقدر أستخدمها وأنا أكمل يومي."}},
+        "proof_1":{"type":"proof","settings":{"label":"رسالة عميلة 1"}},
+        "proof_2":{"type":"proof","settings":{"label":"رسالة عميلة 2"}},
+        "proof_3":{"type":"proof","settings":{"label":"رسالة عميلة 3"}},
+        "proof_4":{"type":"proof","settings":{"label":"رسالة عميلة 4"}},
+        "proof_5":{"type":"proof","settings":{"label":"رسالة عميلة 5"}}
+      },
+      "block_order":["fit_1","fit_2","fit_3","fit_4","review_1","review_2","review_3","review_4","proof_1","proof_2","proof_3","proof_4","proof_5"],
+      "settings":{}
+    },
+    "saudi_difference": {
+      "type":"ww-saudi-difference",
+      "blocks": {
+        "bad_1":{"type":"compare_item","settings":{"column":"other","text":"مقاس واحد لا يناسب الجميع"}},
+        "bad_2":{"type":"compare_item","settings":{"column":"other","text":"تسرب مع الحركة"}},
+        "bad_3":{"type":"compare_item","settings":{"column":"other","text":"ألم مع كل جلسة"}},
+        "good_1":{"type":"compare_item","settings":{"column":"ours","text":"4 مقاسات + أداة قياس"}},
+        "good_2":{"type":"compare_item","settings":{"column":"ours","text":"مانعة للتسرب حتى مقلوبة"}},
+        "good_3":{"type":"compare_item","settings":{"column":"ours","text":"تفريغ كامل وراحة أكثر"}},
+        "how_1":{"type":"step","settings":{"title":"ركبي القطع","text":"ثوانٍ وتصبح جاهزة."}},
+        "how_2":{"type":"step","settings":{"title":"اختاري مقاسك","text":"استخدمي أداة القياس."}},
+        "how_3":{"type":"step","settings":{"title":"ضعيها داخل حمالة الصدر","text":"خفيفة وغير ملفتة."}},
+        "how_4":{"type":"step","settings":{"title":"ابدئي الضخ","text":"اختاري الوضع المريح."}},
+        "how_5":{"type":"step","settings":{"title":"اسكبي الحليب","text":"الكوب مصمم لتسهيل السكب."}}
+      },
+      "block_order":["bad_1","bad_2","bad_3","good_1","good_2","good_3","how_1","how_2","how_3","how_4","how_5"],
+      "settings":{}
+    },
+    "saudi_offer_faq": {
+      "type":"ww-saudi-offer-faq",
+      "blocks": {
+        "faq_1":{"type":"faq","settings":{"question":"هل أختار مضخة مفردة أو مزدوجة؟","answer":"<p>المزدوجة توفر الوقت إذا كنت تضخين كثيراً، والمفردة خيار خفيف للاستخدام الأقل.</p>"}},
+        "faq_2":{"type":"faq","settings":{"question":"هل ستؤثر على إدرار الحليب؟","answer":"<p>تفريغ الثدي بشكل جيد ومنتظم يساعد الجسم على الاستمرار في إنتاج الحليب.</p>"}},
+        "faq_3":{"type":"faq","settings":{"question":"كيف أعرف المقاس المناسب؟","answer":"<p>تأتي العلبة مع 4 مقاسات وأداة قياس لتساعدك في اختيار الأنسب.</p>"}},
+        "faq_4":{"type":"faq","settings":{"question":"ماذا لو تعطلت؟","answer":"<p>المضخة مشمولة بضمان 6 أشهر. تواصلي معنا وسنساعدك.</p>"}},
+        "faq_5":{"type":"faq","settings":{"question":"هل هي هادئة؟","answer":"<p>نعم، مصممة بصوت منخفض لاستخدام أكثر راحة وخصوصية.</p>"}},
+        "faq_6":{"type":"faq","settings":{"question":"كم يستغرق التوصيل؟","answer":"<p>يختلف حسب مدينتك. يمكنك تعديل هذه الإجابة من محرر القالب.</p>"}}
+      },
+      "block_order":["faq_1","faq_2","faq_3","faq_4","faq_5","faq_6"],
+      "settings":{}
+    }
+  },
+  "order":["saudi_hero","saudi_videos","saudi_journey","saudi_proof","saudi_difference","saudi_offer_faq"]
+}

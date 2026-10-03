@@ -1,0 +1,26 @@
+{{ 'ww-saudi-pdp.css' | asset_url | stylesheet_tag }}
+<section class="wwsa wwsa-section wwsa-difference" dir="rtl">
+  <div class="wwsa-wrap"><h2>{{ section.settings.compare_prefix }} <mark>{{ section.settings.compare_highlight }}</mark></h2><div class="wwsa-compare">
+    <article class="wwsa-compare__side wwsa-compare__side--bad">{% if section.settings.other_image != blank %}{{ section.settings.other_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.other_title }}{% else %}<img class="wwsa-compare__image" src="{{ 'ww-sa-img-24.png' | asset_url }}" alt="{{ section.settings.other_title | escape }}" width="700" height="700" loading="lazy">{% endif %}<h3>{{ section.settings.other_title }}</h3><ul>{% for block in section.blocks %}{% if block.type == 'compare_item' and block.settings.column == 'other' %}<li {{ block.shopify_attributes }}>✕ {{ block.settings.text }}</li>{% endif %}{% endfor %}</ul></article>
+    <span class="wwsa-compare__vs">VS</span>
+    <article class="wwsa-compare__side wwsa-compare__side--good">{% if section.settings.our_image != blank %}{{ section.settings.our_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: section.settings.our_title }}{% else %}<img class="wwsa-compare__image" src="{{ 'ww-sa-img-23.png' | asset_url }}" alt="{{ section.settings.our_title | escape }}" width="700" height="700" loading="lazy">{% endif %}<h3>{{ section.settings.our_title }}</h3><ul>{% for block in section.blocks %}{% if block.type == 'compare_item' and block.settings.column == 'ours' %}<li {{ block.shopify_attributes }}>✓ {{ block.settings.text }}</li>{% endif %}{% endfor %}</ul></article>
+  </div></div>
+</section>
+<section class="wwsa wwsa-section wwsa-steps" dir="rtl"><div class="wwsa-wrap"><h2>{{ section.settings.steps_prefix }} <mark>{{ section.settings.steps_highlight }}</mark></h2><div class="wwsa-step-grid">{% assign step_idx = 27 %}{% for block in section.blocks %}{% if block.type == 'step' %}{% assign fallback_name = 'ww-sa-img-' | append: step_idx | append: '.jpg' %}<article class="wwsa-step" {{ block.shopify_attributes }}>{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 500 | image_tag: loading: 'lazy', alt: block.settings.title }}{% else %}<img src="{{ fallback_name | asset_url }}" alt="{{ block.settings.title | escape }}" width="500" height="500" loading="lazy">{% endif %}<span>{{ forloop.index }}</span><strong>{{ block.settings.title }}</strong><p>{{ block.settings.text }}</p></article>{% assign step_idx = step_idx | plus: 1 %}{% endif %}{% endfor %}</div></div></section>
+{% schema %}
+{
+  "name":"WW Saudi — Difference",
+  "settings":[
+    {"type":"text","id":"compare_prefix","label":"Comparison heading","default":"الفرق اللي تسويه"},{"type":"text","id":"compare_highlight","label":"Highlighted text","default":"WeeWonders"},
+    {"type":"image_picker","id":"other_image","label":"Other pumps image"},{"type":"text","id":"other_title","label":"Other pumps title","default":"المضخات الأخرى"},
+    {"type":"image_picker","id":"our_image","label":"WeeWonders image"},{"type":"text","id":"our_title","label":"WeeWonders title","default":"مضخة WeeWonders"},
+    {"type":"text","id":"steps_prefix","label":"Steps heading","default":"خمس خطوات، وبعدها"},{"type":"text","id":"steps_highlight","label":"Highlighted text","default":"يداك حرة"}
+  ],
+  "blocks":[
+    {"type":"compare_item","name":"Comparison point","settings":[{"type":"select","id":"column","label":"Column","default":"ours","options":[{"value":"other","label":"Other pumps"},{"value":"ours","label":"WeeWonders"}]},{"type":"text","id":"text","label":"Text","default":"مريحة ومناسبة لك"}]},
+    {"type":"step","name":"How-to step","settings":[{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"title","label":"Title","default":"ركبي القطع"},{"type":"textarea","id":"text","label":"Text","default":"خطوة بسيطة وسريعة."}]}
+  ],
+  "max_blocks":15,
+  "presets":[{"name":"WW Saudi — Difference","blocks":[{"type":"compare_item","settings":{"column":"other","text":"مقاس واحد لا يناسب الجميع"}},{"type":"compare_item","settings":{"column":"other","text":"تسرب مع الحركة"}},{"type":"compare_item","settings":{"column":"other","text":"ألم مع كل جلسة"}},{"type":"compare_item","settings":{"column":"ours","text":"4 مقاسات + أداة قياس"}},{"type":"compare_item","settings":{"column":"ours","text":"مانعة للتسرب حتى مقلوبة"}},{"type":"compare_item","settings":{"column":"ours","text":"تفريغ كامل وراحة أكثر"}},{"type":"step"},{"type":"step"},{"type":"step"},{"type":"step"},{"type":"step"}]}]
+}
+{% endschema %}

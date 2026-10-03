@@ -1,0 +1,36 @@
+{{ 'ww-saudi-pdp.css' | asset_url | stylesheet_tag }}
+<section class="wwsa wwsa-section wwsa-fit" dir="rtl">
+  <div class="wwsa-wrap wwsa-fit__grid">
+    <div class="wwsa-fit__image">{% if section.settings.fit_image != blank %}{{ section.settings.fit_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '480,720,960,1200', alt: section.settings.fit_title }}{% else %}<img src="{{ 'ww-sa-img-17.jpg' | asset_url }}" alt="{{ section.settings.fit_title | escape }}" width="1200" height="1200" loading="lazy">{% endif %}</div>
+    <div><h2>{{ section.settings.fit_prefix }} <mark>{{ section.settings.fit_highlight }}</mark></h2><p class="wwsa-fit__lead">{{ section.settings.fit_lead }}</p><div class="wwsa-fit-list">{% for block in section.blocks %}{% if block.type == 'fit_feature' %}<div class="wwsa-fit-item" {{ block.shopify_attributes }}><span class="wwsa-fit-item__icon">{{ block.settings.icon }}</span><div><strong>{{ block.settings.title }}</strong><small>{{ block.settings.text }}</small></div></div>{% endif %}{% endfor %}</div></div>
+  </div>
+</section>
+
+<section class="wwsa wwsa-section wwsa-reviews" dir="rtl">
+  <div class="wwsa-wrap"><h2>{{ section.settings.review_prefix }} <mark>{{ section.settings.review_highlight }}</mark></h2><div class="wwsa-review-grid">{% for block in section.blocks %}{% if block.type == 'review' %}<article class="wwsa-review" {{ block.shopify_attributes }}><span>{{ block.settings.label }}</span><strong>{{ block.settings.name }}</strong><b>{{ block.settings.rating }}</b><p>{{ block.settings.text }}</p></article>{% endif %}{% endfor %}</div></div>
+</section>
+
+<section class="wwsa wwsa-section wwsa-proofs" dir="rtl" id="wwsa-proofs-{{ section.id }}">
+  <div class="wwsa-wrap"><h2>{{ section.settings.proof_prefix }} <mark>{{ section.settings.proof_highlight }}</mark></h2><p class="wwsa-proof__sub">{{ section.settings.proof_lead }}</p><div class="wwsa-proof__grid">{% assign fallback_index = 18 %}{% for block in section.blocks %}{% if block.type == 'proof' %}{% assign fallback_name = 'ww-sa-img-' | append: fallback_index | append: '.png' %}<button class="wwsa-proof" type="button" {{ block.shopify_attributes }} data-full="{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 1600 }}{% else %}{{ fallback_name | asset_url }}{% endif %}" aria-label="تكبير {{ block.settings.label | escape }}">{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: block.settings.label }}{% else %}<img src="{{ fallback_name | asset_url }}" alt="{{ block.settings.label | escape }}" width="600" height="900" loading="lazy">{% endif %}<span>{{ block.settings.label }}</span></button>{% assign fallback_index = fallback_index | plus: 1 %}{% endif %}{% endfor %}</div></div>
+  <div class="wwsa-lightbox" role="dialog" aria-modal="true" aria-label="عرض الصورة كاملة"><button class="wwsa-lightbox__close" type="button" aria-label="إغلاق">×</button><img src="" alt="" width="1600" height="1600"></div>
+</section>
+<script>
+(()=>{const r=document.getElementById('wwsa-proofs-{{ section.id }}');if(!r)return;const box=r.querySelector('.wwsa-lightbox'),img=box.querySelector('img');r.querySelectorAll('.wwsa-proof').forEach(b=>b.addEventListener('click',()=>{img.src=b.dataset.full;box.classList.add('is-open');}));const close=()=>box.classList.remove('is-open');box.addEventListener('click',e=>{if(e.target===box||e.target.closest('.wwsa-lightbox__close'))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});})();
+</script>
+{% schema %}
+{
+  "name":"WW Saudi — Social proof",
+  "settings":[
+    {"type":"header","content":"Fit section"},{"type":"image_picker","id":"fit_image","label":"Fit section image"},{"type":"text","id":"fit_prefix","label":"Heading prefix","default":"جربتِ قبل وما ضبط معك؟"},{"type":"text","id":"fit_highlight","label":"Highlighted text","default":"غالباً كان المقاس"},{"type":"textarea","id":"fit_lead","label":"Intro","default":"المقاس الصحيح يفرق في الراحة، منع التسرب، وكمية الحليب."},
+    {"type":"header","content":"Reviews"},{"type":"text","id":"review_prefix","label":"Heading prefix","default":"آراء أمهات حقيقيات"},{"type":"text","id":"review_highlight","label":"Highlighted text","default":"جربن WeeWonders"},
+    {"type":"header","content":"Screenshots"},{"type":"text","id":"proof_prefix","label":"Heading prefix","default":"رسائل حقيقية من"},{"type":"text","id":"proof_highlight","label":"Highlighted text","default":"أمهات WeeWonders"},{"type":"textarea","id":"proof_lead","label":"Intro","default":"اضغطي على أي صورة لعرضها كاملة."}
+  ],
+  "blocks":[
+    {"type":"fit_feature","name":"Fit feature","settings":[{"type":"text","id":"icon","label":"Icon or emoji","default":"✓"},{"type":"text","id":"title","label":"Title","default":"4 مقاسات داخل العلبة"},{"type":"textarea","id":"text","label":"Text","default":"اختاري المقاس الأقرب لك واستخدمي أداة القياس."}]},
+    {"type":"review","name":"Customer review","settings":[{"type":"text","id":"label","label":"Label","default":"تجربة حقيقية"},{"type":"text","id":"name","label":"Name","default":"أم من WeeWonders"},{"type":"text","id":"rating","label":"Rating","default":"★★★★★"},{"type":"textarea","id":"text","label":"Review","default":"مريحة وسهلة، وساعدتني أكمل روتيني بدون ألم."}]},
+    {"type":"proof","name":"WhatsApp screenshot","settings":[{"type":"image_picker","id":"image","label":"Screenshot"},{"type":"text","id":"label","label":"Accessible label","default":"رسالة عميلة"}]}
+  ],
+  "max_blocks":20,
+  "presets":[{"name":"WW Saudi — Social proof","blocks":[{"type":"fit_feature"},{"type":"fit_feature"},{"type":"fit_feature"},{"type":"fit_feature"},{"type":"review"},{"type":"review"},{"type":"review"},{"type":"review"},{"type":"proof"},{"type":"proof"},{"type":"proof"},{"type":"proof"},{"type":"proof"}]}]
+}
+{% endschema %}

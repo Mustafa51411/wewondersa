@@ -1,0 +1,50 @@
+{{ 'ww-saudi-pdp.css' | asset_url | stylesheet_tag }}
+<section class="wwsa wwsa-claim" dir="rtl">
+  <div class="wwsa-wrap">
+    <p class="wwsa-claim__lede">{{ section.settings.rule_label }}</p>
+    <h2>{{ section.settings.claim_prefix }} = <mark class="wwsa-claim__highlight">{{ section.settings.claim_highlight }}</mark></h2>
+    <div class="wwsa-scenarios">
+      <article class="wwsa-scenario">
+        <span class="wwsa-scenario__emoji">😣</span>
+        <div class="wwsa-scenario__image">{% if section.settings.less_image != blank %}{{ section.settings.less_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: section.settings.less_title }}{% else %}<img src="{{ 'ww-sa-img-15.png' | asset_url }}" alt="{{ section.settings.less_title | escape }}" width="900" height="600" loading="lazy">{% endif %}</div>
+        <strong>{{ section.settings.less_title }}</strong><span class="wwsa-scenario__chain">{{ section.settings.less_chain }}</span><b class="wwsa-scenario__result">{{ section.settings.less_result }}</b>
+      </article>
+      <article class="wwsa-scenario">
+        <span class="wwsa-scenario__emoji">😌</span>
+        <div class="wwsa-scenario__image">{% if section.settings.more_image != blank %}{{ section.settings.more_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: section.settings.more_title }}{% else %}<img src="{{ 'ww-sa-img-16.png' | asset_url }}" alt="{{ section.settings.more_title | escape }}" width="900" height="600" loading="lazy">{% endif %}</div>
+        <strong>{{ section.settings.more_title }}</strong><span class="wwsa-scenario__chain">{{ section.settings.more_chain }}</span><b class="wwsa-scenario__result">{{ section.settings.more_result }}</b>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="wwsa wwsa-section wwsa-myth" dir="rtl">
+  <div class="wwsa-wrap"><p class="wwsa-myth__eyebrow">{{ section.settings.myth_eyebrow }}</p><h2>{{ section.settings.myth_title }}</h2><p class="wwsa-myth__copy">{{ section.settings.myth_copy }}</p></div>
+</section>
+
+<section class="wwsa wwsa-section wwsa-timeline" dir="rtl">
+  <div class="wwsa-wrap">
+    <h2>{{ section.settings.timeline_prefix }} <mark>{{ section.settings.timeline_highlight }}</mark></h2>
+    <p class="wwsa-timeline__sub">{{ section.settings.timeline_lead }}</p>
+    <div class="wwsa-timeline__track">
+      {%- for block in section.blocks -%}<article class="wwsa-timeline-step" {{ block.shopify_attributes }}><span class="wwsa-timeline-step__dot"></span><span class="wwsa-timeline-step__label">{{ forloop.index }}</span><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></article>{%- endfor -%}
+    </div>
+    <p class="wwsa-disclaimer">{{ section.settings.disclaimer }}</p>
+  </div>
+</section>
+{% schema %}
+{
+  "name":"WW Saudi — Milk journey",
+  "settings":[
+    {"type":"header","content":"Full-emptying comparison"},
+    {"type":"text","id":"rule_label","label":"Small label","default":"القاعدة البسيطة"},{"type":"text","id":"claim_prefix","label":"Claim","default":"تفريغ كامل"},{"type":"text","id":"claim_highlight","label":"Highlighted result","default":"حليب أكثر"},
+    {"type":"image_picker","id":"less_image","label":"Less milk image"},{"type":"text","id":"less_title","label":"Less title","default":"تفريغ غير كامل"},{"type":"text","id":"less_chain","label":"Less explanation","default":"الجسم يقرأها: لا حاجة للمزيد"},{"type":"text","id":"less_result","label":"Less result","default":"حليب أقل"},
+    {"type":"image_picker","id":"more_image","label":"More milk image"},{"type":"text","id":"more_title","label":"More title","default":"تفريغ كامل"},{"type":"text","id":"more_chain","label":"More explanation","default":"الجسم يقرأها: استمري"},{"type":"text","id":"more_result","label":"More result","default":"حليب أكثر"},
+    {"type":"header","content":"Myth"},{"type":"text","id":"myth_eyebrow","label":"Eyebrow","default":"خلينا نصحح المعلومة"},{"type":"text","id":"myth_title","label":"Title","default":"الضخ لا يجفف حليبك"},{"type":"textarea","id":"myth_copy","label":"Copy","default":"الثدي ينتج الحليب حسب الطلب. كلما تم تفريغه بشكل أفضل، وصلت إشارة أوضح للجسم لإنتاج المزيد."},
+    {"type":"header","content":"Timeline"},{"type":"text","id":"timeline_prefix","label":"Title prefix","default":"شهرك الأول"},{"type":"text","id":"timeline_highlight","label":"Highlighted text","default":"مع WeeWonders"},{"type":"textarea","id":"timeline_lead","label":"Intro","default":"خطوات بسيطة ونتائج تتطور مع الاستمرار."},{"type":"textarea","id":"disclaimer","label":"Disclaimer","default":"كل جسم مختلف. تختلف النتائج من أم لأخرى ولا يمكن ضمانها."}
+  ],
+  "blocks":[{"type":"step","name":"Timeline step","settings":[{"type":"text","id":"title","label":"Title","default":"الأسبوع الأول"},{"type":"textarea","id":"text","label":"Text","default":"تتعرفين على المقاس والإعدادات المناسبة لك."}]}],
+  "max_blocks":5,
+  "presets":[{"name":"WW Saudi — Milk journey","blocks":[{"type":"step","settings":{"title":"اليوم الأول"}},{"type":"step","settings":{"title":"الأسبوع الأول"}},{"type":"step","settings":{"title":"الأسبوع الثاني"}},{"type":"step","settings":{"title":"الأسبوع الثالث"}},{"type":"step","settings":{"title":"نهاية الشهر"}}]}]
+}
+{% endschema %}

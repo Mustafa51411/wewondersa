@@ -1,0 +1,83 @@
+{% doc %}
+  @prompt
+    Create a custom CSS code block that hides the page title on the "How to use the pump" page. The code should target and hide the main page title element that appears at the top of the page template.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-custom-css-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+  }
+
+  {% if block.settings.enable_css %}
+    {{ block.settings.custom_css }}
+  {% endif %}
+{% endstyle %}
+
+<div class="ai-custom-css-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.enable_css %}
+    {% if block.settings.show_info %}
+      <div style="padding: 12px; background-color: #f0f0f0; border-left: 4px solid {{ block.settings.info_color }}; margin: 20px 0; font-size: 14px; color: #333;">
+        <strong>Custom CSS Active:</strong> {{ block.settings.info_message }}
+      </div>
+    {% endif %}
+  {% else %}
+    <div style="padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; margin: 20px 0; font-size: 14px; color: #856404;">
+      <strong>Note:</strong> Custom CSS is currently disabled. Enable it in the block settings to apply your styles.
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Custom CSS code",
+  "tag": null,
+  "class": "custom-css-block",
+  "settings": [
+    {
+      "type": "header",
+      "content": "CSS code"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_css",
+      "label": "Enable custom CSS",
+      "default": true
+    },
+    {
+      "type": "html",
+      "id": "custom_css",
+      "label": "Custom CSS",
+      "default": ".page-title { display: none !important; }"
+    },
+    {
+      "type": "header",
+      "content": "Information banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_info",
+      "label": "Show information banner",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "info_message",
+      "label": "Information message",
+      "default": "Page title is hidden on this page"
+    },
+    {
+      "type": "color",
+      "id": "info_color",
+      "label": "Banner accent color",
+      "default": "#7ac8f0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom CSS code"
+    }
+  ]
+}
+{% endschema %}
