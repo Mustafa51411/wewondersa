@@ -12,7 +12,8 @@
       <div class="wwsa-gallery__main">
         {%- assign primary_media = product.featured_media.preview_image | default: product.featured_image -%}
         {%- if primary_media != blank -%}
-          {{ primary_media | image_url: width: 1400 | image_tag: id: 'wwsa-main-' | append: section.id, loading: 'eager', widths: '480,720,960,1200,1400', sizes: '(min-width: 900px) 50vw, 100vw', alt: product.title }}
+          {%- assign primary_image_id = 'wwsa-main-' | append: section.id -%}
+          {{ primary_media | image_url: width: 1400 | image_tag: id: primary_image_id, loading: 'eager', widths: '480,720,960,1200,1400', sizes: '(min-width: 900px) 50vw, 100vw', alt: product.title }}
         {%- else -%}
           <img id="wwsa-main-{{ section.id }}" src="{{ 'ww-sa-img-02.jpg' | asset_url }}" alt="{{ product.title | escape }}" width="1200" height="1200" loading="eager">
         {%- endif -%}
