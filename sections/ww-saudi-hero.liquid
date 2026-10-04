@@ -58,17 +58,26 @@
 
       {% form 'product', product, id: form_id, class: 'wwsa-product-form' %}
         <div class="wwsa-variants" role="radiogroup" aria-label="{{ section.settings.variant_label | escape }}">
+          {%- assign single_variant_price = product.variants.first.price -%}
+          {%- for possible_variant in product.variants -%}
+            {%- assign possible_variant_title = possible_variant.title | downcase -%}
+            {%- unless possible_variant_title contains 'double' or possible_variant.title contains 'مزدوج' -%}
+              {%- assign single_variant_price = possible_variant.price -%}
+              {%- break -%}
+            {%- endunless -%}
+          {%- endfor -%}
           {%- for variant in product.variants -%}
             {%- assign variant_image = variant.featured_image | default: product.featured_image -%}
             {%- assign offer_type = 'single' -%}
-            {%- if forloop.first -%}{%- assign offer_type = 'double' -%}{%- endif -%}
+            {%- assign variant_title_downcase = variant.title | downcase -%}
+            {%- if variant_title_downcase contains 'double' or variant.title contains 'مزدوج' -%}{%- assign offer_type = 'double' -%}{%- endif -%}
             <label class="wwsa-variant{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-variant-id="{{ variant.id }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
               <input id="wwsa-variant-{{ section.id }}-{{ variant.id }}" type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
               {%- if variant_image != blank -%}{{ variant_image | image_url: width: 240 | image_tag: class: 'wwsa-variant__image', loading: 'lazy', alt: variant.title }}{%- endif -%}
               <div class="wwsa-variant__body">
                 <strong class="wwsa-variant__title">{{ variant.title }}</strong>
                 {%- if offer_type == 'double' and product.variants.size > 1 -%}
-                  {%- assign two_single_price = product.variants[1].price | times: 2 -%}
+                  {%- assign two_single_price = single_variant_price | times: 2 -%}
                   {%- assign bundle_saving = two_single_price | minus: variant.price -%}
                   {%- if bundle_saving > 0 -%}<span class="wwsa-variant__bundle-save">{{ section.settings.bundle_saving_prefix }} {{ bundle_saving | money }} {{ section.settings.bundle_saving_suffix }}</span>{%- endif -%}
                 {%- endif -%}
@@ -88,7 +97,7 @@
                   {%- endif -%}
                 {%- endfor -%}
               </div>
-              {%- if forloop.first -%}<span class="wwsa-badge wwsa-badge--small">{{ section.settings.popular_badge }}</span>{%- endif -%}
+              {%- if offer_type == 'double' -%}<span class="wwsa-badge wwsa-badge--small">{{ section.settings.popular_badge }}</span>{%- endif -%}
             </label>
           {%- endfor -%}
         </div>
@@ -191,7 +200,7 @@
     {"type":"text","id":"sticky_label","label":"Sticky CTA label","default":"جربيها الآن بدون مخاطرة"}
   ],
   "blocks": [
-    {"type":"gift","name":"Included gift","settings":[{"type":"select","id":"applies_to","label":"Show with offer","default":"both","options":[{"value":"double","label":"Double pump only"},{"value":"single","label":"Single pump only"},{"value":"both","label":"Both offers"}]},{"type":"product","id":"product","label":"Gift product"},{"type":"image_picker","id":"image","label":"Image override"},{"type":"text","id":"title","label":"Label"},{"type":"text","id":"price_text","label":"Price text","default":"مجاناً"}]}
+    {"type":"gift","name":"Included gift","settings":[{"type":"select","id":"applies_to","label":"Show with offer","default":"both","options":[{"value":"double","label":"Double pump only"},{"value":"single","label":"Single pump only"},{"value":"both","label":"Both offers"},{"value":"none","label":"Hidden"}]},{"type":"product","id":"product","label":"Gift product"},{"type":"image_picker","id":"image","label":"Image override"},{"type":"text","id":"title","label":"Label"},{"type":"text","id":"price_text","label":"Price text","default":"مجاناً"}]}
   ],
   "max_blocks": 6,
   "presets": [{"name":"WW Saudi — Product hero","blocks":[{"type":"gift"},{"type":"gift"},{"type":"gift"},{"type":"gift"}]}]
