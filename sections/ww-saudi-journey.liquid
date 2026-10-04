@@ -28,7 +28,7 @@
     <p class="wwsa-timeline__sub">{{ section.settings.timeline_lead }}</p>
     <div class="wwsa-timeline__track" data-timeline>
       <span class="wwsa-timeline__fill" aria-hidden="true"></span>
-      {%- for block in section.blocks -%}<article class="wwsa-timeline-step" {{ block.shopify_attributes }} data-timeline-step><div class="wwsa-timeline-step__marker"><span class="wwsa-timeline-step__dot"></span><span class="wwsa-timeline-step__label">{{ forloop.index }}</span></div><div class="wwsa-timeline-step__body"><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></div></article>{%- endfor -%}
+      {%- for block in section.blocks -%}<article class="wwsa-timeline-step" {{ block.shopify_attributes }} data-timeline-step><div class="wwsa-timeline-step__marker"><span class="wwsa-timeline-step__dot"></span></div><div class="wwsa-timeline-step__body"><div class="wwsa-timeline-step__heading"><span class="wwsa-timeline-step__label">{{ forloop.index }}</span><h3>{{ block.settings.title }}</h3></div><p>{{ block.settings.text }}</p></div></article>{%- endfor -%}
     </div>
     <p class="wwsa-disclaimer">{{ section.settings.disclaimer }}</p>
   </div>

@@ -124,7 +124,7 @@
 .wwsa-myth { background: var(--wwsa-soft); text-align: center; }
 .wwsa-myth__eyebrow { color: var(--wwsa-blue); font-size: .8rem; font-weight: 800; margin-bottom: 8px; }
 .wwsa-myth__copy { color: var(--wwsa-muted); margin: 16px auto 0; max-width: 64ch; }
-.wwsa-timeline { background: var(--wwsa-soft); }
+.wwsa-timeline { background: var(--wwsa-soft); text-align: center; }
 .wwsa-timeline__sub { color: var(--wwsa-muted); margin-top: 12px; text-align: center; }
 .wwsa-timeline__track { display: grid; gap: 18px; grid-template-columns: repeat(5,1fr); margin-top: 52px; position: relative; }
 .wwsa-timeline__track::before { background: rgba(26,43,60,.15); content: ''; height: 4px; left: 5%; position: absolute; right: 5%; top: 9px; }
@@ -371,23 +371,26 @@
 .wwsa-timeline__track { --wwsa-progress: 0%; }
 .wwsa-timeline__fill { background: linear-gradient(90deg, var(--wwsa-blue), var(--wwsa-navy)); height: 4px; inset-inline-start: 5%; position: absolute; top: 9px; transition: width .25s ease-out; width: calc(var(--wwsa-progress) * .9); z-index: 1; }
 .wwsa-timeline-step { transition: opacity .3s ease, transform .3s ease; }
-.wwsa-timeline-step:not(.is-active) { opacity: .48; }
+.wwsa-timeline-step:not(.is-active) { opacity: .76; }
 .wwsa-timeline-step.is-active { opacity: 1; }
 .wwsa-timeline-step.is-active .wwsa-timeline-step__dot { background: var(--wwsa-navy); border-color: var(--wwsa-navy); box-shadow: 0 0 0 5px rgba(63,169,222,.24); }
 .wwsa-timeline-step__marker { align-items: center; display: flex; flex-direction: column; }
 .wwsa-timeline-step__body { min-width: 0; }
+.wwsa-timeline-step__heading { align-items: center; display: flex; gap: 7px; justify-content: center; }
+.wwsa-timeline-step__heading h3 { margin: 0; }
+.wwsa-timeline-step__heading + p { margin-inline: auto; }
 
 @media (max-width: 980px) {
   .wwsa-timeline__track { gap: 0; margin: 34px auto 0; max-width: 640px; padding-block: 2px; }
-  .wwsa-timeline__track::before { bottom: 18px; right: 17px; top: 18px; }
-  .wwsa-timeline__fill { background: linear-gradient(180deg, var(--wwsa-blue), var(--wwsa-navy)); height: calc(var(--wwsa-progress) * .86); right: 17px; top: 18px; transition: height .25s ease-out; width: 3px; }
-  .wwsa-timeline-step { align-items: start; display: grid; gap: 14px; grid-template-columns: 38px minmax(0,1fr); min-height: 114px; padding: 0 0 22px; text-align: right; }
-  .wwsa-timeline-step__marker { grid-column: 1; grid-row: 1; padding-top: 2px; position: static; }
+  .wwsa-timeline__track::before { bottom: 18px; left: 50%; right: auto; top: 18px; transform: translateX(-50%); }
+  .wwsa-timeline__fill { background: linear-gradient(180deg, var(--wwsa-blue), var(--wwsa-navy)); height: calc(var(--wwsa-progress) * .86); left: 50%; right: auto; top: 18px; transform: translateX(-50%); transition: height .25s ease-out; width: 3px; }
+  .wwsa-timeline-step { align-items: center; display: grid; gap: 8px; grid-template-columns: 1fr; justify-items: center; min-height: 122px; padding: 0 0 24px; text-align: center; }
+  .wwsa-timeline-step__marker { grid-column: 1; grid-row: 1; padding: 0; position: static; }
   .wwsa-timeline-step__dot { flex: 0 0 20px; margin: 0; position: static; }
-  .wwsa-timeline-step__label { font-size: 13px; font-weight: 900; line-height: 1; margin-top: 8px; }
-  .wwsa-timeline-step__body { grid-column: 2; grid-row: 1; padding: 0; text-align: right; }
-  .wwsa-timeline-step__body h3 { margin: 0; }
-  .wwsa-timeline-step__body p { margin: 4px 0 0; max-width: 35ch; }
+  .wwsa-timeline-step__body { grid-column: 1; grid-row: 2; padding: 0; text-align: center; }
+  .wwsa-timeline-step__heading { justify-content: center; }
+  .wwsa-timeline-step__label { font-size: 13px; font-weight: 900; line-height: 1; }
+  .wwsa-timeline-step__body p { margin: 4px auto 0; max-width: 35ch; }
 }
 
 @media (max-width: 640px) {
@@ -401,8 +404,8 @@
   .wwsa-proof__grid { gap: 10px; margin-top: 16px; }
   .wwsa-proof { aspect-ratio: 4 / 5; border-radius: 12px; }
   .wwsa-proof > span { font-size: 11px; padding: 8px; }
-  .wwsa-timeline-step { gap: 12px; grid-template-columns: 34px minmax(0,1fr); min-height: 100px; padding-bottom: 18px; }
-  .wwsa-timeline__track::before, .wwsa-timeline__fill { right: 15px; }
+  .wwsa-timeline-step { gap: 8px; grid-template-columns: 1fr; min-height: 108px; padding-bottom: 20px; }
+  .wwsa-timeline__track::before, .wwsa-timeline__fill { left: 50%; right: auto; }
   .wwsa-timeline-step__dot { height: 18px; width: 18px; }
   .wwsa-timeline-step__label { font-size: 12px; }
   .wwsa-timeline-step__body h3 { font-size: 18px; line-height: 1.25; }
