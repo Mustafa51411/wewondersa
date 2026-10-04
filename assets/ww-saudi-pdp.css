@@ -126,6 +126,10 @@
 .wwsa-myth__copy { color: var(--wwsa-muted); margin: 16px auto 0; max-width: 64ch; }
 .wwsa-timeline { background: var(--wwsa-soft); text-align: center; }
 .wwsa-timeline__sub { color: var(--wwsa-muted); margin-top: 12px; text-align: center; }
+.wwsa-timeline__title > span,
+.wwsa-timeline__title > mark { display: block; width: max-content; }
+.wwsa-timeline__title > span { margin-inline: auto; }
+.wwsa-timeline__title > mark { margin: 4px auto 0; }
 .wwsa-timeline__track { display: grid; gap: 18px; grid-template-columns: repeat(5,1fr); margin-top: 52px; position: relative; }
 .wwsa-timeline__track::before { background: rgba(26,43,60,.15); content: ''; height: 4px; left: 5%; position: absolute; right: 5%; top: 9px; }
 .wwsa-timeline-step { position: relative; text-align: center; z-index: 1; }
