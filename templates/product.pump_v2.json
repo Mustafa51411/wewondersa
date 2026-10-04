@@ -3,10 +3,10 @@
     "saudi_hero": {
       "type": "ww-saudi-hero",
       "blocks": {
-        "gift_1": {"type":"gift","settings":{"title":"حقيبة تخزين","price_text":"مجاناً"}},
-        "gift_2": {"type":"gift","settings":{"title":"مسخن رضاعة","price_text":"مجاناً"}},
-        "gift_3": {"type":"gift","settings":{"title":"وسادة رضاعة","price_text":"مجاناً"}},
-        "gift_4": {"type":"gift","settings":{"title":"أكياس حفظ الحليب","price_text":"مجاناً"}}
+        "gift_1": {"type":"gift","settings":{"applies_to":"both","title":"حقيبة تخزين","price_text":"مجاناً"}},
+        "gift_2": {"type":"gift","settings":{"applies_to":"double","title":"مسخن رضاعة","price_text":"مجاناً"}},
+        "gift_3": {"type":"gift","settings":{"applies_to":"single","title":"وسادة رضاعة","price_text":"مجاناً"}},
+        "gift_4": {"type":"gift","settings":{"applies_to":"both","title":"أكياس حفظ الحليب","price_text":"مجاناً"}}
       },
       "block_order": ["gift_1","gift_2","gift_3","gift_4"],
       "settings": {}

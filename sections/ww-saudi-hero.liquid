@@ -60,29 +60,39 @@
         <div class="wwsa-variants" role="radiogroup" aria-label="{{ section.settings.variant_label | escape }}">
           {%- for variant in product.variants -%}
             {%- assign variant_image = variant.featured_image | default: product.featured_image -%}
+            {%- assign offer_type = 'single' -%}
+            {%- if forloop.first -%}{%- assign offer_type = 'double' -%}{%- endif -%}
             <label class="wwsa-variant{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-variant-id="{{ variant.id }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
               <input id="wwsa-variant-{{ section.id }}-{{ variant.id }}" type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
               {%- if variant_image != blank -%}{{ variant_image | image_url: width: 240 | image_tag: class: 'wwsa-variant__image', loading: 'lazy', alt: variant.title }}{%- endif -%}
               <div class="wwsa-variant__body">
                 <strong class="wwsa-variant__title">{{ variant.title }}</strong>
+                {%- if offer_type == 'double' and product.variants.size > 1 -%}
+                  {%- assign two_single_price = product.variants[1].price | times: 2 -%}
+                  {%- assign bundle_saving = two_single_price | minus: variant.price -%}
+                  {%- if bundle_saving > 0 -%}<span class="wwsa-variant__bundle-save">{{ section.settings.bundle_saving_prefix }} {{ bundle_saving | money }} {{ section.settings.bundle_saving_suffix }}</span>{%- endif -%}
+                {%- endif -%}
                 <div class="wwsa-variant__price-wrap"><span class="wwsa-variant__price">{{ variant.price | money }}</span>{% if variant.compare_at_price > variant.price %}<s class="wwsa-variant__compare">{{ variant.compare_at_price | money }}</s><span class="wwsa-variant__save">{{ 'وفر ' }}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}%</span>{% endif %}</div>
                 <div class="wwsa-variant__perks">✓ {{ section.settings.variant_perk_1 }}<br>✓ {{ section.settings.variant_perk_2 }}</div>
+              </div>
+              <div class="wwsa-variant__gifts" aria-label="{{ section.settings.included_gifts_label | escape }}">
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'gift' -%}
+                    {%- if block.settings.applies_to == offer_type or block.settings.applies_to == 'both' -%}
+                    <div class="wwsa-gift" {{ block.shopify_attributes }}>
+                      <span class="wwsa-gift__plus" aria-hidden="true">+</span>
+                      {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- elsif block.settings.product != blank and block.settings.product.featured_image != blank -%}{{ block.settings.product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- endif -%}
+                      <span><strong>{{ block.settings.title | default: block.settings.product.title }}</strong><small>{{ block.settings.price_text }}</small></span>
+                    </div>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
               </div>
               {%- if forloop.first -%}<span class="wwsa-badge wwsa-badge--small">{{ section.settings.popular_badge }}</span>{%- endif -%}
             </label>
           {%- endfor -%}
         </div>
 
-        <div class="wwsa-gifts">
-          {%- for block in section.blocks -%}
-            {%- if block.type == 'gift' -%}
-              <div class="wwsa-gift" {{ block.shopify_attributes }}>
-                {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- elsif block.settings.product != blank and block.settings.product.featured_image != blank -%}{{ block.settings.product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- endif -%}
-                <span><strong>{{ block.settings.title | default: block.settings.product.title }}</strong><small>{{ block.settings.price_text }}</small></span>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
         <p class="wwsa-offer-note">🎁 {{ section.settings.offer_note }}</p>
         <button class="wwsa-btn wwsa-btn--primary" type="submit" name="add"{% unless current_variant.available %} disabled{% endunless %}>{{ section.settings.add_to_cart_label }}</button>
         {%- if section.settings.whatsapp_number != blank -%}
@@ -166,6 +176,9 @@
     {"type":"text","id":"popular_badge","label":"Popular badge","default":"الأكثر طلباً"},
     {"type":"text","id":"offer_note","label":"Offer note","default":"عدة المقاسات مجانية في كل علبة"},
     {"type":"text","id":"add_to_cart_label","label":"Add to cart label","default":"جربيها الآن بدون مخاطرة"},
+    {"type":"text","id":"bundle_saving_prefix","label":"Double bundle saving prefix","default":"وفّري"},
+    {"type":"text","id":"bundle_saving_suffix","label":"Double bundle saving suffix","default":"عن شراء مضختين مفردتين"},
+    {"type":"text","id":"included_gifts_label","label":"Included gifts label","default":"الهدايا المجانية"},
     {"type":"header","content":"WhatsApp"},
     {"type":"text","id":"whatsapp_number","label":"WhatsApp number (country code, no +)"},
     {"type":"text","id":"whatsapp_label","label":"WhatsApp button label","default":"اطلبي عبر واتساب"},
@@ -178,7 +191,7 @@
     {"type":"text","id":"sticky_label","label":"Sticky CTA label","default":"جربيها الآن بدون مخاطرة"}
   ],
   "blocks": [
-    {"type":"gift","name":"Included gift","settings":[{"type":"product","id":"product","label":"Gift product"},{"type":"image_picker","id":"image","label":"Image override"},{"type":"text","id":"title","label":"Label"},{"type":"text","id":"price_text","label":"Price text","default":"مجاناً"}]}
+    {"type":"gift","name":"Included gift","settings":[{"type":"select","id":"applies_to","label":"Show with offer","default":"both","options":[{"value":"double","label":"Double pump only"},{"value":"single","label":"Single pump only"},{"value":"both","label":"Both offers"}]},{"type":"product","id":"product","label":"Gift product"},{"type":"image_picker","id":"image","label":"Image override"},{"type":"text","id":"title","label":"Label"},{"type":"text","id":"price_text","label":"Price text","default":"مجاناً"}]}
   ],
   "max_blocks": 6,
   "presets": [{"name":"WW Saudi — Product hero","blocks":[{"type":"gift"},{"type":"gift"},{"type":"gift"},{"type":"gift"}]}]
