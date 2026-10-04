@@ -357,3 +357,54 @@
   .wwsa-video-card { border-radius: 13px; flex-basis: min(72vw, 250px); }
   .wwsa-review, .wwsa-proof, .wwsa-offer__variant { border-radius: 13px; }
 }
+
+/* Saudi PDP mobile refinement: compact proof cards, readable reviews, and
+   a timeline that preserves the reference's progressive journey behavior. */
+.wwsa-review__label { color: var(--wwsa-blue); display: block; font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .02em; margin-bottom: 11px; }
+.wwsa-review__meta { align-items: baseline; display: flex; gap: 10px; justify-content: space-between; margin-bottom: 10px; }
+.wwsa-review__meta strong { margin: 0; }
+.wwsa-review__meta b { color: var(--wwsa-blue); font-size: 14px; letter-spacing: 1px; white-space: nowrap; }
+.wwsa-proof { align-items: stretch; aspect-ratio: 3 / 4; background: #fff; box-shadow: 0 10px 24px -20px rgba(26,43,60,.45); display: flex; flex-direction: column; position: relative; }
+.wwsa-proof img { aspect-ratio: auto; flex: 1 1 auto; min-height: 0; object-fit: cover; object-position: center 25%; }
+.wwsa-proof > span { background: rgba(255,255,255,.96); color: var(--wwsa-navy); display: block; flex: 0 0 auto; font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: 800; overflow: hidden; padding: 9px 10px; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+
+.wwsa-timeline__track { --wwsa-progress: 0%; }
+.wwsa-timeline__fill { background: linear-gradient(90deg, var(--wwsa-blue), var(--wwsa-navy)); height: 4px; inset-inline-start: 5%; position: absolute; top: 9px; transition: width .25s ease-out; width: calc(var(--wwsa-progress) * .9); z-index: 1; }
+.wwsa-timeline-step { transition: opacity .3s ease, transform .3s ease; }
+.wwsa-timeline-step:not(.is-active) { opacity: .48; }
+.wwsa-timeline-step.is-active { opacity: 1; }
+.wwsa-timeline-step.is-active .wwsa-timeline-step__dot { background: var(--wwsa-navy); border-color: var(--wwsa-navy); box-shadow: 0 0 0 5px rgba(63,169,222,.24); }
+.wwsa-timeline-step__marker { align-items: center; display: flex; flex-direction: column; }
+.wwsa-timeline-step__body { min-width: 0; }
+
+@media (max-width: 980px) {
+  .wwsa-timeline__track { gap: 0; margin: 34px auto 0; max-width: 640px; padding-block: 2px; }
+  .wwsa-timeline__track::before { bottom: 18px; right: 17px; top: 18px; }
+  .wwsa-timeline__fill { background: linear-gradient(180deg, var(--wwsa-blue), var(--wwsa-navy)); height: calc(var(--wwsa-progress) * .86); right: 17px; top: 18px; transition: height .25s ease-out; width: 3px; }
+  .wwsa-timeline-step { align-items: start; display: grid; gap: 14px; grid-template-columns: 38px minmax(0,1fr); min-height: 114px; padding: 0 0 22px; text-align: right; }
+  .wwsa-timeline-step__marker { grid-column: 1; grid-row: 1; padding-top: 2px; position: static; }
+  .wwsa-timeline-step__dot { flex: 0 0 20px; margin: 0; position: static; }
+  .wwsa-timeline-step__label { font-size: 13px; font-weight: 900; line-height: 1; margin-top: 8px; }
+  .wwsa-timeline-step__body { grid-column: 2; grid-row: 1; padding: 0; text-align: right; }
+  .wwsa-timeline-step__body h3 { margin: 0; }
+  .wwsa-timeline-step__body p { margin: 4px 0 0; max-width: 35ch; }
+}
+
+@media (max-width: 640px) {
+  .wwsa-review-grid { gap: 11px; margin-top: 24px; }
+  .wwsa-review { padding: 14px; }
+  .wwsa-review__label { font-size: 10px; line-height: 1.35; margin-bottom: 8px; }
+  .wwsa-review__meta { align-items: flex-start; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+  .wwsa-review__meta strong { font-size: 16px; }
+  .wwsa-review__meta b { font-size: 12px; }
+  .wwsa-review p { font-size: 14px; line-height: 1.55; }
+  .wwsa-proof__grid { gap: 10px; margin-top: 16px; }
+  .wwsa-proof { aspect-ratio: 4 / 5; border-radius: 12px; }
+  .wwsa-proof > span { font-size: 11px; padding: 8px; }
+  .wwsa-timeline-step { gap: 12px; grid-template-columns: 34px minmax(0,1fr); min-height: 100px; padding-bottom: 18px; }
+  .wwsa-timeline__track::before, .wwsa-timeline__fill { right: 15px; }
+  .wwsa-timeline-step__dot { height: 18px; width: 18px; }
+  .wwsa-timeline-step__label { font-size: 12px; }
+  .wwsa-timeline-step__body h3 { font-size: 18px; line-height: 1.25; }
+  .wwsa-timeline-step__body p { font-size: 14px; line-height: 1.6; }
+}

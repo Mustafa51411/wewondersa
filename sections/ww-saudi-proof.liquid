@@ -7,7 +7,7 @@
 </section>
 
 <section class="wwsa wwsa-section wwsa-reviews" dir="rtl">
-  <div class="wwsa-wrap"><h2>{{ section.settings.review_prefix }} <mark>{{ section.settings.review_highlight }}</mark></h2><div class="wwsa-review-grid">{% for block in section.blocks %}{% if block.type == 'review' %}<article class="wwsa-review" {{ block.shopify_attributes }}><span>{{ block.settings.label }}</span><strong>{{ block.settings.name }}</strong><b>{{ block.settings.rating }}</b><p>{{ block.settings.text }}</p></article>{% endif %}{% endfor %}</div></div>
+  <div class="wwsa-wrap"><h2>{{ section.settings.review_prefix }} <mark>{{ section.settings.review_highlight }}</mark></h2><div class="wwsa-review-grid">{% for block in section.blocks %}{% if block.type == 'review' %}<article class="wwsa-review" {{ block.shopify_attributes }}><span class="wwsa-review__label">{{ block.settings.label }}</span><div class="wwsa-review__meta"><strong>{{ block.settings.name }}</strong><b>{{ block.settings.rating }}</b></div><p>{{ block.settings.text }}</p></article>{% endif %}{% endfor %}</div></div>
 </section>
 
 <section class="wwsa wwsa-section wwsa-proofs" dir="rtl" id="wwsa-proofs-{{ section.id }}">

@@ -26,12 +26,16 @@
   <div class="wwsa-wrap">
     <h2>{{ section.settings.timeline_prefix }} <mark>{{ section.settings.timeline_highlight }}</mark></h2>
     <p class="wwsa-timeline__sub">{{ section.settings.timeline_lead }}</p>
-    <div class="wwsa-timeline__track">
-      {%- for block in section.blocks -%}<article class="wwsa-timeline-step" {{ block.shopify_attributes }}><span class="wwsa-timeline-step__dot"></span><span class="wwsa-timeline-step__label">{{ forloop.index }}</span><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></article>{%- endfor -%}
+    <div class="wwsa-timeline__track" data-timeline>
+      <span class="wwsa-timeline__fill" aria-hidden="true"></span>
+      {%- for block in section.blocks -%}<article class="wwsa-timeline-step" {{ block.shopify_attributes }} data-timeline-step><div class="wwsa-timeline-step__marker"><span class="wwsa-timeline-step__dot"></span><span class="wwsa-timeline-step__label">{{ forloop.index }}</span></div><div class="wwsa-timeline-step__body"><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></div></article>{%- endfor -%}
     </div>
     <p class="wwsa-disclaimer">{{ section.settings.disclaimer }}</p>
   </div>
 </section>
+<script>
+(()=>{const timeline=document.querySelector('[data-timeline]');if(!timeline)return;const steps=[...timeline.querySelectorAll('[data-timeline-step]')];const fill=timeline.querySelector('.wwsa-timeline__fill');const update=()=>{const rect=timeline.getBoundingClientRect(),progress=Math.max(0,Math.min(1,(window.innerHeight*.72-rect.top)/Math.max(1,rect.height)));steps.forEach((step,index)=>step.classList.toggle('is-active',progress>=index/Math.max(1,steps.length-1)));fill.style.setProperty('--wwsa-progress',`${progress*100}%`)};update();addEventListener('scroll',update,{passive:true});addEventListener('resize',update);})();
+</script>
 {% schema %}
 {
   "name":"WW Saudi — Milk journey",
