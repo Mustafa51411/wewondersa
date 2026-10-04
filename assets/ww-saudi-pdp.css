@@ -94,7 +94,7 @@
 .wwsa-variant__gifts { align-items: stretch; display: flex; flex-wrap: wrap; gap: 8px; grid-column: 1 / -1; margin-top: 2px; }
 .wwsa-gift { align-items: center; background: #fff; border: 1px solid var(--wwsa-line); border-radius: 30px; display: flex; flex: 1 1 150px; gap: 7px; min-width: 0; padding: 4px 9px; }
 .wwsa-gift__plus { color: #a3b4c0; font-size: 1rem; font-weight: 800; }
-.wwsa-gift img { border-radius: 50%; height: 34px; object-fit: cover; width: 34px; }
+.wwsa-gift img { background: #fff; border: 1px solid #dce8ef; border-radius: 50%; box-sizing: border-box; height: 38px; object-fit: contain; padding: 2px; width: 38px; }
 .wwsa-gift strong { color: var(--wwsa-navy); display: block; font-size: .7rem; }
 .wwsa-gift small { color: var(--wwsa-good); font-size: .7rem; font-weight: 800; }
 .wwsa-gift small s { color: #8b96a0; margin-left: 3px; }

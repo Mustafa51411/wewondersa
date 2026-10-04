@@ -94,8 +94,24 @@
                     {%- if block.settings.applies_to == offer_type or block.settings.applies_to == 'both' -%}
                     <div class="wwsa-gift" {{ block.shopify_attributes }}>
                       <span class="wwsa-gift__plus" aria-hidden="true">+</span>
-                      {%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- elsif block.settings.product != blank and block.settings.product.featured_image != blank -%}{{ block.settings.product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- endif -%}
-                      <span><strong>{{ block.settings.title | default: block.settings.product.title }}</strong><small>{{ block.settings.price_text }}</small></span>
+                      {%- assign gift_label = block.settings.title | default: block.settings.product.title -%}
+                      {%- assign gift_label_downcase = gift_label | downcase -%}
+                      {%- assign default_gift_asset = blank -%}
+                      {%- if gift_label_downcase contains 'مسخن' or gift_label_downcase contains 'warmer' -%}
+                        {%- assign default_gift_asset = 'ww-sa-img-10.jpg' -%}
+                      {%- elsif gift_label_downcase contains 'وسادة' or gift_label_downcase contains 'pillow' -%}
+                        {%- assign default_gift_asset = 'ww-sa-img-13.jpg' -%}
+                      {%- elsif gift_label_downcase contains 'أكياس' or gift_label_downcase contains 'bags' -%}
+                        {%- assign default_gift_asset = 'ww-sa-img-11.jpg' -%}
+                      {%- endif -%}
+                      {%- if block.settings.image != blank -%}
+                        {{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: gift_label }}
+                      {%- elsif block.settings.product != blank and block.settings.product.featured_image != blank -%}
+                        {{ block.settings.product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: gift_label }}
+                      {%- elsif default_gift_asset != blank -%}
+                        <img src="{{ default_gift_asset | asset_url }}" width="120" height="120" loading="lazy" alt="{{ gift_label | escape }}">
+                      {%- endif -%}
+                      <span><strong>{{ gift_label }}</strong><small>{{ block.settings.price_text }}</small></span>
                     </div>
                     {%- endif -%}
                   {%- endif -%}
