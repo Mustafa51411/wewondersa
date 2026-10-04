@@ -59,9 +59,9 @@
       {% form 'product', product, id: form_id, class: 'wwsa-product-form' %}
         <div class="wwsa-variants" role="radiogroup" aria-label="{{ section.settings.variant_label | escape }}">
           {%- for variant in product.variants -%}
-            <label class="wwsa-variant{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card>
-              <input type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
-              {%- assign variant_image = variant.featured_image | default: product.featured_image -%}
+            {%- assign variant_image = variant.featured_image | default: product.featured_image -%}
+            <label class="wwsa-variant{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-variant-id="{{ variant.id }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
+              <input id="wwsa-variant-{{ section.id }}-{{ variant.id }}" type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
               {%- if variant_image != blank -%}{{ variant_image | image_url: width: 240 | image_tag: class: 'wwsa-variant__image', loading: 'lazy', alt: variant.title }}{%- endif -%}
               <div class="wwsa-variant__body">
                 <strong class="wwsa-variant__title">{{ variant.title }}</strong>
@@ -111,12 +111,30 @@
   thumbs.forEach((t,i)=>t.addEventListener('click',()=>show(i)));
   root.querySelector('.wwsa-gallery__nav--prev')?.addEventListener('click',()=>show(active-1));
   root.querySelector('.wwsa-gallery__nav--next')?.addEventListener('click',()=>show(active+1));
-  root.querySelectorAll('[data-variant-card]').forEach(card => card.addEventListener('click', () => {
-    root.querySelectorAll('[data-variant-card]').forEach(x=>x.classList.remove('is-selected')); card.classList.add('is-selected');
-    const input=card.querySelector('input'); if(input){ input.checked=true; input.dispatchEvent(new Event('change',{bubbles:true})); }
-    document.querySelector('[data-sticky-price]').textContent=card.querySelector('.wwsa-variant__price')?.textContent || '';
-    document.querySelector('[data-sticky-title]').textContent=card.querySelector('.wwsa-variant__title')?.textContent || '';
-  }));
+  const form = root.querySelector('.wwsa-product-form');
+  const selectVariant = (card) => {
+    const input = card.querySelector('input[name="id"]');
+    if (!input || input.disabled) return;
+    root.querySelectorAll('[data-variant-card]').forEach((item) => {
+      const itemInput = item.querySelector('input[name="id"]');
+      item.classList.toggle('is-selected', item === card);
+      if (itemInput) itemInput.checked = item === card;
+    });
+    if (main && card.dataset.variantImage) {
+      main.src = card.dataset.variantImage;
+      thumbs.forEach((thumb) => thumb.classList.remove('is-active'));
+    }
+    root.querySelector('[data-sticky-price]')?.replaceChildren(document.createTextNode(card.querySelector('.wwsa-variant__price')?.textContent || ''));
+    root.querySelector('[data-sticky-title]')?.replaceChildren(document.createTextNode(card.querySelector('.wwsa-variant__title')?.textContent || ''));
+    form?.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+  root.querySelectorAll('[data-variant-card]').forEach((card) => {
+    card.addEventListener('click', (event) => { event.preventDefault(); selectVariant(card); });
+    card.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectVariant(card); }
+    });
+    card.setAttribute('tabindex', card.querySelector('input:not(:disabled)') ? '0' : '-1');
+  });
   document.querySelector('[data-submit-form="{{ form_id }}"]')?.addEventListener('click',()=>document.getElementById('{{ form_id }}')?.requestSubmit());
 })();
 </script>
