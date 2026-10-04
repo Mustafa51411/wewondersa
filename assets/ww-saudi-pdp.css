@@ -123,7 +123,7 @@
 .wwsa-scenario__result { color: var(--wwsa-sky); display: block; font-family: 'Cairo', sans-serif; font-size: 1.28rem; font-weight: 900; }
 .wwsa-myth { background: var(--wwsa-soft); text-align: center; }
 .wwsa-myth__eyebrow { color: var(--wwsa-blue); font-size: .8rem; font-weight: 800; margin-bottom: 8px; }
-.wwsa-myth__copy { color: var(--wwsa-muted); margin: 16px auto 0; max-width: 64ch; text-align: center; text-wrap: balance; }
+.wwsa-myth__copy { color: var(--wwsa-muted); direction: rtl; display: block !important; margin: 16px auto 0 !important; max-width: 720px; text-align: center !important; text-wrap: balance; unicode-bidi: plaintext; width: min(100%, 720px) !important; }
 .wwsa-timeline { background: var(--wwsa-soft); text-align: center; }
 .wwsa-timeline__sub { color: var(--wwsa-muted); margin-top: 12px; text-align: center; }
 .wwsa-timeline__title > span,
