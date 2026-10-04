@@ -259,3 +259,100 @@
   .wwsa-sticky__price { font-size: 1rem; }
   .wwsa-sticky .wwsa-btn { font-size: .84rem; padding-inline: 16px; }
 }
+
+/* Typography calibration: this theme uses a 62.5% root font size, so component
+   type must use explicit pixels instead of rems. These values mirror the supplied
+   PDP reference and prevent the Arabic copy from becoming undersized. */
+.wwsa { font-size: 16.5px; line-height: 1.55; }
+.wwsa h1, .wwsa h2, .wwsa h3, .wwsa .wwsa-display { font-weight: 800; }
+.wwsa h2 { font-size: clamp(28px, 3.3vw, 41px); }
+.wwsa h3 { font-size: 19px; }
+.wwsa-btn { font-size: 17px; }
+.wwsa-empty { font-size: 14px; }
+.wwsa-section { padding-block: 60px; }
+
+.wwsa-rating { font-size: 16px; }
+.wwsa-rating__proof { font-size: 14px; }
+.wwsa-hero h1 { font-size: clamp(29px, 3vw, 37px); }
+.wwsa-hero__promise { font-size: 17px; line-height: 1.65; }
+.wwsa-features > div, .wwsa-features li { align-items: center; color: var(--wwsa-navy); display: flex; font-size: 16px; font-weight: 700; gap: 11px; }
+.wwsa-specs strong { font-size: 17px; }
+.wwsa-specs small, .wwsa-specs span { font-size: 13px; }
+.wwsa-variant__title { font-size: 17px; }
+.wwsa-variant__price { font-size: 22px; }
+.wwsa-variant__compare { font-size: 15px; }
+.wwsa-variant__save, .wwsa-variant__perks { font-size: 13px; }
+.wwsa-gift strong, .wwsa-gift small { font-size: 12px; }
+.wwsa-offer-note { font-size: 14px; }
+.wwsa-guarantee-box strong { font-size: 16px; }
+.wwsa-guarantee-box small, .wwsa-guarantee-box span { color: var(--wwsa-muted); font-size: 14px; }
+.wwsa-badge strong { font-size: 24px; }
+.wwsa-badge { font-size: 10px; font-weight: 800; line-height: 1.25; }
+
+.wwsa-section__lead, .wwsa-fit__lead { color: var(--wwsa-muted); font-size: 17px; line-height: 1.65; margin: 12px auto 0; max-width: 720px; }
+.wwsa-video-card__caption { font-size: 15px; }
+.wwsa-claim { padding-block: 72px 58px; }
+.wwsa-claim h2 { font-size: clamp(33px, 4.6vw, 54px); }
+.wwsa-claim__lede { font-size: 18px; }
+.wwsa-scenario__chain { font-size: 16px; }
+.wwsa-scenario__result { font-size: 21px; }
+.wwsa-myth__eyebrow { font-size: 14px; }
+.wwsa-myth__copy { font-size: 17px; line-height: 1.7; max-width: 720px; }
+.wwsa-timeline__sub { font-size: 17px; line-height: 1.65; }
+.wwsa-timeline__track { margin-top: 38px; }
+.wwsa-timeline-step__label { font-size: 13px; }
+.wwsa-timeline-step h3 { font-size: 17px; }
+.wwsa-timeline-step p { font-size: 14px; line-height: 1.55; }
+.wwsa-disclaimer { font-size: 13px; margin-top: 25px; }
+
+.wwsa-fit-item strong { font-size: 18px; }
+.wwsa-fit-item small { font-size: 16px; line-height: 1.55; }
+.wwsa-review strong { font-size: 17px; }
+.wwsa-review p { font-size: 16px; line-height: 1.65; }
+.wwsa-proof-label { font-size: 18px; }
+.wwsa-proof-sub, .wwsa-proof__sub { font-size: 14px; }
+
+.wwsa-compare li { font-size: 16px; line-height: 1.45; }
+.wwsa-compare__vs { font-size: 13px; }
+.wwsa-step > span, .wwsa-step__number { font-size: 22px; }
+.wwsa-step > strong { font-size: 17px; }
+.wwsa-step p { font-size: 14px; }
+
+.wwsa-guarantee__seal strong { font-size: 31px; }
+.wwsa-guarantee__seal small { font-size: 13px; }
+.wwsa-guarantee__card b, .wwsa-guarantee__card strong { font-size: 21px; }
+.wwsa-guarantee__card p { font-size: 16px; line-height: 1.65; }
+.wwsa-guarantee__trust span { font-size: 15px; }
+.wwsa-offer__variant strong { font-size: 18px; }
+.wwsa-offer__variant b { font-size: 24px; }
+.wwsa-offer__variant s, .wwsa-offer__variant span { font-size: 15px; }
+
+.wwsa-faq { padding-block: 56px; }
+.wwsa-faq__list { margin-top: 28px; max-width: 1000px; }
+.wwsa-faq summary { font-size: 17px; line-height: 1.45; padding: 20px 6px; }
+.wwsa-faq details > div { color: var(--wwsa-muted); font-size: 16px; line-height: 1.7; padding: 0 6px 20px; }
+.wwsa-faq details p { font-size: inherit; line-height: inherit; padding: 0; }
+.wwsa-faq summary::after { flex: 0 0 28px; height: 28px; width: 28px; }
+
+@media (max-width: 640px) {
+  .wwsa { font-size: 16px; }
+  .wwsa h2 { font-size: clamp(27px, 8vw, 34px); line-height: 1.22; }
+  .wwsa h3 { font-size: 18px; }
+  .wwsa-section { padding-block: 44px; }
+  .wwsa-hero h1 { font-size: 29px; }
+  .wwsa-hero__promise, .wwsa-section__lead, .wwsa-fit__lead, .wwsa-myth__copy, .wwsa-timeline__sub { font-size: 16px; }
+  .wwsa-claim { padding-block: 56px 46px; }
+  .wwsa-claim h2 { font-size: 33px; }
+  .wwsa-claim__lede { font-size: 16px; }
+  .wwsa-scenarios { gap: 16px; margin-top: 30px; }
+  .wwsa-timeline__track { gap: 22px; margin-top: 30px; }
+  .wwsa-timeline-step { padding-right: 34px; }
+  .wwsa-timeline-step h3 { font-size: 17px; }
+  .wwsa-timeline-step p { font-size: 14px; }
+  .wwsa-faq { padding-block: 44px; }
+  .wwsa-faq__list { margin-top: 20px; }
+  .wwsa-faq summary { font-size: 16px; padding-block: 17px; }
+  .wwsa-faq details > div { font-size: 15px; }
+  .wwsa-video-card { border-radius: 13px; flex-basis: min(72vw, 250px); }
+  .wwsa-review, .wwsa-proof, .wwsa-offer__variant { border-radius: 13px; }
+}
