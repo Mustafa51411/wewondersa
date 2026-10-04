@@ -313,6 +313,7 @@
 .wwsa-proof-sub, .wwsa-proof__sub { font-size: 14px; }
 
 .wwsa-compare li { font-size: 16px; line-height: 1.45; }
+.wwsa-compare li::before { content: none; }
 .wwsa-compare__vs { font-size: 13px; }
 .wwsa-step > span, .wwsa-step__number { font-size: 22px; }
 .wwsa-step > strong { font-size: 17px; }
