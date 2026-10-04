@@ -380,6 +380,22 @@
 .wwsa-timeline-step__heading h3 { margin: 0; }
 .wwsa-timeline-step__heading + p { margin-inline: auto; }
 
+/* These three journey panels must remain optically centred in Shopify's RTL canvas. */
+.wwsa-claim > .wwsa-wrap,
+.wwsa-myth > .wwsa-wrap,
+.wwsa-timeline > .wwsa-wrap { text-align: center !important; }
+.wwsa-claim h2,
+.wwsa-myth h2,
+.wwsa-timeline h2,
+.wwsa-claim__lede,
+.wwsa-myth__eyebrow,
+.wwsa-myth__copy,
+.wwsa-timeline__sub,
+.wwsa-disclaimer { margin-inline: auto; text-align: center !important; }
+.wwsa-claim h2,
+.wwsa-myth h2,
+.wwsa-timeline h2 { display: block; width: 100%; }
+
 @media (max-width: 980px) {
   .wwsa-timeline__track { gap: 0; margin: 34px auto 0; max-width: 640px; padding-block: 2px; }
   .wwsa-timeline__track::before { bottom: 18px; left: 50%; right: auto; top: 18px; transform: translateX(-50%); }
