@@ -2,6 +2,15 @@
 
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
+  if product.selected_variant == blank
+    for candidate_variant in product.variants
+      assign candidate_title = candidate_variant.title | downcase
+      if candidate_title contains 'double' or candidate_variant.title contains 'مزدوج'
+        assign current_variant = candidate_variant
+        break
+      endif
+    endfor
+  endif
   assign form_id = 'wwsa-product-form-' | append: section.id
   assign fallback_gallery = 'ww-sa-img-02.jpg,ww-sa-img-04.jpg,ww-sa-img-05.jpg,ww-sa-img-06.jpg,ww-sa-img-07.jpg,ww-sa-img-08.jpg' | split: ','
 -%}
@@ -71,19 +80,14 @@
             {%- assign offer_type = 'single' -%}
             {%- assign variant_title_downcase = variant.title | downcase -%}
             {%- if variant_title_downcase contains 'double' or variant.title contains 'مزدوج' -%}{%- assign offer_type = 'double' -%}{%- endif -%}
-            <label class="wwsa-variant{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-variant-id="{{ variant.id }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
+            <label class="wwsa-variant wwsa-variant--{{ offer_type }}{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-variant-id="{{ variant.id }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
               <input id="wwsa-variant-{{ section.id }}-{{ variant.id }}" type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
               {%- if variant_image != blank -%}{{ variant_image | image_url: width: 240 | image_tag: class: 'wwsa-variant__image', loading: 'lazy', alt: variant.title }}{%- endif -%}
               <div class="wwsa-variant__body">
                 <strong class="wwsa-variant__title">{{ variant.title }}</strong>
-                {%- if offer_type == 'double' and product.variants.size > 1 -%}
-                  {%- assign two_single_price = single_variant_price | times: 2 -%}
-                  {%- assign bundle_saving = two_single_price | minus: variant.price -%}
-                  {%- if bundle_saving > 0 -%}<span class="wwsa-variant__bundle-save">{{ section.settings.bundle_saving_prefix }} {{ bundle_saving | money }} {{ section.settings.bundle_saving_suffix }}</span>{%- endif -%}
-                {%- endif -%}
-                <div class="wwsa-variant__price-wrap"><span class="wwsa-variant__price">{{ variant.price | money }}</span>{% if variant.compare_at_price > variant.price %}<s class="wwsa-variant__compare">{{ variant.compare_at_price | money }}</s><span class="wwsa-variant__save">{{ 'وفر ' }}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}%</span>{% endif %}</div>
                 <div class="wwsa-variant__perks">✓ {{ section.settings.variant_perk_1 }}<br>✓ {{ section.settings.variant_perk_2 }}</div>
               </div>
+              <div class="wwsa-variant__price-wrap"><span class="wwsa-variant__price">{{ variant.price | money }}</span>{% if variant.compare_at_price > variant.price %}<s class="wwsa-variant__compare">{{ variant.compare_at_price | money }}</s><span class="wwsa-variant__save">{{ 'وفر ' }}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}%</span>{% endif %}{%- if offer_type == 'double' and product.variants.size > 1 -%}{%- assign two_single_price = single_variant_price | times: 2 -%}{%- assign bundle_saving = two_single_price | minus: variant.price -%}{%- if bundle_saving > 0 -%}<span class="wwsa-variant__bundle-save">{{ section.settings.bundle_saving_prefix }} {{ bundle_saving | money }} {{ section.settings.bundle_saving_suffix }}</span>{%- endif -%}{%- endif -%}</div>
               <div class="wwsa-variant__gifts" aria-label="{{ section.settings.included_gifts_label | escape }}">
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'gift' -%}
