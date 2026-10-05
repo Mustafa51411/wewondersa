@@ -20,6 +20,9 @@
             {%- if block.settings.video != blank or block.settings.video_url != blank -%}
               <button class="wwsa-video-card__play" type="button" aria-label="تشغيل فيديو {{ block.settings.name | escape }}" aria-pressed="false"><span aria-hidden="true">▶</span></button>
             {%- endif -%}
+            {%- unless block.settings.video != blank or block.settings.video_url != blank -%}
+              <button class="wwsa-video-card__play is-awaiting-video" type="button" aria-label="Play video {{ block.settings.name | escape }}" aria-pressed="false" title="Select a Shopify-hosted video or MP4 URL to play"><span aria-hidden="true">&#9654;</span></button>
+            {%- endunless -%}
           </div>
           <div class="wwsa-video-card__caption"><span>{{ block.settings.label }}</span><strong>{{ block.settings.name }}</strong><small>{{ block.settings.rating }}</small></div>
         </article>
@@ -34,7 +37,11 @@
   section.querySelectorAll('.wwsa-video-card').forEach(card => {
     const video = card.querySelector('video');
     const button = card.querySelector('.wwsa-video-card__play');
-    if (!video || !button) return;
+    if (!button) return;
+    if (!video) {
+      button.addEventListener('click', event => event.preventDefault());
+      return;
+    }
     const toggle = () => {
       if (video.paused) video.play(); else video.pause();
     };

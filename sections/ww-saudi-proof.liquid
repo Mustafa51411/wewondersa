@@ -1,4 +1,13 @@
 {{ 'ww-saudi-pdp.css' | asset_url | stylesheet_tag }}
+<style>
+  /* This section is editable in Shopify; keep its mark treatment independent
+     from any global theme mark rule. */
+  .wwsa.wwsa-fit h2 mark {
+    background: linear-gradient(180deg, transparent 56%, rgba(167, 222, 246, .9) 56%) !important;
+    background-color: transparent !important;
+    color: inherit !important;
+  }
+</style>
 <section class="wwsa wwsa-section wwsa-fit" dir="rtl">
   <div class="wwsa-wrap wwsa-fit__grid">
     <div class="wwsa-fit__image">{% if section.settings.fit_image != blank %}{{ section.settings.fit_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '480,720,960,1200', alt: section.settings.fit_title }}{% else %}<img src="{{ 'ww-sa-img-17.jpg' | asset_url }}" alt="{{ section.settings.fit_title | escape }}" width="1200" height="1200" loading="lazy">{% endif %}</div>
