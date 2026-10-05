@@ -18,13 +18,27 @@
               <img src="{{ poster_name | asset_url }}" alt="{{ block.settings.name | escape }}" width="540" height="760" loading="lazy">
             {%- endif -%}
             {%- if block.settings.video != blank or block.settings.video_url != blank -%}
-              <button class="wwsa-video-card__play" type="button" aria-label="تشغيل فيديو {{ block.settings.name | escape }}" aria-pressed="false"><span aria-hidden="true">▶</span></button>
+              <button class="wwsa-video-card__play" type="button" aria-label="تشغيل فيديو {{ block.settings.name | escape }}" aria-pressed="false">
+                <svg class="wwsa-video-card__icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v14.72a1 1 0 001.5.86l11.5-7.36a1 1 0 000-1.72L9.5 4.28a1 1 0 00-1.5.86z"/></svg>
+                <svg class="wwsa-video-card__icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              </button>
+            {%- else -%}
+              <button class="wwsa-video-card__play is-awaiting-video" type="button" aria-label="Play video {{ block.settings.name | escape }}" aria-pressed="false" title="Select a Shopify-hosted video or MP4 URL to play">
+                <svg class="wwsa-video-card__icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v14.72a1 1 0 001.5.86l11.5-7.36a1 1 0 000-1.72L9.5 4.28a1 1 0 00-1.5.86z"/></svg>
+              </button>
             {%- endif -%}
-            {%- unless block.settings.video != blank or block.settings.video_url != blank -%}
-              <button class="wwsa-video-card__play is-awaiting-video" type="button" aria-label="Play video {{ block.settings.name | escape }}" aria-pressed="false" title="Select a Shopify-hosted video or MP4 URL to play"><span aria-hidden="true">&#9654;</span></button>
-            {%- endunless -%}
           </div>
-          <div class="wwsa-video-card__caption"><span>{{ block.settings.label }}</span><strong>{{ block.settings.name }}</strong><small>{{ block.settings.rating }}</small></div>
+          <div class="wwsa-video-card__caption">
+            {%- if block.settings.label != blank -%}
+              <span class="wwsa-video-card__tag">{{ block.settings.label }}</span>
+            {%- endif -%}
+            {%- if block.settings.name != blank -%}
+              <strong class="wwsa-video-card__name">{{ block.settings.name }}</strong>
+            {%- endif -%}
+            {%- if block.settings.rating != blank -%}
+              <small class="wwsa-video-card__rating" aria-label="{{ block.settings.rating }}">{{ block.settings.rating }}</small>
+            {%- endif -%}
+          </div>
         </article>
       {%- endfor -%}
     </div>
@@ -43,15 +57,34 @@
       return;
     }
     const toggle = () => {
-      if (video.paused) video.play(); else video.pause();
+      if (video.paused) {
+        section.querySelectorAll('video').forEach(other => {
+          if (other !== video && !other.paused) other.pause();
+        });
+        video.play();
+      } else {
+        video.pause();
+      }
     };
     button.addEventListener('click', event => { event.stopPropagation(); toggle(); });
-    card.querySelector('.wwsa-video-card__media').addEventListener('click', event => {
+    card.addEventListener('click', event => {
       if (!event.target.closest('.wwsa-video-card__play')) toggle();
     });
-    video.addEventListener('play', () => { card.classList.add('is-playing'); button.setAttribute('aria-pressed', 'true'); button.setAttribute('aria-label', 'إيقاف الفيديو مؤقتاً'); });
-    video.addEventListener('pause', () => { card.classList.remove('is-playing'); button.setAttribute('aria-pressed', 'false'); button.setAttribute('aria-label', 'تشغيل الفيديو'); });
-    video.addEventListener('ended', () => { card.classList.remove('is-playing'); button.setAttribute('aria-pressed', 'false'); });
+    video.addEventListener('play', () => {
+      card.classList.add('is-playing');
+      button.setAttribute('aria-pressed', 'true');
+      button.setAttribute('aria-label', 'إيقاف الفيديو مؤقتاً');
+    });
+    video.addEventListener('pause', () => {
+      card.classList.remove('is-playing');
+      button.setAttribute('aria-pressed', 'false');
+      button.setAttribute('aria-label', 'تشغيل الفيديو');
+    });
+    video.addEventListener('ended', () => {
+      card.classList.remove('is-playing');
+      button.setAttribute('aria-pressed', 'false');
+      button.setAttribute('aria-label', 'تشغيل الفيديو');
+    });
   });
 })();
 </script>
