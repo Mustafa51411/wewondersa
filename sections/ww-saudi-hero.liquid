@@ -86,7 +86,7 @@
             {%- elsif offer_type == 'single' and section.settings.single_offer_title != blank -%}
               {%- assign display_variant_title = section.settings.single_offer_title -%}
             {%- endif -%}
-            <label class="wwsa-variant wwsa-variant--{{ offer_type }}{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-variant-id="{{ variant.id }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
+            <label class="wwsa-variant wwsa-variant--{{ offer_type }}{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-variant-id="{{ variant.id }}" data-variant-price="{{ variant.price }}" data-variant-title="{{ display_variant_title | escape }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
               <input id="wwsa-variant-{{ section.id }}-{{ variant.id }}" type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
               {%- if variant_image != blank -%}{{ variant_image | image_url: width: 240 | image_tag: class: 'wwsa-variant__image', loading: 'lazy', alt: variant.title }}{%- endif -%}
               <div class="wwsa-variant__body">
@@ -164,6 +164,20 @@
   root.querySelector('.wwsa-gallery__nav--prev')?.addEventListener('click',()=>show(active-1));
   root.querySelector('.wwsa-gallery__nav--next')?.addEventListener('click',()=>show(active+1));
   const form = root.querySelector('.wwsa-product-form');
+  // Keep Shopify's normal submission intact and expose a standard browser
+  // event for an installed Meta Pixel or GTM container. Secrets stay server-side.
+  form?.addEventListener('submit', () => {
+    const selected = root.querySelector('[data-variant-card] input[name="id"]:checked')?.closest('[data-variant-card]');
+    if (!selected) return;
+    const value = Number(selected.dataset.variantPrice || 0) / 100;
+    const eventId = `wwsa-atc-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    const item = { item_id: selected.dataset.variantId, item_name: selected.dataset.variantTitle || {{ product.title | json }}, price: value, quantity: 1 };
+    const payload = { content_ids: [selected.dataset.variantId], content_type: 'product', currency: {{ cart.currency.iso_code | default: shop.currency | json }}, value };
+    window.dispatchEvent(new CustomEvent('wwsa:add_to_cart', { detail: { eventId, payload, item } }));
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'add_to_cart', event_id: eventId, ecommerce: { currency: payload.currency, value, items: [item] } });
+    if (typeof window.fbq === 'function') window.fbq('track', 'AddToCart', payload, { eventID: eventId });
+  });
   const selectVariant = (card, notify = true) => {
     const input = card.querySelector('input[name="id"]');
     if (!input || input.disabled) return;
