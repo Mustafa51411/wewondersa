@@ -164,7 +164,7 @@
   root.querySelector('.wwsa-gallery__nav--prev')?.addEventListener('click',()=>show(active-1));
   root.querySelector('.wwsa-gallery__nav--next')?.addEventListener('click',()=>show(active+1));
   const form = root.querySelector('.wwsa-product-form');
-  const selectVariant = (card) => {
+  const selectVariant = (card, notify = true) => {
     const input = card.querySelector('input[name="id"]');
     if (!input || input.disabled) return;
     root.querySelectorAll('[data-variant-card]').forEach((item) => {
@@ -178,10 +178,14 @@
     }
     root.querySelector('[data-sticky-price]')?.replaceChildren(document.createTextNode(card.querySelector('.wwsa-variant__price')?.textContent || ''));
     root.querySelector('[data-sticky-title]')?.replaceChildren(document.createTextNode(card.querySelector('.wwsa-variant__title')?.textContent || ''));
-    form?.dispatchEvent(new Event('change', { bubbles: true }));
+    // Notify Shopify's native product-form listeners from the actual variant
+    // input. This keeps selected offer, cart submission, and web-pixel events
+    // in sync instead of only changing the card visually.
+    if (notify) input.dispatchEvent(new Event('change', { bubbles: true }));
   };
   root.querySelectorAll('[data-variant-card]').forEach((card) => {
     card.addEventListener('click', (event) => { event.preventDefault(); selectVariant(card); });
+    card.querySelector('input[name="id"]')?.addEventListener('change', () => selectVariant(card, false));
     card.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectVariant(card); }
     });

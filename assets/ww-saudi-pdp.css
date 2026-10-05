@@ -39,6 +39,19 @@
 .wwsa-center { text-align: center; }
 .wwsa-muted { color: var(--wwsa-muted); }
 .wwsa-highlight, .wwsa-hero mark { background: linear-gradient(180deg, transparent 56%, rgba(167, 222, 246, .82) 56%); color: inherit; padding-inline: .08em; }
+
+/* Keep every editable highlighted word on-brand.  The base theme styles <mark>
+   yellow, so this deliberately comes after the generic PDP rule. */
+.wwsa mark,
+.wwsa h1 mark,
+.wwsa h2 mark,
+.wwsa h3 mark {
+  background: linear-gradient(180deg, transparent 56%, rgba(167, 222, 246, .88) 56%) !important;
+  color: inherit !important;
+  padding-inline: .08em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
 .wwsa-btn {
   align-items: center; border: 0; border-radius: 14px; cursor: pointer; display: inline-flex;
   font-family: 'Cairo', 'Tajawal', sans-serif; font-size: 1rem; font-weight: 800;
