@@ -80,12 +80,21 @@
             {%- assign offer_type = 'single' -%}
             {%- assign variant_title_downcase = variant.title | downcase -%}
             {%- if variant_title_downcase contains 'double' or variant.title contains 'مزدوج' -%}{%- assign offer_type = 'double' -%}{%- endif -%}
+            {%- assign display_variant_title = variant.title -%}
+            {%- if offer_type == 'double' and section.settings.double_offer_title != blank -%}
+              {%- assign display_variant_title = section.settings.double_offer_title -%}
+            {%- elsif offer_type == 'single' and section.settings.single_offer_title != blank -%}
+              {%- assign display_variant_title = section.settings.single_offer_title -%}
+            {%- endif -%}
             <label class="wwsa-variant wwsa-variant--{{ offer_type }}{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-variant-id="{{ variant.id }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
               <input id="wwsa-variant-{{ section.id }}-{{ variant.id }}" type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
               {%- if variant_image != blank -%}{{ variant_image | image_url: width: 240 | image_tag: class: 'wwsa-variant__image', loading: 'lazy', alt: variant.title }}{%- endif -%}
               <div class="wwsa-variant__body">
-                <strong class="wwsa-variant__title">{{ variant.title }}</strong>
-                <div class="wwsa-variant__perks">✓ {{ section.settings.variant_perk_1 }}<br>✓ {{ section.settings.variant_perk_2 }}</div>
+                <strong class="wwsa-variant__title">{{ display_variant_title }}</strong>
+                <div class="wwsa-variant__perks">
+                  {%- if section.settings.variant_perk_1 != blank -%}<span>{{ section.settings.variant_perk_1 }}</span>{%- endif -%}
+                  {%- if section.settings.variant_perk_2 != blank -%}<span>{{ section.settings.variant_perk_2 }}</span>{%- endif -%}
+                </div>
               </div>
               <div class="wwsa-variant__price-wrap"><span class="wwsa-variant__price">{{ variant.price | money }}</span>{% if variant.compare_at_price > variant.price %}<s class="wwsa-variant__compare">{{ variant.compare_at_price | money }}</s><span class="wwsa-variant__save">{{ 'وفر ' }}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}%</span>{% endif %}{%- if offer_type == 'double' and product.variants.size > 1 -%}{%- assign two_single_price = single_variant_price | times: 2 -%}{%- assign bundle_saving = two_single_price | minus: variant.price -%}{%- if bundle_saving > 0 -%}<span class="wwsa-variant__bundle-save">{{ section.settings.bundle_saving_prefix }} {{ bundle_saving | money }} {{ section.settings.bundle_saving_suffix }}</span>{%- endif -%}{%- endif -%}</div>
               <div class="wwsa-variant__gifts" aria-label="{{ section.settings.included_gifts_label | escape }}">
@@ -199,6 +208,8 @@
     {"type":"text","id":"spec_2_value","label":"Spec 2 value","default":"180 مل"},{"type":"text","id":"spec_2_label","label":"Spec 2 label","default":"كوب مانع للتسرب"},
     {"type":"text","id":"spec_3_value","label":"Spec 3 value","default":"4 أوضاع"},{"type":"text","id":"spec_3_label","label":"Spec 3 label","default":"12 مستوى لكل وضع"},
     {"type":"text","id":"variant_label","label":"Variant group label","default":"اختاري مجموعتك"},
+    {"type":"text","id":"double_offer_title","label":"Double offer display title","default":"مضخة مزدوجة"},
+    {"type":"text","id":"single_offer_title","label":"Single offer display title","default":"مضخة مفردة"},
     {"type":"text","id":"variant_perk_1","label":"Variant perk 1","default":"عدة المقاسات مجاناً"},
     {"type":"text","id":"variant_perk_2","label":"Variant perk 2","default":"شحن مجاني"},
     {"type":"text","id":"popular_badge","label":"Popular badge","default":"الأكثر طلباً"},
