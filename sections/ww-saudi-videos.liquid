@@ -10,12 +10,14 @@
           <div class="wwsa-video-card__media">
             {%- if block.settings.video != blank -%}
               {{ block.settings.video | video_tag: image_size: '700x', controls: false, muted: false, preload: 'metadata', playsinline: true }}
+            {%- elsif block.settings.video_url != blank -%}
+              <video preload="metadata" playsinline {% if block.settings.cover_image != blank %}poster="{{ block.settings.cover_image | image_url: width: 700 }}"{% endif %}><source src="{{ block.settings.video_url }}" type="video/mp4"></video>
             {%- elsif block.settings.cover_image != blank -%}
               {{ block.settings.cover_image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '360, 540, 700', alt: block.settings.name }}
             {%- else -%}
               <img src="{{ poster_name | asset_url }}" alt="{{ block.settings.name | escape }}" width="540" height="760" loading="lazy">
             {%- endif -%}
-            {%- if block.settings.video != blank -%}
+            {%- if block.settings.video != blank or block.settings.video_url != blank -%}
               <button class="wwsa-video-card__play" type="button" aria-label="تشغيل فيديو {{ block.settings.name | escape }}" aria-pressed="false"><span aria-hidden="true">▶</span></button>
             {%- endif -%}
           </div>
@@ -54,7 +56,7 @@
     {"type":"text","id":"heading_highlight","label":"Highlighted text","default":"أمهات WeeWonders"},
     {"type":"textarea","id":"lead","label":"Intro text","default":"قصص حقيقية من أمهات وطبيبات جربن المضخة."}
   ],
-  "blocks":[{"type":"video","name":"Video story","settings":[{"type":"video","id":"video","label":"Shopify-hosted video"},{"type":"image_picker","id":"cover_image","label":"Video cover image (shown if no video is selected)"},{"type":"text","id":"label","label":"Story label","default":"تجربة حقيقية"},{"type":"text","id":"name","label":"Name","default":"أم من WeeWonders"},{"type":"text","id":"rating","label":"Rating","default":"★★★★★"}]}],
+  "blocks":[{"type":"video","name":"Video story","settings":[{"type":"video","id":"video","label":"Shopify-hosted video"},{"type":"url","id":"video_url","label":"Direct MP4 video URL (optional)"},{"type":"image_picker","id":"cover_image","label":"Video cover image (shown if no video is selected)"},{"type":"text","id":"label","label":"Story label","default":"تجربة حقيقية"},{"type":"text","id":"name","label":"Name","default":"أم من WeeWonders"},{"type":"text","id":"rating","label":"Rating","default":"★★★★★"}]}],
   "max_blocks":5,
   "presets":[{"name":"WW Saudi — Video stories","blocks":[{"type":"video","settings":{"name":"نورة"}},{"type":"video","settings":{"name":"د. فرح"}},{"type":"video","settings":{"name":"د. ثريا"}},{"type":"video","settings":{"name":"د. إيليت"}},{"type":"video","settings":{"name":"جنى"}}]}]
 }
