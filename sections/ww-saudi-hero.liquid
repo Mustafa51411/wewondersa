@@ -164,19 +164,53 @@
   root.querySelector('.wwsa-gallery__nav--prev')?.addEventListener('click',()=>show(active-1));
   root.querySelector('.wwsa-gallery__nav--next')?.addEventListener('click',()=>show(active+1));
   const form = root.querySelector('.wwsa-product-form');
-  // Keep Shopify's normal submission intact and expose a standard browser
-  // event for an installed Meta Pixel or GTM container. Secrets stay server-side.
-  form?.addEventListener('submit', () => {
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
     const selected = root.querySelector('[data-variant-card] input[name="id"]:checked')?.closest('[data-variant-card]');
-    if (!selected) return;
-    const value = Number(selected.dataset.variantPrice || 0) / 100;
+    const variantId = selected?.dataset.variantId || form.querySelector('input[name="id"]')?.value;
+    if (!variantId) {
+      form.submit();
+      return;
+    }
+    const submitBtn = form.querySelector('[type="submit"]');
+    const stickyBtn = document.querySelector('[data-submit-form="{{ form_id }}"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.style.opacity = '0.75'; }
+    if (stickyBtn) { stickyBtn.disabled = true; stickyBtn.style.opacity = '0.75'; }
+
+    const value = selected ? (Number(selected.dataset.variantPrice || 0) / 100) : 0;
     const eventId = `wwsa-atc-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
-    const item = { item_id: selected.dataset.variantId, item_name: selected.dataset.variantTitle || {{ product.title | json }}, price: value, quantity: 1 };
-    const payload = { content_ids: [selected.dataset.variantId], content_type: 'product', currency: {{ cart.currency.iso_code | default: shop.currency | json }}, value };
+    const variantTitle = selected?.dataset.variantTitle || {{ product.title | json }};
+    const item = { item_id: variantId, item_name: variantTitle, price: value, quantity: 1 };
+    const payload = {
+      content_ids: [variantId],
+      content_name: variantTitle,
+      content_type: 'product',
+      currency: {{ cart.currency.iso_code | default: shop.currency | json }},
+      value: value
+    };
+
     window.dispatchEvent(new CustomEvent('wwsa:add_to_cart', { detail: { eventId, payload, item } }));
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'add_to_cart', event_id: eventId, ecommerce: { currency: payload.currency, value, items: [item] } });
-    if (typeof window.fbq === 'function') window.fbq('track', 'AddToCart', payload, { eventID: eventId });
+
+    if (window.wwsaTrackMetaEvent) {
+      window.wwsaTrackMetaEvent('AddToCart', payload, { eventId: eventId });
+    } else if (typeof window.fbq === 'function') {
+      window.fbq('track', 'AddToCart', payload, { eventID: eventId });
+    }
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+    })
+    .then((res) => {
+      if (!res.ok) throw new Error('Add to cart failed');
+      window.location.href = '/cart';
+    })
+    .catch(() => {
+      form.submit();
+    });
   });
   const selectVariant = (card, notify = true) => {
     const input = card.querySelector('input[name="id"]');
