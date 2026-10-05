@@ -96,7 +96,12 @@
                   {%- if section.settings.variant_perk_2 != blank -%}<span>{{ section.settings.variant_perk_2 }}</span>{%- endif -%}
                 </div>
               </div>
-              <div class="wwsa-variant__price-wrap"><span class="wwsa-variant__price">{{ variant.price | money }}</span>{% if variant.compare_at_price > variant.price %}<s class="wwsa-variant__compare">{{ variant.compare_at_price | money }}</s><span class="wwsa-variant__save">{{ 'وفر ' }}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}%</span>{% endif %}{%- if offer_type == 'double' and product.variants.size > 1 -%}{%- assign two_single_price = single_variant_price | times: 2 -%}{%- assign bundle_saving = two_single_price | minus: variant.price -%}{%- if bundle_saving > 0 -%}<span class="wwsa-variant__bundle-save">{{ section.settings.bundle_saving_prefix }} {{ bundle_saving | money }} {{ section.settings.bundle_saving_suffix }}</span>{%- endif -%}{%- endif -%}</div>
+              <div class="wwsa-variant__price-wrap"><span class="wwsa-variant__price">{{ variant.price | money }}</span>{% if variant.compare_at_price > variant.price %}<s class="wwsa-variant__compare">{{ variant.compare_at_price | money }}</s><span class="wwsa-variant__save">{{ 'وفر ' }}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}%</span>{% endif %}</div>
+              {%- if offer_type == 'double' and product.variants.size > 1 -%}
+                {%- assign two_single_price = single_variant_price | times: 2 -%}
+                {%- assign bundle_saving = two_single_price | minus: variant.price -%}
+                {%- if bundle_saving > 0 -%}<span class="wwsa-variant__bundle-save">{{ section.settings.bundle_saving_prefix }} {{ bundle_saving | money }} {{ section.settings.bundle_saving_suffix }}</span>{%- endif -%}
+              {%- endif -%}
               <div class="wwsa-variant__gifts" aria-label="{{ section.settings.included_gifts_label | escape }}">
                 {%- for block in section.blocks -%}
                   {%- if block.type == 'gift' -%}
