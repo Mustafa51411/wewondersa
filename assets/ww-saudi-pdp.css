@@ -128,11 +128,12 @@
 .wwsa-video-card { background: #111b26; border-radius: 18px; box-shadow: 0 16px 36px -18px rgba(26,43,60,.5); flex: 0 0 min(18.5vw,230px); max-width: 230px; overflow: hidden; position: relative; scroll-snap-align: start; }
 .wwsa-video-card__media { aspect-ratio: 9/16; position: relative; }
 .wwsa-video-card video, .wwsa-video-card img { height: 100%; object-fit: cover; width: 100%; }
-.wwsa-video-card__play { align-items: center; background: rgba(255,255,255,.96); border: 2px solid #fff; border-radius: 50%; bottom: 18px; box-shadow: 0 8px 20px rgba(0,0,0,.22); color: var(--wwsa-navy); cursor: pointer; display: flex; font-size: 15px; height: 54px; justify-content: center; right: 16px; position: absolute; transition: opacity .2s ease, transform .2s ease; width: 54px; z-index: 5; }
-.wwsa-video-card__play:hover { transform: scale(1.06); }
+.wwsa-video-card__play { align-items: center !important; background: rgba(255,255,255,.98) !important; border: 2px solid #fff !important; border-radius: 50% !important; bottom: 20px !important; box-shadow: 0 8px 20px rgba(0,0,0,.3) !important; color: var(--wwsa-navy) !important; cursor: pointer; display: flex !important; font-size: 19px !important; height: 58px !important; justify-content: center !important; left: 50% !important; opacity: 1 !important; position: absolute !important; right: auto !important; transform: translateX(-50%) !important; transition: opacity .2s ease, transform .2s ease; visibility: visible !important; width: 58px !important; z-index: 30 !important; }
+.wwsa-video-card__play span { display: block !important; line-height: 1; margin-inline-start: 3px; }
+.wwsa-video-card__play:hover { transform: translateX(-50%) scale(1.06) !important; }
 .wwsa-video-card__play.is-awaiting-video { cursor: default; }
-.wwsa-video-card.is-playing .wwsa-video-card__play { opacity: 0; pointer-events: none; }
-.wwsa-video-card__caption { background: linear-gradient(180deg,rgba(17,27,38,0),rgba(17,27,38,.94)); bottom: 0; color: #fff; font-family: 'Cairo', sans-serif; font-size: .88rem; font-weight: 800; inset-inline: 0; padding: 58px 84px 15px 16px; position: absolute; }
+.wwsa-video-card.is-playing .wwsa-video-card__play { opacity: 0 !important; pointer-events: none; }
+.wwsa-video-card__caption { background: linear-gradient(180deg,rgba(17,27,38,0),rgba(17,27,38,.94)); bottom: 0; color: #fff; font-family: 'Cairo', sans-serif; font-size: .88rem; font-weight: 800; inset-inline: 0; padding: 58px 16px 15px; position: absolute; }
 
 /* Journey */
 .wwsa-claim { background: var(--wwsa-navy); color: #fff; padding-block: 84px 66px; }
@@ -459,8 +460,8 @@
   .wwsa-videos h2, .wwsa-reviews h2, .wwsa-proofs h2 { text-align: center; }
   .wwsa-video-track { gap: 12px; justify-content: flex-start; margin-inline: -4px; padding-inline: 4px; }
   .wwsa-video-card { flex-basis: min(68vw, 238px); max-width: none; }
-  .wwsa-video-card__play { bottom: 14px; height: 46px; right: 14px; width: 46px; }
-  .wwsa-video-card__caption { font-size: 13px; padding: 50px 68px 13px 13px; }
+  .wwsa-video-card__play { bottom: 16px !important; font-size: 17px !important; height: 50px !important; left: 50% !important; right: auto !important; width: 50px !important; }
+  .wwsa-video-card__caption { font-size: 13px; padding: 50px 13px 13px; }
   .wwsa-review-grid { gap: 11px; margin-top: 24px; }
   .wwsa-review { padding: 14px; }
   .wwsa-review__label { font-size: 10px; line-height: 1.35; margin-bottom: 8px; }
