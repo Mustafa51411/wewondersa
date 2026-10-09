@@ -138,7 +138,7 @@
         <p class="wwsa-offer-note">🎁 {{ section.settings.offer_note }}</p>
         <button class="wwsa-btn wwsa-btn--primary" type="submit" name="add"{% unless current_variant.available %} disabled{% endunless %}>{{ section.settings.add_to_cart_label }}</button>
         {%- if section.settings.whatsapp_number != blank -%}
-          <a class="wwsa-btn wwsa-btn--whatsapp" target="_blank" rel="noopener" href="https://wa.me/{{ section.settings.whatsapp_number | remove: ' ' | remove: '+' }}?text={{ section.settings.whatsapp_message | url_encode }}">{{ section.settings.whatsapp_label }}</a>
+          <a class="wwsa-btn wwsa-btn--whatsapp" data-whatsapp-btn target="_blank" rel="noopener" href="https://wa.me/{{ section.settings.whatsapp_number | remove: ' ' | remove: '+' }}?text={{ section.settings.whatsapp_message | url_encode }}">{{ section.settings.whatsapp_label }}</a>
         {%- endif -%}
       {% endform %}
 
@@ -164,10 +164,70 @@
   root.querySelector('.wwsa-gallery__nav--prev')?.addEventListener('click',()=>show(active-1));
   root.querySelector('.wwsa-gallery__nav--next')?.addEventListener('click',()=>show(active+1));
   const form = root.querySelector('.wwsa-product-form');
+
+  // WhatsApp Button Click Tracking
+  const waBtn = root.querySelector('[data-whatsapp-btn], .wwsa-btn--whatsapp');
+  if (waBtn) {
+    waBtn.addEventListener('click', () => {
+      const selected = root.querySelector('[data-variant-card] input[name="id"]:checked')?.closest('[data-variant-card]');
+      const rawPrice = selected?.dataset.variantPrice || {{ current_variant.price }};
+      const val = Number(rawPrice || 0) / 100;
+      const vTitle = selected?.dataset.variantTitle || {{ current_variant.title | json }};
+      const vId = selected?.dataset.variantId || form?.querySelector('input[name="id"]:checked')?.value || form?.querySelector('input[name="id"]')?.value || '{{ current_variant.id }}';
+      const curr = {{ cart.currency.iso_code | default: shop.currency | json }};
+      const waEventId = `wwsa-wa-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
+      const waData = {
+        content_name: 'WhatsApp Order - ' + vTitle,
+        content_category: 'Contact',
+        content_ids: [String(vId)],
+        currency: curr,
+        value: val
+      };
+
+      // 1. Meta Pixel
+      if (typeof window.fbq === 'function') {
+        try {
+          window.fbq('track', 'Contact', waData, { eventID: waEventId });
+          window.fbq('trackCustom', 'WhatsAppClick', waData, { eventID: waEventId });
+        } catch (e) {
+          console.warn('[Meta Pixel] WhatsApp tracking error:', e);
+        }
+      }
+
+      // 2. Google Tag Manager / GA4 DataLayer
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'whatsapp_click',
+        event_id: waEventId,
+        contact_type: 'whatsapp',
+        value: val,
+        currency: curr,
+        ecommerce: {
+          currency: curr,
+          value: val,
+          items: [{ item_id: String(vId), item_name: vTitle, price: val, quantity: 1 }]
+        }
+      });
+      window.dataLayer.push({
+        event: 'contact',
+        method: 'whatsapp',
+        event_id: waEventId
+      });
+
+      // 3. Custom DOM Event
+      window.dispatchEvent(new CustomEvent('wwsa:whatsapp_click', {
+        detail: { eventId: waEventId, data: waData }
+      }));
+    });
+  }
+
+  // Add to Cart Submission & Tracking
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
     const selected = root.querySelector('[data-variant-card] input[name="id"]:checked')?.closest('[data-variant-card]');
-    const variantId = selected?.dataset.variantId || form.querySelector('input[name="id"]')?.value;
+    const variantInput = form.querySelector('input[name="id"]:checked') || form.querySelector('input[name="id"]');
+    const variantId = selected?.dataset.variantId || variantInput?.value;
     if (!variantId) {
       form.submit();
       return;
@@ -177,41 +237,102 @@
     if (submitBtn) { submitBtn.disabled = true; submitBtn.style.opacity = '0.75'; }
     if (stickyBtn) { stickyBtn.disabled = true; stickyBtn.style.opacity = '0.75'; }
 
-    const value = selected ? (Number(selected.dataset.variantPrice || 0) / 100) : 0;
+    const rawPrice = selected?.dataset.variantPrice || {{ current_variant.price }};
+    const value = Number(rawPrice || 0) / 100;
     const eventId = `wwsa-atc-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
-    const variantTitle = selected?.dataset.variantTitle || {{ product.title | json }};
-    const item = { item_id: variantId, item_name: variantTitle, price: value, quantity: 1 };
+    const variantTitle = selected?.dataset.variantTitle || {{ current_variant.title | json }};
+    const currency = {{ cart.currency.iso_code | default: shop.currency | json }};
+    const item = { item_id: String(variantId), item_name: variantTitle, price: value, quantity: 1 };
     const payload = {
-      content_ids: [variantId],
+      content_ids: [String(variantId)],
       content_name: variantTitle,
       content_type: 'product',
-      currency: {{ cart.currency.iso_code | default: shop.currency | json }},
+      currency: currency,
       value: value
     };
 
-    window.dispatchEvent(new CustomEvent('wwsa:add_to_cart', { detail: { eventId, payload, item } }));
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'add_to_cart', event_id: eventId, ecommerce: { currency: payload.currency, value, items: [item] } });
-
-    if (window.wwsaTrackMetaEvent) {
-      window.wwsaTrackMetaEvent('AddToCart', payload, { eventId: eventId });
-    } else if (typeof window.fbq === 'function') {
-      window.fbq('track', 'AddToCart', payload, { eventID: eventId });
+    // 1. Meta Browser Pixel (Standard AddToCart)
+    if (typeof window.fbq === 'function') {
+      try {
+        window.fbq('track', 'AddToCart', payload, { eventID: eventId });
+      } catch (e) {
+        console.warn('[Meta Pixel] Error tracking AddToCart:', e);
+      }
     }
 
-    fetch('/cart/add.js', {
+    // 2. DataLayer for Google Tag Manager / GA4
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'add_to_cart',
+      event_id: eventId,
+      ecommerce: {
+        currency: currency,
+        value: value,
+        items: [item]
+      }
+    });
+
+    // 3. Custom DOM Event
+    window.dispatchEvent(new CustomEvent('wwsa:add_to_cart', { detail: { eventId, payload, item } }));
+
+    // 4. Cart Addition & Cart Drawer Support
+    const miniCart = document.querySelector('mini-cart');
+    const sections = miniCart ? miniCart.getSectionsToRender().map((s) => s.id) : [];
+
+    const requestBody = {
+      id: Number(variantId),
+      quantity: 1
+    };
+    if (sections.length) {
+      requestBody.sections = sections;
+      requestBody.sections_url = window.location.pathname;
+    }
+
+    fetch(`${window.theme?.routes?.cart_add_url || '/cart/add.js'}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify(requestBody)
     })
     .then((res) => {
       if (!res.ok) throw new Error('Add to cart failed');
-      window.location.href = '/cart';
+      return res.json();
     })
-    .catch(() => {
+    .then((response) => {
+      if (response.status && response.status >= 400) {
+        throw new Error(response.description || 'Add to cart error');
+      }
+
+      if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+        publish(PUB_SUB_EVENTS.cartUpdate, { source: 'wwsa-product-form', productVariantId: variantId });
+      }
+
+      document.dispatchEvent(new CustomEvent('ajaxProduct:added', {
+        detail: { product: response }
+      }));
+
+      if (miniCart) {
+        miniCart.renderContents(response);
+      } else {
+        // Safe navigation allowing fbq beacon time to complete
+        setTimeout(() => {
+          window.location.href = window.theme?.routes?.cart_url || '/cart';
+        }, 250);
+      }
+    })
+    .catch((err) => {
+      console.warn('[Add to cart] AJAX failed, falling back to form submit:', err);
       form.submit();
+    })
+    .finally(() => {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.style.opacity = '1'; }
+      if (stickyBtn) { stickyBtn.disabled = false; stickyBtn.style.opacity = '1'; }
     });
   });
+
   const selectVariant = (card, notify = true) => {
     const input = card.querySelector('input[name="id"]');
     if (!input || input.disabled) return;
@@ -231,6 +352,7 @@
     // in sync instead of only changing the card visually.
     if (notify) input.dispatchEvent(new Event('change', { bubbles: true }));
   };
+
   root.querySelectorAll('[data-variant-card]').forEach((card) => {
     card.addEventListener('click', (event) => { event.preventDefault(); selectVariant(card); });
     card.querySelector('input[name="id"]')?.addEventListener('change', () => selectVariant(card, false));
@@ -239,7 +361,20 @@
     });
     card.setAttribute('tabindex', card.querySelector('input:not(:disabled)') ? '0' : '-1');
   });
-  document.querySelector('[data-submit-form="{{ form_id }}"]')?.addEventListener('click',()=>document.getElementById('{{ form_id }}')?.requestSubmit());
+
+  // Sticky Bar Trigger
+  const stickyTrigger = document.querySelector('[data-submit-form="{{ form_id }}"]');
+  if (stickyTrigger) {
+    stickyTrigger.addEventListener('click', () => {
+      const formEl = document.getElementById('{{ form_id }}');
+      if (!formEl) return;
+      if (typeof formEl.requestSubmit === 'function') {
+        formEl.requestSubmit();
+      } else {
+        formEl.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      }
+    });
+  }
 })();
 </script>
 

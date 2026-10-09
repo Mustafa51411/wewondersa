@@ -3698,3 +3698,79 @@ class LocalizationForm extends HTMLElement {
   }
 }
 customElements.define('localization-form', LocalizationForm);
+
+/* ==========================================================================
+   Global Event Tracking (WhatsApp, InitiateCheckout)
+   Dispatches safely to Meta Pixel (if loaded) and Google dataLayer without duplicates
+   ========================================================================== */
+(function() {
+  // Global WhatsApp click tracking
+  document.addEventListener('click', function(e) {
+    const wa = e.target.closest('.wwsa-btn--whatsapp, [data-whatsapp-btn], a[href*="wa.me"], a[href*="whatsapp.com"], [class*="whatsapp-chat"], [id*="whatsapp"]');
+    if (!wa) return;
+    const eventId = 'wa-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+    if (typeof window.fbq === 'function') {
+      try {
+        window.fbq('track', 'Contact', { content_name: 'WhatsApp Click' }, { eventID: eventId });
+        window.fbq('trackCustom', 'WhatsAppClick', { content_name: 'WhatsApp Click' }, { eventID: eventId });
+      } catch (err) {
+        console.warn('[Tracking] WhatsApp Meta track error:', err);
+      }
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'whatsapp_click',
+      event_id: eventId,
+      contact_type: 'whatsapp'
+    });
+    window.dataLayer.push({
+      event: 'contact',
+      method: 'whatsapp',
+      event_id: eventId
+    });
+  }, true);
+
+  // Global Checkout Tracking (InitiateCheckout)
+  document.addEventListener('click', function(e) {
+    const checkoutBtn = e.target.closest('[name="checkout"], .cart__checkout-button, a[href*="/checkout"]');
+    if (!checkoutBtn) return;
+    const eventId = 'ic-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+
+    fetch('/cart.js')
+      .then(function(r) { return r.json(); })
+      .then(function(cart) {
+        const ids = (cart.items || []).map(function(item) { return String(item.variant_id || item.id); });
+        const val = (cart.total_price || 0) / 100.0;
+        const curr = cart.currency || (window.theme && window.theme.shopSettings && window.theme.shopSettings.currency) || 'SAR';
+        if (typeof window.fbq === 'function') {
+          try {
+            window.fbq('track', 'InitiateCheckout', {
+              content_ids: ids,
+              content_type: 'product',
+              num_items: cart.item_count,
+              value: val,
+              currency: curr
+            }, { eventID: eventId });
+          } catch (err) {}
+        }
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'begin_checkout',
+          event_id: eventId,
+          ecommerce: {
+            currency: curr,
+            value: val,
+            items: (cart.items || []).map(function(item) {
+              return {
+                item_id: String(item.variant_id || item.id),
+                item_name: item.title,
+                price: (item.price || 0) / 100.0,
+                quantity: item.quantity
+              };
+            })
+          }
+        });
+      })
+      .catch(function() {});
+  }, true);
+})();
