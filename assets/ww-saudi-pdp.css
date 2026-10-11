@@ -76,9 +76,6 @@
 .wwsa-gallery__thumb { aspect-ratio: 1; background: #f2f5f7; border: 2px solid var(--wwsa-line); border-radius: 11px; cursor: pointer; overflow: hidden; padding: 0; }
 .wwsa-gallery__thumb.is-active { border-color: var(--wwsa-navy); }
 .wwsa-gallery__thumb img { height: 100%; object-fit: cover; width: 100%; }
-.wwsa-badge { align-items: center; background: var(--wwsa-navy); border-radius: 50%; bottom: 5%; color: #fff; display: flex; flex-direction: column; font-family: 'Cairo', sans-serif; height: 102px; justify-content: center; position: absolute; right: -14px; text-align: center; transform: rotate(-8deg); width: 102px; z-index: 3; }
-.wwsa-badge strong { color: var(--wwsa-sky); font-size: 1.45rem; line-height: 1; }
-.wwsa-badge small { font-size: .58rem; font-weight: 800; line-height: 1.25; margin-top: 4px; }
 .wwsa-rating { align-items: center; color: var(--wwsa-navy); display: flex; flex-wrap: wrap; font-weight: 700; gap: 7px; }
 .wwsa-rating__stars { color: var(--wwsa-blue); letter-spacing: 1px; }
 .wwsa-rating__proof { border-right: 1px solid var(--wwsa-line); color: var(--wwsa-muted); font-size: .87rem; padding-right: 9px; }
@@ -399,8 +396,6 @@
   .wwsa-hero { padding-top: 16px; }
   .wwsa-hero__grid { gap: 28px; }
   .wwsa-gallery__thumbs { gap: 6px; }
-  .wwsa-badge { height: 78px; right: -4px; width: 78px; }
-  .wwsa-badge strong { font-size: 1.1rem; }
   .wwsa-variant { gap: 10px; grid-template-columns: 70px minmax(0,1fr); padding: 13px; }
   .wwsa-variant__image { height: 70px; width: 70px; }
   .wwsa-variant__price-wrap { grid-column: 2; }
@@ -446,8 +441,6 @@
 .wwsa-offer-note { font-size: 14px; }
 .wwsa-guarantee-box strong { font-size: 16px; }
 .wwsa-guarantee-box small, .wwsa-guarantee-box span { color: var(--wwsa-muted); font-size: 14px; }
-.wwsa-badge strong { font-size: 24px; }
-.wwsa-badge { font-size: 10px; font-weight: 800; line-height: 1.25; }
 
 .wwsa-section__lead, .wwsa-fit__lead { color: var(--wwsa-muted); font-size: 17px; line-height: 1.65; margin: 12px auto 0; max-width: 720px; }
 .wwsa-video-card__caption { font-size: 15px; }
