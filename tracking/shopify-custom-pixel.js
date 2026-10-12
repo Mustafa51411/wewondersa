@@ -1,17 +1,9 @@
 /**
  * WeeWonders Saudi Arabia (weewonderssa.com) - Shopify Custom Pixel
- * 
- * Setup instructions:
- * 1. In Shopify Admin, navigate to: Settings > Customer events > Add custom pixel.
- * 2. Name the pixel: "WeeWonders Meta CAPI and Browser Pixel".
- * 3. Replace TRACKING_ENDPOINT with your deployed server URL (e.g. https://your-server.vercel.app/api/events).
- * 4. Save and click "Connect".
- * 
- * Complies strictly with Meta Conversions API deduplication and SOW Data Rules.
+ * Dataset / Pixel ID: 1032874294681740
+ * Currency: SAR | Store Tag: sa
  */
 
-// Replace with your live tracking server endpoint
-const TRACKING_ENDPOINT = 'https://REPLACE-WITH-YOUR-TRACKING-HOST.com/api/events';
 const STORE = 'sa';
 const DEFAULT_CURRENCY = 'SAR';
 const META_PIXEL_ID = '1032874294681740';
@@ -47,7 +39,7 @@ async function getFbc(event) {
         const u = new URL(urlStr);
         const fbclid = u.searchParams.get('fbclid');
         if (fbclid) {
-          fbc = `fb.1.${Date.now()}.${fbclid}`;
+          fbc = b.1..;
         }
       }
     } catch (_) {}
@@ -63,14 +55,14 @@ async function trackEvent(metaEventName, isStandard, event, customData = {}, use
   // Single shared event ID for browser + server deduplication
   let eventId;
   if (metaEventName === 'WW_Order' && orderId) {
-    eventId = `order_${orderId}`;
+    eventId = order_;
   } else if (orderId) {
-    eventId = `order_${orderId}`;
+    eventId = order_;
   } else {
-    eventId = `${STORE}_${metaEventName}_${event.id || (Date.now() + '_' + Math.random().toString(36).slice(2, 8))}`;
+    eventId = ${STORE}__;
   }
 
-  // 3a. Fire Meta Browser Pixel Event
+  // 3a. Fire Meta Browser Pixel Event with Event ID
   if (typeof fbq === 'function') {
     try {
       if (isStandard) {
@@ -83,36 +75,37 @@ async function trackEvent(metaEventName, isStandard, event, customData = {}, use
     }
   }
 
-  // 3b. Read Attribution & Send to Server CAPI
+  // 3b. Read Attribution & Optional CAPI Forwarding
   const [fbc, fbp] = await Promise.all([getFbc(event), getCookie('_fbp')]);
   const sourceUrl = event.context?.document?.location?.href || null;
 
-  try {
-    fetch(TRACKING_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        event_name: metaEventName,
-        event_id: eventId,
-        store: STORE,
-        value: customData.value || null,
-        currency: customData.currency || DEFAULT_CURRENCY,
-        num_items: customData.num_items || null,
-        order_id: customData.order_id || null,
-        fbc: fbc,
-        fbp: fbp,
-        event_source_url: sourceUrl,
-        user_data: {
-          email: userContact.email || checkout.email || null,
-          phone: userContact.phone || checkout.phone || null,
-          country: checkout.shippingAddress?.countryCode || 'SA'
-        }
-      }),
-      keepalive: true
-    }).catch(function(err) {
-      console.warn('[Pixel] Server forward error:', err);
-    });
-  } catch (_) {}
+  const endpoint = window.WW_CAPI_ENDPOINT || null;
+  if (endpoint) {
+    try {
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_name: metaEventName,
+          event_id: eventId,
+          store: STORE,
+          value: customData.value || null,
+          currency: customData.currency || DEFAULT_CURRENCY,
+          num_items: customData.num_items || null,
+          order_id: customData.order_id || null,
+          fbc: fbc,
+          fbp: fbp,
+          event_source_url: sourceUrl,
+          user_data: {
+            email: userContact.email || checkout.email || null,
+            phone: userContact.phone || checkout.phone || null,
+            country: checkout.shippingAddress?.countryCode || 'SA'
+          }
+        }),
+        keepalive: true
+      }).catch(function() {});
+    } catch (_) {}
+  }
 }
 
 // 4. Subscriptions
