@@ -1,0 +1,159 @@
+{% comment %}
+  WeeWonders Universal Attribution & WhatsApp Tracking Snippet (Saudi Arabia)
+  - Captures and preserves fbc, fbp, and UTMs into Shopify Cart Attributes (SOW Task 3)
+  - Generates WhatsApp reference codes and links attribution to draft orders (SOW Task 5)
+{% endcomment %}
+<script>
+(function() {
+  'use strict';
+
+  var STORE = 'sa';
+  var SERVER_URL = window.WW_TRACKING_SERVER_URL || '';
+
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+    return match ? decodeURIComponent(match[3]) : null;
+  }
+
+  function setCookie(name, value, days) {
+    var expires = '';
+    if (days) {
+      var d = new Date();
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = '; expires=' + d.toUTCString();
+    }
+    var domain = window.location.hostname.includes('.') ? '; domain=.' + window.location.hostname.replace(/^www\./, '') : '';
+    document.cookie = name + '=' + encodeURIComponent(value) + expires + '; path=/' + domain + '; SameSite=Lax';
+  }
+
+  // 1. Capture UTMs & Click IDs
+  var urlParams = new URLSearchParams(window.location.search);
+  var fbclid = urlParams.get('fbclid');
+  var fbc = getCookie('_fbc');
+  var fbp = getCookie('_fbp');
+
+  if (!fbc && fbclid) {
+    fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+    setCookie('_fbc', fbc, 90);
+  }
+
+  var utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+  var utms = {};
+
+  utmKeys.forEach(function(k) {
+    var val = urlParams.get(k);
+    if (val) {
+      utms[k] = val;
+      try { sessionStorage.setItem('ww_' + k, val); } catch (_) {}
+    } else {
+      try {
+        var saved = sessionStorage.getItem('ww_' + k);
+        if (saved) utms[k] = saved;
+      } catch (_) {}
+    }
+  });
+
+  // 2. Persist fbc, fbp & UTMs into Shopify Cart Attributes
+  function syncCartAttributes() {
+    var cartAttrs = {};
+    if (fbc) cartAttrs['_fbc'] = fbc;
+    if (fbp) cartAttrs['_fbp'] = fbp;
+    Object.keys(utms).forEach(function(k) {
+      if (utms[k]) cartAttrs[k] = utms[k];
+    });
+
+    if (Object.keys(cartAttrs).length > 0) {
+      try {
+        fetch('/cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify({ attributes: cartAttrs })
+        }).catch(function() {});
+      } catch (_) {}
+    }
+  }
+
+  if (document.readyState === 'complete') {
+    setTimeout(syncCartAttributes, 500);
+  } else {
+    window.addEventListener('load', function() {
+      setTimeout(syncCartAttributes, 500);
+    });
+  }
+
+  // 3. WhatsApp Reference Code Generator & Click Tracking
+  function generateRefCode() {
+    var chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+    var code = 'W';
+    for (var i = 0; i < 4; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+  }
+
+  function handleWhatsAppClick(e) {
+    var link = e.target.closest('a[href*="wa.me"], a[href*="whatsapp.com"], [data-whatsapp-btn], .wwsa-btn--whatsapp');
+    if (!link) return;
+
+    var refCode = generateRefCode();
+    var waEventId = 'wa_' + refCode + '_' + Date.now();
+
+    // Attach reference code to WhatsApp URL with Arabic prefix
+    var href = link.getAttribute('href') || '';
+    if (href) {
+      var refTag = ' [رمز: ' + refCode + ']';
+      if (href.includes('text=')) {
+        href = href.replace(/([?&]text=)([^&]*)/, function(match, p1, p2) {
+          return p1 + p2 + encodeURIComponent(refTag);
+        });
+      } else {
+        var sep = href.includes('?') ? '&' : '?';
+        href = href + sep + 'text=' + encodeURIComponent('مرحباً، أريد طلب مضخة WeeWonders' + refTag);
+      }
+      link.setAttribute('href', href);
+    }
+
+    // Save wa_ref attribute in cart
+    try {
+      fetch('/cart/update.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ attributes: { 'wa_ref': refCode } })
+      }).catch(function() {});
+    } catch (_) {}
+
+    // Track Meta Browser Event
+    if (typeof window.fbq === 'function') {
+      try {
+        window.fbq('trackCustom', 'WW_WhatsApp', { ref_code: refCode }, { eventID: waEventId });
+      } catch (_) {}
+    }
+
+    // Forward to server tracking endpoint if configured
+    if (SERVER_URL) {
+      try {
+        fetch(SERVER_URL.replace(/\/+$/, '') + '/api/whatsapp-ref', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ref_code: refCode,
+            store: STORE,
+            fbc: fbc,
+            fbp: fbp,
+            utms: utms,
+            landing_page: window.location.href,
+            event_id: waEventId
+          }),
+          keepalive: true
+        }).catch(function() {});
+      } catch (_) {}
+    }
+  }
+
+  document.addEventListener('click', handleWhatsAppClick, true);
+})();
+</script>

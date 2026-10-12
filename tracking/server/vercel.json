@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/events", "destination": "/api/events.js" },
+    { "source": "/api/whatsapp-ref", "destination": "/api/whatsapp-ref.js" },
+    { "source": "/api/webhooks/shopify", "destination": "/api/webhooks/shopify.js" },
+    { "source": "/api/health", "destination": "/api/health.js" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,POST,OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, X-Shopify-Hmac-Sha256, X-Shopify-Topic, X-Shopify-Shop-Domain" }
+      ]
+    }
+  ]
+}

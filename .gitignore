@@ -1,0 +1,5 @@
+tracking/server/.env
+tracking/server/data/
+node_modules/
+.DS_Store
+*.log

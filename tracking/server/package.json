@@ -1,0 +1,23 @@
+{
+  "name": "weewonders-tracking-server",
+  "version": "1.0.0",
+  "description": "Meta Conversions API (CAPI) and Shopify Webhook Tracking Server for WeeWonders (SA & LB)",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "shopify",
+    "meta-pixel",
+    "meta-capi",
+    "conversions-api",
+    "weewonders"
+  ],
+  "author": "WeeWonders Engineering",
+  "license": "UNLICENSED"
+}
