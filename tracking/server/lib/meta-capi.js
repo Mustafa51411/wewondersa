@@ -51,9 +51,7 @@ export async function sendMetaEvent({
   clientUserAgent,
   fbc,
   fbp,
-  email,
-  phone,
-  country,
+  customer = {},
   customData = {}
 }) {
   const pixelId = process.env.META_PIXEL_ID || '1032874294681740';
@@ -72,14 +70,25 @@ export async function sendMetaEvent({
   if (fbc) userData.fbc = fbc;
   if (fbp) userData.fbp = fbp;
 
-  const em = hashEmail(email);
+  const em = hashEmail(customer.email);
   if (em) userData.em = [em];
 
-  const ph = hashPhone(phone);
+  const ph = hashPhone(customer.phone);
   if (ph) userData.ph = [ph];
 
-  const co = hashCountry(country);
+  const co = hashCountry(customer.country);
   if (co) userData.country = [co];
+
+  const fn = customer.first_name ? sha256(String(customer.first_name).trim().toLowerCase()) : null;
+  if (fn) userData.fn = [fn];
+  const ln = customer.last_name ? sha256(String(customer.last_name).trim().toLowerCase()) : null;
+  if (ln) userData.ln = [ln];
+  const ct = customer.city ? sha256(String(customer.city).trim().toLowerCase()) : null;
+  if (ct) userData.ct = [ct];
+  const zp = customer.zip ? sha256(String(customer.zip).trim().toLowerCase()) : null;
+  if (zp) userData.zp = [zp];
+  const externalId = customer.external_id ? sha256(String(customer.external_id).trim().toLowerCase()) : null;
+  if (externalId) userData.external_id = [externalId];
 
   // 2. Build sanitized custom_data according to SOW rules
   const sanitizedCustomData = {};
@@ -97,6 +106,15 @@ export async function sendMetaEvent({
   }
   if (customData.store) {
     sanitizedCustomData.store = String(customData.store).toLowerCase();
+  }
+  if (Array.isArray(customData.content_ids)) {
+    const ids = customData.content_ids.map(String).filter(Boolean);
+    if (ids.length) sanitizedCustomData.content_ids = ids;
+  }
+  if (customData.content_type) sanitizedCustomData.content_type = String(customData.content_type);
+  if (Array.isArray(customData.contents)) {
+    const contents = customData.contents.map((item) => ({ id: String(item?.id || ''), quantity: Number(item?.quantity || 1), item_price: Number(item?.item_price || 0) })).filter((item) => item.id);
+    if (contents.length) sanitizedCustomData.contents = contents;
   }
 
   // 3. Assemble event item

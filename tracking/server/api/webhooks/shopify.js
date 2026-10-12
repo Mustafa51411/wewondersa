@@ -13,11 +13,7 @@ function verifyShopifyHmac(rawBody, hmacHeader) {
     process.env.SHOPIFY_WEBHOOK_SECRET_LB
   ].filter(Boolean);
 
-  if (secrets.length === 0) {
-    // If no secret configured yet, warn and allow in dev
-    console.warn('[Shopify Webhook] Warning: SHOPIFY_WEBHOOK_SECRET not configured.');
-    return true;
-  }
+  if (secrets.length === 0) return false;
 
   for (const secret of secrets) {
     const hash = crypto
@@ -115,7 +111,7 @@ export default async function handler(req, res) {
         console.log(`[Shopify Webhook] Found WhatsApp attribution for ref ${refCode}:`, savedRef);
         if (!fbc && savedRef.fbc) fbc = savedRef.fbc;
         if (!fbp && savedRef.fbp) fbp = savedRef.fbp;
-        if (!eventSourceUrl && savedRef.landing_page) eventSourceUrl = savedRef.landing_page;
+        if (!eventSourceUrl && savedRef.landing_url) eventSourceUrl = savedRef.landing_url;
         actionSource = 'other'; // Recommended for orders placed via chat / WhatsApp
       }
     }
@@ -138,19 +134,22 @@ export default async function handler(req, res) {
       clientUserAgent,
       fbc,
       fbp,
-      email,
-      phone,
-      country,
+      customer: { email, phone, country, first_name: order.customer?.first_name || order.shipping_address?.first_name,
+        last_name: order.customer?.last_name || order.shipping_address?.last_name, city: order.shipping_address?.city,
+        zip: order.shipping_address?.zip, external_id: order.customer?.id },
       customData: {
         value: Number(order.total_price) || 0,
         currency: order.currency || (store === 'sa' ? 'SAR' : 'USD'),
-        num_items: Array.isArray(order.line_items) ? order.line_items.length : 1,
+        num_items: Array.isArray(order.line_items) ? order.line_items.reduce((total, item) => total + Number(item.quantity || 0), 0) : 1,
+        content_ids: Array.isArray(order.line_items) ? order.line_items.map((item) => String(item.product_id || item.variant_id || '')).filter(Boolean) : [],
+        content_type: 'product',
+        contents: Array.isArray(order.line_items) ? order.line_items.map((item) => ({ id: String(item.product_id || item.variant_id || ''), quantity: Number(item.quantity || 1), item_price: Number(item.price || 0) })).filter((item) => item.id) : [],
         order_id: String(order.id),
         store
       }
     });
 
-    markOrderProcessed(order.id);
+    if (capiResult.success) markOrderProcessed(order.id);
 
     console.log(`[Shopify Webhook] Emitted WW_Order for order ${order.id}:`, capiResult);
 

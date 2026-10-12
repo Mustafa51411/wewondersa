@@ -8,7 +8,8 @@
   'use strict';
 
   var STORE = 'sa';
-  var SERVER_URL = window.WW_TRACKING_SERVER_URL || '';
+  // Keep this URL explicit. It must be the same deployed tracking host as the custom pixel.
+  var TRACKING_SERVER_URL = 'https://REPLACE-WITH-YOUR-TRACKING-HOST.com';
 
   function getCookie(name) {
     var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
@@ -134,18 +135,17 @@
     }
 
     // Forward to server tracking endpoint if configured
-    if (SERVER_URL) {
+    if (!TRACKING_SERVER_URL.includes('REPLACE-WITH')) {
       try {
-        fetch(SERVER_URL.replace(/\/+$/, '') + '/api/whatsapp-ref', {
+        fetch(TRACKING_SERVER_URL.replace(/\/+$/, '') + '/api/whatsapp-ref', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            ref_code: refCode,
-            store: STORE,
+            reference: refCode,
             fbc: fbc,
             fbp: fbp,
-            utms: utms,
-            landing_page: window.location.href,
+            attribution: utms,
+            landing_url: window.location.href,
             event_id: waEventId
           }),
           keepalive: true
