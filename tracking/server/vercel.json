@@ -1,9 +1,9 @@
 {
-  "version": 2,
-  "rewrites": [
-    { "source": "/api/events", "destination": "/api/events.js" },
-    { "source": "/api/whatsapp-ref", "destination": "/api/whatsapp-ref.js" },
-    { "source": "/api/webhooks/shopify", "destination": "/api/webhooks/shopify.js" },
-    { "source": "/api/health", "destination": "/api/health.js" }
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 30
+    }
+  }
 }
