@@ -2,6 +2,16 @@ import crypto from 'node:crypto';
 import { sendMetaEvent } from '../../lib/meta-capi.js';
 import { isOrderProcessed, markOrderProcessed, getWhatsAppRef } from '../../lib/store.js';
 
+export const config = { api: { bodyParser: false } };
+
+async function rawRequestBody(req) {
+  if (typeof req.body === 'string') return req.body;
+  if (Buffer.isBuffer(req.body)) return req.body.toString('utf8');
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  return Buffer.concat(chunks).toString('utf8');
+}
+
 /**
  * Verify Shopify Webhook HMAC SHA256 signature
  */
@@ -33,7 +43,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const rawBody = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+    const rawBody = await rawRequestBody(req);
     const hmacHeader = req.headers['x-shopify-hmac-sha256'];
     const topic = req.headers['x-shopify-topic'] || 'orders/paid';
     const shopDomain = req.headers['x-shopify-shop-domain'] || '';
@@ -50,7 +60,7 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Invalid HMAC signature' });
     }
 
-    const order = typeof req.body === 'string' ? JSON.parse(rawBody) : (req.body || {});
+    const order = JSON.parse(rawBody || '{}');
     if (!order.id) {
       return res.status(400).json({ error: 'Invalid order payload' });
     }

@@ -39,12 +39,13 @@ function customer(checkout = {}) {
   return { email: checkout.email, phone: checkout.phone, first_name: address.firstName, last_name: address.lastName,
     city: address.city, zip: address.zip, country: address.countryCode || DEFAULT_COUNTRY, external_id: checkout.customer?.id };
 }
-async function track(eventName, standard, event, customData = {}) {
+async function track(eventName, standard, event, customData = {}, sendServer = true) {
   const checkout = event.data?.checkout || {};
   const eventId = eventName === 'WW_Order' && checkout.order?.id ? `order_${checkout.order.id}` : `${STORE}_${eventName}_${event.id || `${Date.now()}_${Math.random().toString(36).slice(2)}`}`;
   if (standard) fbq('track', eventName, customData, { eventID: eventId }); else fbq('trackCustom', eventName, customData, { eventID: eventId });
   const [fbc, fbp] = await Promise.all([getFbc(event), getCookie('_fbp')]);
   const sourceUrl = event.context?.document?.location?.href || '';
+  if (!sendServer) return;
   if (TRACKING_ENDPOINT.includes('REPLACE-WITH')) { console.warn('[WeeWonders] Set TRACKING_ENDPOINT before connecting this pixel.'); return; }
   fetch(TRACKING_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
     body: JSON.stringify({ event_name: eventName, event_id: eventId, event_time: Math.floor(Date.now() / 1000), event_source_url: sourceUrl,
@@ -56,4 +57,5 @@ analytics.subscribe('product_added_to_cart', (event) => { const l = event.data?.
 function checkoutData(event) { const c = event.data?.checkout || {}; const lines = c.lineItems || []; return { value: Number(c.totalPrice?.amount || 0), currency: c.currencyCode || DEFAULT_CURRENCY, num_items: lines.reduce((total, line) => total + Number(line.quantity || 0), 0), content_ids: contents(lines).map((x) => x.id), content_type: 'product', contents: contents(lines), order_id: c.order?.id ? String(c.order.id) : undefined }; }
 analytics.subscribe('checkout_started', (event) => track('WW_Checkout', false, event, checkoutData(event)));
 analytics.subscribe('payment_info_submitted', (event) => track('WW_Payment', false, event, checkoutData(event)));
-analytics.subscribe('checkout_completed', (event) => track('WW_Order', false, event, checkoutData(event)));
+// Browser Purchase is paired only with the Shopify order webhook's server event.
+analytics.subscribe('checkout_completed', (event) => track('WW_Order', false, event, checkoutData(event), false));
