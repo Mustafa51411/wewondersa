@@ -4,9 +4,9 @@ import { isEventProcessed, markEventProcessed } from '../lib/store.js';
 import { applyCors, clientIp, safeAttribution, safeText } from '../lib/security.js';
 
 export default async function handler(req, res) {
-  if (req.method === 'OPTIONS') { applyCors(req, res); return res.status(204).end(); }
+  applyCors(req, res);
+  if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-  if (!applyCors(req, res)) return res.status(403).json({ error: 'Origin not allowed' });
   const payload = req.body || {};
   const eventName = safeText(payload.event_name, 80);
   const eventId = safeText(payload.event_id, 160);
