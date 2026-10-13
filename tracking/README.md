@@ -23,7 +23,7 @@ Your endpoint will look like: `https://your-weewonders-tracking.vercel.app`
 1. Open **Shopify Admin → Settings → Customer events**.
 2. Click **Add custom pixel** and name it: `WeeWonders Meta CAPI & Browser Pixel`.
 3. Open `shopify-custom-pixel.js`, replace:
-   `const TRACKING_ENDPOINT = 'https://REPLACE-WITH-YOUR-TRACKING-HOST.com/api/events';`
+   `const TRACKING_ENDPOINT = 'https://wewondersa-tracking.vercel.app/api/events';`
    with your real deployed URL (e.g. `https://your-weewonders-tracking.vercel.app/api/events`).
 4. Click **Save** and then **Connect**.
 
