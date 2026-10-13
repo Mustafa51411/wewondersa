@@ -3,6 +3,8 @@ const STORE = 'sa';
 const DEFAULT_CURRENCY = 'SAR';
 const DEFAULT_COUNTRY = 'SA';
 const META_PIXEL_ID = '1032874294681740';
+// Paste an Events Manager test code here only while testing, otherwise leave blank.
+const TEST_EVENT_CODE = '';
 // Replace this single deployment URL before connecting the pixel. Do not use a theme/window variable.
 const TRACKING_ENDPOINT = 'https://wewondersa-tracking.vercel.app/api/events';
 
@@ -47,9 +49,11 @@ async function track(eventName, standard, event, customData = {}, sendServer = t
   const sourceUrl = event.context?.document?.location?.href || '';
   if (!sendServer) return;
   if (TRACKING_ENDPOINT.includes('REPLACE-WITH')) { console.warn('[WeeWonders] Set TRACKING_ENDPOINT before connecting this pixel.'); return; }
+  const payload = { event_name: eventName, event_id: eventId, event_time: Math.floor(Date.now() / 1000), event_source_url: sourceUrl,
+    fbc, fbp, attribution: attribution(event), customer: customer(checkout), custom_data: { ...customData, store: STORE } };
+  if (TEST_EVENT_CODE) payload.test_event_code = TEST_EVENT_CODE;
   fetch(TRACKING_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
-    body: JSON.stringify({ event_name: eventName, event_id: eventId, event_time: Math.floor(Date.now() / 1000), event_source_url: sourceUrl,
-      fbc, fbp, attribution: attribution(event), customer: customer(checkout), custom_data: { ...customData, store: STORE } }) }).catch(() => {});
+    body: JSON.stringify(payload) }).catch(() => {});
 }
 analytics.subscribe('page_viewed', (event) => track('PageView', true, event));
 analytics.subscribe('product_viewed', (event) => { const v = event.data?.productVariant || {}; track('ViewContent', true, event, { value: Number(v.price?.amount || 0), currency: v.price?.currencyCode || DEFAULT_CURRENCY, content_ids: [String(v.product?.id || v.id || '')].filter(Boolean), content_type: 'product', contents: contents([{ productVariant: v }]) }); });

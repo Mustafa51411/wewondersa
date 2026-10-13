@@ -52,11 +52,12 @@ export async function sendMetaEvent({
   fbc,
   fbp,
   customer = {},
-  customData = {}
+  customData = {},
+  testEventCode
 }) {
   const pixelId = process.env.META_PIXEL_ID || '1032874294681740';
   const token = process.env.META_CAPI_ACCESS_TOKEN;
-  const testCode = process.env.TEST_EVENT_CODE;
+  const testCode = testEventCode || process.env.META_TEST_EVENT_CODE || process.env.TEST_EVENT_CODE;
 
   if (!token) {
     console.warn('[Meta CAPI] Warning: META_CAPI_ACCESS_TOKEN not set in environment.');

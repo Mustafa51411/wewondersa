@@ -17,7 +17,8 @@ export default async function handler(req, res) {
     const result = await sendMetaEvent({ eventName, eventId, eventTime: Number(payload.event_time) || Math.floor(Date.now() / 1000),
       eventSourceUrl: safeText(payload.event_source_url, 2048), clientIp: clientIp(req), clientUserAgent: safeText(req.headers['user-agent'], 512),
       fbc: safeText(payload.fbc, 512), fbp: safeText(payload.fbp, 512), customer: payload.customer || {},
-      customData: { ...(payload.custom_data || {}), ...safeAttribution(payload.attribution), store: STORE } });
+      customData: { ...(payload.custom_data || {}), ...safeAttribution(payload.attribution), store: STORE },
+      testEventCode: safeText(payload.test_event_code, 200) });
     if (!result.success) return res.status(503).json({ ok: false, configuration: result.reason });
     markEventProcessed(eventId);
     return res.status(200).json({ ok: true });
