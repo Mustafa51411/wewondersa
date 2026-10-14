@@ -103,6 +103,12 @@ export default async function handler(req, res) {
     let fbp = noteAttributes['_fbp'] || null;
     let refCode = noteAttributes['wa_ref'] || noteAttributes['ref_code'] || null;
 
+    if (!refCode && order.tags) {
+      const tags = Array.isArray(order.tags) ? order.tags : String(order.tags).split(',');
+      const waTag = tags.map((tag) => String(tag).trim()).find((tag) => /^wa_[a-z0-9]+$/i.test(tag));
+      if (waTag) refCode = waTag.slice(3).toUpperCase();
+    }
+
     // If no ref_code in attributes, check order.note for pattern (e.g. "Ref: W8K2" or "W8K2")
     if (!refCode && order.note) {
       const match = String(order.note).match(/\b(?:ref|code|رمز|طلب)?[:\s-]*([A-Za-z0-9]{4,8})\b/i);
@@ -116,7 +122,7 @@ export default async function handler(req, res) {
 
     // If WhatsApp reference code exists, look up saved attribution
     if (refCode) {
-      const savedRef = await getWhatsAppRef(refCode);
+      const savedRef = await getWhatsAppRef(refCode, store);
       if (savedRef) {
         console.log(`[Shopify Webhook] Found WhatsApp attribution for ref ${refCode}:`, savedRef);
         if (!fbc && savedRef.fbc) fbc = savedRef.fbc;
@@ -155,7 +161,9 @@ export default async function handler(req, res) {
         content_type: 'product',
         contents: Array.isArray(order.line_items) ? order.line_items.map((item) => ({ id: String(item.product_id || item.variant_id || ''), quantity: Number(item.quantity || 1), item_price: Number(item.price || 0) })).filter((item) => item.id) : [],
         order_id: String(order.id),
-        store
+        store,
+        ref: refCode || undefined,
+        whatsapp_reference: refCode || undefined
       }
     });
 

@@ -96,9 +96,53 @@
     return code;
   }
 
+  function cartData() {
+    return fetch('/cart.js', { credentials: 'same-origin' }).then(function(response) { return response.ok ? response.json() : {}; }).then(function(cart) {
+      var items = Array.isArray(cart.items) ? cart.items : [];
+      var contents = items.map(function(item) { return { id: String(item.product_id || item.variant_id || ''), quantity: Number(item.quantity || 1), item_price: Number(item.final_price || item.price || 0) / 100 }; }).filter(function(item) { return item.id; });
+      return { value: Number(cart.total_price || 0) / 100, currency: cart.currency || 'SAR', num_items: items.reduce(function(total, item) { return total + Number(item.quantity || 0); }, 0), content_ids: contents.map(function(item) { return item.id; }), contents: contents };
+    }).catch(function() { return { value: 0, currency: 'SAR', num_items: 0, content_ids: [], contents: [] }; });
+  }
+
+  function whatsappUrl(link, ref) {
+    var href = link.getAttribute('href') || '';
+    var refTag = ' [Ref: ' + ref + ']';
+    if (href.indexOf('text=') >= 0) return href.replace(/([?&]text=)([^&]*)/, function(_, prefix, text) { return prefix + text + encodeURIComponent(refTag); });
+    return href + (href.indexOf('?') >= 0 ? '&' : '?') + 'text=' + encodeURIComponent('Hi WeeWonders' + refTag);
+  }
+
+  function publishWhatsApp(ref, ts, cart) {
+    if (window.Shopify && Shopify.analytics && typeof Shopify.analytics.publish === 'function') Shopify.analytics.publish('ww_whatsapp', { ref: ref, ts: ts, value: cart.value, currency: cart.currency, content_ids: cart.content_ids, num_items: cart.num_items });
+  }
+
+  function storeClick(ref, ts, cart) {
+    return fetch(TRACKING_SERVER_URL.replace(/\/+$/, '') + '/api/wa-click', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify({ ref: ref, ts: ts, fbc: fbc, fbp: fbp, attribution: utms, fbclid: fbclid, ad_id: urlParams.get('ad_id'), cart: cart, store: STORE, page_url: window.location.href }) });
+  }
+
   function handleWhatsAppClick(e) {
     var link = e.target.closest('a[href*="wa.me"], a[href*="whatsapp.com"], [data-whatsapp-btn], .wwsa-btn--whatsapp');
     if (!link) return;
+
+    if (link.dataset.wwTrackingPending === 'true') return;
+    e.preventDefault();
+    link.dataset.wwTrackingPending = 'true';
+    var persistentRef = generateRefCode();
+    var persistentTs = Date.now();
+    var persistentHref = whatsappUrl(link, persistentRef);
+    cartData().then(function(cart) {
+      publishWhatsApp(persistentRef, persistentTs, cart);
+      return Promise.allSettled([
+        fetch('/cart/update.js', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ attributes: { wa_ref: persistentRef } }), keepalive: true }).catch(function() {}),
+        storeClick(persistentRef, persistentTs, cart)
+      ]);
+    }).finally(function() {
+      if (link.target === '_blank') {
+        var popup = window.open(persistentHref, '_blank', 'noopener');
+        if (popup) return;
+      }
+      window.location.assign(persistentHref);
+    });
+    return;
 
     var refCode = generateRefCode();
     var waEventId = 'wa_' + refCode + '_' + Date.now();
@@ -127,31 +171,6 @@
       }).catch(function() {});
     } catch (_) {}
 
-    // Track Meta Browser Event
-    if (typeof window.fbq === 'function') {
-      try {
-        window.fbq('trackCustom', 'WW_WhatsApp', { ref_code: refCode }, { eventID: waEventId });
-      } catch (_) {}
-    }
-
-    // Forward to server tracking endpoint if configured
-    if (!TRACKING_SERVER_URL.includes('REPLACE-WITH')) {
-      try {
-        fetch(TRACKING_SERVER_URL.replace(/\/+$/, '') + '/api/whatsapp-ref', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            reference: refCode,
-            fbc: fbc,
-            fbp: fbp,
-            attribution: utms,
-            landing_url: window.location.href,
-            event_id: waEventId
-          }),
-          keepalive: true
-        }).catch(function() {});
-      } catch (_) {}
-    }
   }
 
   document.addEventListener('click', handleWhatsAppClick, true);

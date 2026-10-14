@@ -117,6 +117,8 @@ export async function sendMetaEvent({
     const contents = customData.contents.map((item) => ({ id: String(item?.id || ''), quantity: Number(item?.quantity || 1), item_price: Number(item?.item_price || 0) })).filter((item) => item.id);
     if (contents.length) sanitizedCustomData.contents = contents;
   }
+  if (customData.ref) sanitizedCustomData.ref = String(customData.ref);
+  if (customData.whatsapp_reference) sanitizedCustomData.whatsapp_reference = String(customData.whatsapp_reference);
 
   // 3. Assemble event item
   const eventItem = {
