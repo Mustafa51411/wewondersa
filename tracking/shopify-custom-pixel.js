@@ -41,7 +41,7 @@ function customer(checkout = {}) {
   return { email: checkout.email, phone: checkout.phone, first_name: address.firstName, last_name: address.lastName,
     city: address.city, zip: address.zip, country: address.countryCode || DEFAULT_COUNTRY, external_id: checkout.customer?.id };
 }
-async function track(eventName, standard, event, customData = {}, sendServer = true, eventIdOverride) {
+async function track(eventName, standard, event, customData = {}, sendServer = true, eventIdOverride = undefined) {
   const checkout = event.data?.checkout || {};
   const eventId = eventIdOverride || (eventName === 'WW_Order' && checkout.order?.id ? `order_${checkout.order.id}` : `${STORE}_${eventName}_${event.id || `${Date.now()}_${Math.random().toString(36).slice(2)}`}`);
   if (standard) fbq('track', eventName, customData, { eventID: eventId }); else fbq('trackCustom', eventName, customData, { eventID: eventId });
