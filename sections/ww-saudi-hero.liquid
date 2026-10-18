@@ -180,9 +180,16 @@
     if (submitBtn) { submitBtn.disabled = true; submitBtn.style.opacity = '0.75'; }
     if (stickyBtn) { stickyBtn.disabled = true; stickyBtn.style.opacity = '0.75'; }
 
-    // Cart addition and drawer support.
+    // Cart addition and drawer support. Some published versions of this theme
+    // render the <mini-cart> markup without the component API, so never call
+    // its methods unless both are actually available.
     const miniCart = document.querySelector('mini-cart');
-    const sections = miniCart ? miniCart.getSectionsToRender().map((s) => s.id) : [];
+    const canRenderMiniCart = Boolean(
+      miniCart &&
+      typeof miniCart.getSectionsToRender === 'function' &&
+      typeof miniCart.renderContents === 'function'
+    );
+    const sections = canRenderMiniCart ? miniCart.getSectionsToRender().map((s) => s.id) : [];
 
     const requestBody = {
       id: Number(variantId),
@@ -193,7 +200,10 @@
       requestBody.sections_url = window.location.pathname;
     }
 
-    fetch(`${window.theme?.routes?.cart_add_url || '/cart/add.js'}`, {
+    // Use the product form action so Shopify keeps the active /ar-sa locale.
+    const cartAddUrl = form.action.replace(/\/add(?:\.js)?(?:\?.*)?$/, '/add.js');
+    const cartUrl = form.action.replace(/\/add(?:\.js)?(?:\?.*)?$/, '');
+    fetch(cartAddUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -219,12 +229,12 @@
         detail: { product: response }
       }));
 
-      if (miniCart) {
+      if (canRenderMiniCart) {
         miniCart.renderContents(response);
       } else {
-        setTimeout(() => {
-          window.location.href = window.theme?.routes?.cart_url || '/cart';
-        }, 250);
+        // The cart was added successfully; open the locale-aware full cart
+        // instead of trying to use a drawer API this theme does not expose.
+        window.location.assign(cartUrl);
       }
     })
     .catch((err) => {
