@@ -85,7 +85,7 @@
             {%- elsif offer_type == 'single' and section.settings.single_offer_title != blank -%}
               {%- assign display_variant_title = section.settings.single_offer_title -%}
             {%- endif -%}
-            <label class="wwsa-variant wwsa-variant--{{ offer_type }}{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-variant-id="{{ variant.id }}" data-variant-price="{{ variant.price }}" data-variant-title="{{ display_variant_title | escape }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
+            <label class="wwsa-variant wwsa-variant--{{ offer_type }}{% if variant.id == current_variant.id %} is-selected{% endif %}{% unless variant.available %} is-soldout{% endunless %}" data-variant-card data-offer-type="{{ offer_type }}" data-variant-id="{{ variant.id }}" data-variant-price="{{ variant.price }}" data-variant-title="{{ display_variant_title | escape }}"{% if variant_image != blank %} data-variant-image="{{ variant_image | image_url: width: 1400 }}"{% endif %}>
               <input id="wwsa-variant-{{ section.id }}-{{ variant.id }}" type="radio" name="id" value="{{ variant.id }}"{% if variant.id == current_variant.id %} checked{% endif %}{% unless variant.available %} disabled{% endunless %}>
               {%- if variant_image != blank -%}{{ variant_image | image_url: width: 240 | image_tag: class: 'wwsa-variant__image', loading: 'lazy', alt: variant.title }}{%- endif -%}
               <div class="wwsa-variant__body">
@@ -163,6 +163,10 @@
   root.querySelector('.wwsa-gallery__nav--prev')?.addEventListener('click',()=>show(active-1));
   root.querySelector('.wwsa-gallery__nav--next')?.addEventListener('click',()=>show(active+1));
   const form = root.querySelector('.wwsa-product-form');
+  // Shopify's automatic Buy X Get Y discount makes this variant free only
+  // alongside the double pump. The theme adds it once so the customer does
+  // not have to discover the gift product or add it manually.
+  const DOUBLE_PUMP_GIFT_VARIANT_ID = 51931312226596;
 
   // Cart addition is handled by Shopify's AJAX endpoint. Analytics is subscribed
   // through Shopify Customer Events / the server-side CAPI endpoint, not theme JS.
@@ -171,6 +175,7 @@
     const selected = root.querySelector('[data-variant-card] input[name="id"]:checked')?.closest('[data-variant-card]');
     const variantInput = form.querySelector('input[name="id"]:checked') || form.querySelector('input[name="id"]');
     const variantId = selected?.dataset.variantId || variantInput?.value;
+    const isDoubleOffer = selected?.dataset.offerType === 'double';
     if (!variantId) {
       form.submit();
       return;
@@ -216,9 +221,48 @@
       if (!res.ok) throw new Error('Add to cart failed');
       return res.json();
     })
-    .then((response) => {
+    .then(async (response) => {
       if (response.status && response.status >= 400) {
         throw new Error(response.description || 'Add to cart error');
+      }
+
+      let cartResponse = response;
+      if (isDoubleOffer) {
+        // Keep a single warmer in the cart. The automatic discount itself is
+        // limited to one gift per order, so adding extras would be misleading.
+        try {
+          const cart = await fetch(`${cartUrl}.js`, {
+            headers: { 'Accept': 'application/json' }
+          }).then((res) => res.ok ? res.json() : null);
+          const hasGift = cart?.items?.some((item) => Number(item.variant_id) === DOUBLE_PUMP_GIFT_VARIANT_ID);
+
+          if (!hasGift) {
+            const giftRequestBody = {
+              id: DOUBLE_PUMP_GIFT_VARIANT_ID,
+              quantity: 1,
+              properties: { '_ww_offer': 'Free bottle warmer with double pump' }
+            };
+            if (sections.length) {
+              giftRequestBody.sections = sections;
+              giftRequestBody.sections_url = window.location.pathname;
+            }
+            const giftResponse = await fetch(cartAddUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              body: JSON.stringify(giftRequestBody)
+            });
+            if (!giftResponse.ok) throw new Error('Unable to add the free bottle warmer');
+            cartResponse = await giftResponse.json();
+          }
+        } catch (giftError) {
+          // Do not block the pump purchase if Shopify temporarily rejects the
+          // separate gift line; retain a clear diagnostic for support.
+          console.warn('[Double pump gift]', giftError);
+        }
       }
 
       if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
@@ -230,7 +274,7 @@
       }));
 
       if (canRenderMiniCart) {
-        miniCart.renderContents(response);
+        miniCart.renderContents(cartResponse);
       } else {
         // The cart was added successfully; open the locale-aware full cart
         // instead of trying to use a drawer API this theme does not expose.
