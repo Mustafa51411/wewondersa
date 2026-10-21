@@ -7,6 +7,7 @@ const META_PIXEL_ID = '1032874294681740';
 const TEST_EVENT_CODE = '';
 // Replace this single deployment URL before connecting the pixel. Do not use a theme/window variable.
 const TRACKING_ENDPOINT = 'https://wewondersa-tracking.vercel.app/api/events';
+const ATTRIBUTION_ENDPOINT = 'https://wewondersa-tracking.vercel.app/api/checkout-attribution';
 
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', META_PIXEL_ID);
@@ -55,11 +56,20 @@ async function track(eventName, standard, event, customData = {}, sendServer = t
   fetch(TRACKING_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
     body: JSON.stringify(payload) }).catch(() => {});
 }
+async function saveCheckoutAttribution(event) {
+  const checkout = event.data?.checkout || {};
+  const checkoutToken = checkout.token || checkout.checkoutToken;
+  if (!checkoutToken) return;
+  const [fbc, fbp] = await Promise.all([getFbc(event), getCookie('_fbp')]);
+  fetch(ATTRIBUTION_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+    body: JSON.stringify({ store: STORE, checkout_token: checkoutToken, order_id: checkout.order?.id, fbc, fbp,
+      attribution: attribution(event), external_id: checkout.customer?.id }) }).catch(() => {});
+}
 analytics.subscribe('page_viewed', (event) => track('PageView', true, event));
 analytics.subscribe('product_viewed', (event) => { const v = event.data?.productVariant || {}; track('ViewContent', true, event, { value: Number(v.price?.amount || 0), currency: v.price?.currencyCode || DEFAULT_CURRENCY, content_ids: [String(v.product?.id || v.id || '')].filter(Boolean), content_type: 'product', contents: contents([{ productVariant: v }]) }); });
 analytics.subscribe('product_added_to_cart', (event) => { const l = event.data?.cartLine || {}; track('WW_AddToCart', false, event, { value: Number(l.cost?.totalAmount?.amount || 0), currency: l.cost?.totalAmount?.currencyCode || DEFAULT_CURRENCY, num_items: Number(l.quantity || 1), content_ids: contents([l]).map((x) => x.id), content_type: 'product', contents: contents([l]) }); });
 function checkoutData(event) { const c = event.data?.checkout || {}; const lines = c.lineItems || []; return { value: Number(c.totalPrice?.amount || 0), currency: c.currencyCode || DEFAULT_CURRENCY, num_items: lines.reduce((total, line) => total + Number(line.quantity || 0), 0), content_ids: contents(lines).map((x) => x.id), content_type: 'product', contents: contents(lines), order_id: c.order?.id ? String(c.order.id) : undefined }; }
-analytics.subscribe('checkout_started', (event) => track('WW_Checkout', false, event, checkoutData(event)));
+analytics.subscribe('checkout_started', (event) => { track('WW_Checkout', false, event, checkoutData(event)); saveCheckoutAttribution(event); });
 analytics.subscribe('payment_info_submitted', (event) => track('WW_Payment', false, event, checkoutData(event)));
 analytics.subscribe('ww_whatsapp', (event) => {
   const data = event.customData || event.data?.customData || event.data || {};

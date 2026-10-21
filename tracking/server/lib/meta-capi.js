@@ -22,7 +22,7 @@ export function hashEmail(email) {
  */
 export function hashPhone(phone) {
   if (!phone) return null;
-  const digits = String(phone).replace(/\D/g, '');
+  const digits = String(phone).replace(/\D/g, '').replace(/^0+/, '');
   return digits ? sha256(digits) : null;
 }
 
@@ -84,9 +84,9 @@ export async function sendMetaEvent({
   if (fn) userData.fn = [fn];
   const ln = customer.last_name ? sha256(String(customer.last_name).trim().toLowerCase()) : null;
   if (ln) userData.ln = [ln];
-  const ct = customer.city ? sha256(String(customer.city).trim().toLowerCase()) : null;
+  const ct = customer.city ? sha256(String(customer.city).trim().toLowerCase().replace(/\s+/g, '')) : null;
   if (ct) userData.ct = [ct];
-  const zp = customer.zip ? sha256(String(customer.zip).trim().toLowerCase()) : null;
+  const zp = customer.zip ? sha256(String(customer.zip).trim().toLowerCase().replace(/\s+/g, '')) : null;
   if (zp) userData.zp = [zp];
   const externalId = customer.external_id ? sha256(String(customer.external_id).trim().toLowerCase()) : null;
   if (externalId) userData.external_id = [externalId];

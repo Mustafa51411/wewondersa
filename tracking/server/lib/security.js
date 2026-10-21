@@ -15,6 +15,9 @@ export function applyCors(req, res) {
   return true;
 }
 export function safeText(value, max = 200) { return typeof value === 'string' ? value.trim().slice(0, max) : ''; }
+// Meta treats fbc/fbp as opaque identifiers. Do not lowercase, trim, decode,
+// rebuild, or otherwise transform an identifier received from the browser.
+export function safeClickId(value, max = 512) { return typeof value === 'string' && value.length <= max ? value : ''; }
 export function safeAttribution(input = {}) {
   return Object.fromEntries(['utm_source','utm_medium','utm_campaign','utm_content','utm_term','ad_id','fbclid']
     .map((key) => [key, safeText(input[key], 180)]).filter(([, value]) => value));

@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import { sendMetaEvent } from '../../lib/meta-capi.js';
-import { isOrderProcessed, markOrderProcessed, getWhatsAppRef } from '../../lib/store.js';
+import { getCheckoutAttribution, getWhatsAppRef, isOrderProcessed, markOrderProcessed, releaseOrder, reserveOrder } from '../../lib/store.js';
 
 export const config = { api: { bodyParser: false } };
 
@@ -72,7 +72,7 @@ export default async function handler(req, res) {
     const orderEventId = `order_${order.id}`;
 
     // Deduplication check
-    if (isOrderProcessed(order.id)) {
+    if (isOrderProcessed(order.id) || !(await reserveOrder(order.id, store))) {
       console.log(`[Shopify Webhook] Order ${order.id} already processed. Skipping.`);
       return res.status(200).json({ success: true, message: 'Order already processed', order_id: order.id });
     }
@@ -101,6 +101,8 @@ export default async function handler(req, res) {
 
     let fbc = noteAttributes['_fbc'] || null;
     let fbp = noteAttributes['_fbp'] || null;
+    let checkoutAttribution = await getCheckoutAttribution(order.checkout_token, store);
+    if (checkoutAttribution) { fbc = fbc || checkoutAttribution.fbc; fbp = fbp || checkoutAttribution.fbp; }
     let refCode = noteAttributes['wa_ref'] || noteAttributes['ref_code'] || null;
 
     if (!refCode && order.tags) {
@@ -118,17 +120,19 @@ export default async function handler(req, res) {
     }
 
     let actionSource = 'website';
+    let savedClick = null;
     let eventSourceUrl = order.order_status_url || null;
 
     // If WhatsApp reference code exists, look up saved attribution
     if (refCode) {
       const savedRef = await getWhatsAppRef(refCode, store);
       if (savedRef) {
+        savedClick = savedRef;
         console.log(`[Shopify Webhook] Found WhatsApp attribution for ref ${refCode}:`, savedRef);
         if (!fbc && savedRef.fbc) fbc = savedRef.fbc;
         if (!fbp && savedRef.fbp) fbp = savedRef.fbp;
         if (!eventSourceUrl && savedRef.landing_url) eventSourceUrl = savedRef.landing_url;
-        actionSource = 'other'; // Recommended for orders placed via chat / WhatsApp
+        // Preserve a website event with the stored browser data for matching.
       }
     }
 
@@ -136,8 +140,12 @@ export default async function handler(req, res) {
     const orderDate = order.created_at || order.processed_at || new Date().toISOString();
     const eventTime = Math.floor(new Date(orderDate).getTime() / 1000);
 
-    const clientIp = order.browser_ip || order.client_details?.browser_ip || null;
-    const clientUserAgent = order.client_details?.user_agent || null;
+    if (!fbc) {
+      const landingUrl = order.landing_site || order.landing_site_ref || '';
+      try { const fbclid = new URL(landingUrl).searchParams.get('fbclid'); if (fbclid) fbc = `fb.1.${new Date(order.created_at || Date.now()).getTime()}.${fbclid}`; } catch (_) {}
+    }
+    const clientIp = order.browser_ip || order.client_details?.browser_ip || savedClick?.client_ip_address || checkoutAttribution?.client_ip_address || null;
+    const clientUserAgent = order.client_details?.user_agent || savedClick?.client_user_agent || checkoutAttribution?.client_user_agent || null;
 
     // Send WW_Order to Meta Conversions API
     const capiResult = await sendMetaEvent({
@@ -154,12 +162,12 @@ export default async function handler(req, res) {
         last_name: order.customer?.last_name || order.shipping_address?.last_name, city: order.shipping_address?.city,
         zip: order.shipping_address?.zip, external_id: order.customer?.id },
       customData: {
-        value: Number(order.total_price) || 0,
-        currency: order.currency || (store === 'sa' ? 'SAR' : 'USD'),
+        value: Number(order.total_price_set?.presentment_money?.amount || order.total_price) || 0,
+        currency: order.total_price_set?.presentment_money?.currency_code || order.currency || (store === 'sa' ? 'SAR' : 'USD'),
         num_items: Array.isArray(order.line_items) ? order.line_items.reduce((total, item) => total + Number(item.quantity || 0), 0) : 1,
         content_ids: Array.isArray(order.line_items) ? order.line_items.map((item) => String(item.product_id || item.variant_id || '')).filter(Boolean) : [],
         content_type: 'product',
-        contents: Array.isArray(order.line_items) ? order.line_items.map((item) => ({ id: String(item.product_id || item.variant_id || ''), quantity: Number(item.quantity || 1), item_price: Number(item.price || 0) })).filter((item) => item.id) : [],
+        contents: Array.isArray(order.line_items) ? order.line_items.map((item) => { const quantity = Number(item.quantity || 1); const lineTotal = Number(item.price || 0) * quantity - Number(item.total_discount || 0); return { id: String(item.product_id || item.variant_id || ''), quantity, item_price: lineTotal / quantity }; }).filter((item) => item.id) : [],
         order_id: String(order.id),
         store,
         ref: refCode || undefined,
@@ -168,6 +176,7 @@ export default async function handler(req, res) {
     });
 
     if (capiResult.success) markOrderProcessed(order.id);
+    else await releaseOrder(order.id, store);
 
     console.log(`[Shopify Webhook] Emitted WW_Order for order ${order.id}:`, capiResult);
 
