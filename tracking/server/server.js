@@ -1,6 +1,8 @@
 import http from 'node:http';
 import eventsHandler from './api/events.js';
 import whatsappHandler from './api/whatsapp-ref.js';
+import waClickHandler from './api/wa-click.js';
+import checkoutAttributionHandler from './api/checkout-attribution.js';
 import webhooksHandler from './api/webhooks/shopify.js';
 import healthHandler from './api/health.js';
 
@@ -44,6 +46,13 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/api/whatsapp-ref' || pathname === '/v1/whatsapp-ref') {
       return await whatsappHandler(req, res);
     }
+    // NEW routes: WhatsApp click record and checkout click data
+    if (pathname === '/api/wa-click' || pathname === '/v1/wa-click') {
+      return await waClickHandler(req, res);
+    }
+    if (pathname === '/api/checkout-attribution' || pathname === '/v1/checkout-attribution') {
+      return await checkoutAttributionHandler(req, res);
+    }
     if (pathname === '/api/webhooks/shopify' || pathname === '/v1/webhooks/shopify') {
       return await webhooksHandler(req, res);
     }
@@ -61,3 +70,4 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, () => {
   console.log(`WeeWonders Tracking Server running on http://localhost:${PORT}`);
 });
+

@@ -1,5 +1,9 @@
 import crypto from 'node:crypto';
 
+// Bump this when Meta retires the version. Can also be set with the META_GRAPH_VERSION environment variable.
+const GRAPH_VERSION = process.env.META_GRAPH_VERSION || 'v23.0';
+const CALLING_CODES = { SA: '966', LB: '961', AE: '971' };
+
 /**
  * Hash string using SHA-256
  */
@@ -18,12 +22,28 @@ export function hashEmail(email) {
 }
 
 /**
- * Format & hash phone: only digits including country code, no + or spaces
+ * CHANGE: phone numbers now always include the country code before hashing.
+ *  +966501234567, 00966501234567, 966501234567 -> 966501234567
+ *  0501234567 (leading 0)                       -> 966501234567
+ *  501234567 (short local number)               -> 966501234567
+ *  A long number with no + that starts with another country code is left as it is.
  */
-export function hashPhone(phone) {
+export function normalizePhone(phone, callingCode) {
   if (!phone) return null;
-  const digits = String(phone).replace(/\D/g, '').replace(/^0+/, '');
-  return digits ? sha256(digits) : null;
+  const raw = String(phone).trim();
+  let digits = raw.replace(/\D/g, '');
+  if (!digits) return null;
+  if (raw.startsWith('+')) return digits;
+  if (digits.startsWith('00')) return digits.replace(/^00/, '') || null;
+  if (!callingCode) return digits.replace(/^0+/, '') || null;
+  if (digits.startsWith('0')) return callingCode + digits.replace(/^0+/, '');
+  if (digits.startsWith(callingCode) && digits.length > callingCode.length + 6) return digits;
+  if (digits.length <= 9) return callingCode + digits;
+  return digits;
+}
+export function hashPhone(phone, callingCode) {
+  const n = normalizePhone(phone, callingCode);
+  return n ? sha256(n) : null;
 }
 
 /**
@@ -38,8 +58,11 @@ export function hashCountry(country) {
 /**
  * Send event payload to Meta Conversions API (CAPI)
  * Strictly follows SOW data rules:
- * - Sends only: value, currency, order_id, num_items, store
+ * - Sends only: value, currency, order_id, num_items, store, content ids/contents, ref
  * - Sends NO product names, categories, page titles, or free text
+ *
+ * CHANGE: a test event code is used ONLY when passed in. The old fallback to the META_TEST_EVENT_CODE /
+ * TEST_EVENT_CODE environment variables is removed, so a forgotten variable can never turn live events into test events.
  */
 export async function sendMetaEvent({
   eventName,
@@ -57,7 +80,7 @@ export async function sendMetaEvent({
 }) {
   const pixelId = process.env.META_PIXEL_ID || '1032874294681740';
   const token = process.env.META_CAPI_ACCESS_TOKEN;
-  const testCode = testEventCode || process.env.META_TEST_EVENT_CODE || process.env.TEST_EVENT_CODE;
+  const testCode = testEventCode || '';
 
   if (!token) {
     console.warn('[Meta CAPI] Warning: META_CAPI_ACCESS_TOKEN not set in environment.');
@@ -74,7 +97,8 @@ export async function sendMetaEvent({
   const em = hashEmail(customer.email);
   if (em) userData.em = [em];
 
-  const ph = hashPhone(customer.phone);
+  const callingCode = CALLING_CODES[String(customer.country || '').toUpperCase().slice(0, 2)];
+  const ph = hashPhone(customer.phone, callingCode);
   if (ph) userData.ph = [ph];
 
   const co = hashCountry(customer.country);
@@ -145,7 +169,7 @@ export async function sendMetaEvent({
     payload.test_event_code = testCode;
   }
 
-  const endpoint = `https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${token}`;
+  const endpoint = `https://graph.facebook.com/${GRAPH_VERSION}/${pixelId}/events?access_token=${token}`;
 
   try {
     const res = await fetch(endpoint, {
@@ -174,3 +198,4 @@ export async function sendMetaEvent({
     return { success: false, error: err.message };
   }
 }
+

@@ -14,6 +14,7 @@ async function rawRequestBody(req) {
 
 /**
  * Verify Shopify Webhook HMAC SHA256 signature
+ * CHANGE: lengths are compared first. timingSafeEqual throws when they differ, which returned 500 instead of 401.
  */
 function verifyShopifyHmac(rawBody, hmacHeader) {
   if (!hmacHeader) return false;
@@ -25,12 +26,14 @@ function verifyShopifyHmac(rawBody, hmacHeader) {
 
   if (secrets.length === 0) return false;
 
+  const given = Buffer.from(String(hmacHeader));
   for (const secret of secrets) {
     const hash = crypto
       .createHmac('sha256', secret)
       .update(rawBody, 'utf8')
       .digest('base64');
-    if (crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(hmacHeader))) {
+    const expected = Buffer.from(hash);
+    if (expected.length === given.length && crypto.timingSafeEqual(expected, given)) {
       return true;
     }
   }
@@ -45,7 +48,7 @@ export default async function handler(req, res) {
   try {
     const rawBody = await rawRequestBody(req);
     const hmacHeader = req.headers['x-shopify-hmac-sha256'];
-    const topic = req.headers['x-shopify-topic'] || 'orders/paid';
+    const topic = req.headers['x-shopify-topic'] || 'orders/create';
     const shopDomain = req.headers['x-shopify-shop-domain'] || '';
 
     // Determine store tag from shop domain or currency
@@ -99,25 +102,38 @@ export default async function handler(req, res) {
       });
     }
 
+    // Tags (WhatsApp code and test mode both live in tags)
+    const tagList = (Array.isArray(order.tags) ? order.tags : String(order.tags || '').split(','))
+      .map((tag) => String(tag).trim()).filter(Boolean);
+
     let fbc = noteAttributes['_fbc'] || null;
     let fbp = noteAttributes['_fbp'] || null;
-    let checkoutAttribution = await getCheckoutAttribution(order.checkout_token, store);
-    if (checkoutAttribution) { fbc = fbc || checkoutAttribution.fbc; fbp = fbp || checkoutAttribution.fbp; }
+    if (!order.checkout_token) console.log(`[Shopify Webhook] Order ${order.id} has no checkout_token on this payload (topic ${topic}).`);
+    const checkoutAttribution = await getCheckoutAttribution(order.checkout_token, store);
+    if (checkoutAttribution) {
+      fbc = fbc || checkoutAttribution.fbc || null;
+      fbp = fbp || checkoutAttribution.fbp || null;
+    }
     let refCode = noteAttributes['wa_ref'] || noteAttributes['ref_code'] || null;
 
-    if (!refCode && order.tags) {
-      const tags = Array.isArray(order.tags) ? order.tags : String(order.tags).split(',');
-      const waTag = tags.map((tag) => String(tag).trim()).find((tag) => /^wa_[a-z0-9]+$/i.test(tag));
+    if (!refCode) {
+      const waTag = tagList.find((tag) => /^wa_[a-z0-9]+$/i.test(tag));
       if (waTag) refCode = waTag.slice(3).toUpperCase();
     }
 
-    // If no ref_code in attributes, check order.note for pattern (e.g. "Ref: W8K2" or "W8K2")
+    // CHANGE: the note is only read when it clearly says "ref" / "code" before the value.
+    // Before, any 4 to 8 letter word in the note (for example "please") was taken as a code.
     if (!refCode && order.note) {
-      const match = String(order.note).match(/\b(?:ref|code|رمز|طلب)?[:\s-]*([A-Za-z0-9]{4,8})\b/i);
+      const match = String(order.note).match(/\b(?:ref|code|Ø±Ù…Ø²)\s*[:#-]?\s*([A-Za-z0-9]{4,8})\b/i);
       if (match) {
         refCode = match[1].toUpperCase();
       }
     }
+
+    // TEST MODE: tag the order wa_TEST1 and its WW_Order goes to Events Manager > Test events.
+    // Needs the WW_TEST_EVENT_CODE environment variable (copy the code from Test events). Not used for live orders.
+    const isTest = tagList.some((tag) => tag.toLowerCase() === 'wa_test1');
+    const testEventCode = isTest ? (process.env.WW_TEST_EVENT_CODE || '') : '';
 
     let actionSource = 'website';
     let savedClick = null;
@@ -128,7 +144,7 @@ export default async function handler(req, res) {
       const savedRef = await getWhatsAppRef(refCode, store);
       if (savedRef) {
         savedClick = savedRef;
-        console.log(`[Shopify Webhook] Found WhatsApp attribution for ref ${refCode}:`, savedRef);
+        console.log(`[Shopify Webhook] Found WhatsApp attribution for ref ${refCode}`);
         if (!fbc && savedRef.fbc) fbc = savedRef.fbc;
         if (!fbp && savedRef.fbp) fbp = savedRef.fbp;
         if (!eventSourceUrl && savedRef.landing_url) eventSourceUrl = savedRef.landing_url;
@@ -140,12 +156,20 @@ export default async function handler(req, res) {
     const orderDate = order.created_at || order.processed_at || new Date().toISOString();
     const eventTime = Math.floor(new Date(orderDate).getTime() / 1000);
 
+    // CHANGE: Shopify's landing_site is usually a relative path ("/?fbclid=..."), and new URL() threw on it,
+    // so this fallback never ran. A base address is now supplied.
     if (!fbc) {
-      const landingUrl = order.landing_site || order.landing_site_ref || '';
-      try { const fbclid = new URL(landingUrl).searchParams.get('fbclid'); if (fbclid) fbc = `fb.1.${new Date(order.created_at || Date.now()).getTime()}.${fbclid}`; } catch (_) {}
+      const landingUrl = order.landing_site || '';
+      try {
+        const fbclid = new URL(landingUrl, 'https://placeholder.invalid').searchParams.get('fbclid');
+        if (fbclid) fbc = `fb.1.${new Date(order.created_at || Date.now()).getTime()}.${fbclid}`;
+      } catch (_) {}
     }
     const clientIp = order.browser_ip || order.client_details?.browser_ip || savedClick?.client_ip_address || checkoutAttribution?.client_ip_address || null;
     const clientUserAgent = order.client_details?.user_agent || savedClick?.client_user_agent || checkoutAttribution?.client_user_agent || null;
+
+    // CHANGE: use the same external id the pixel sends (saved at checkout), so the two events match each other.
+    const externalId = checkoutAttribution?.external_id || order.customer?.id;
 
     // Send WW_Order to Meta Conversions API
     const capiResult = await sendMetaEvent({
@@ -158,9 +182,10 @@ export default async function handler(req, res) {
       clientUserAgent,
       fbc,
       fbp,
+      testEventCode,
       customer: { email, phone, country, first_name: order.customer?.first_name || order.shipping_address?.first_name,
         last_name: order.customer?.last_name || order.shipping_address?.last_name, city: order.shipping_address?.city,
-        zip: order.shipping_address?.zip, external_id: order.customer?.id },
+        zip: order.shipping_address?.zip, external_id: externalId },
       customData: {
         value: Number(order.total_price_set?.presentment_money?.amount || order.total_price) || 0,
         currency: order.total_price_set?.presentment_money?.currency_code || order.currency || (store === 'sa' ? 'SAR' : 'USD'),
@@ -178,7 +203,14 @@ export default async function handler(req, res) {
     if (capiResult.success) markOrderProcessed(order.id);
     else await releaseOrder(order.id, store);
 
-    console.log(`[Shopify Webhook] Emitted WW_Order for order ${order.id}:`, capiResult);
+    // One searchable line per order: what was sent, with click data and ad tags (Vercel > Logs, search "[ORDER]").
+    console.log('[ORDER]', JSON.stringify({
+      store, topic, order_id: String(order.id), total: order.total_price_set?.presentment_money?.amount || order.total_price,
+      currency: order.total_price_set?.presentment_money?.currency_code || order.currency,
+      fbc: !!fbc, fbp: !!fbp, external_id: !!externalId, checkout_token: order.checkout_token ? String(order.checkout_token).slice(0, 6) : null, checkout_record_found: !!checkoutAttribution, wa_ref: refCode || null, test: isTest,
+      attribution: checkoutAttribution?.attribution || savedClick?.attribution || {},
+      meta: capiResult.success ? { received: capiResult.events_received, trace: capiResult.fbtrace_id } : { error: capiResult.error }
+    }));
 
     return res.status(200).json({
       success: true,
@@ -192,3 +224,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Internal Server Error', message: err.message });
   }
 }
+
