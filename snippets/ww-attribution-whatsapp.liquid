@@ -106,9 +106,9 @@
 
   function whatsappUrl(link, ref) {
     var href = link.getAttribute('href') || '';
-    var refTag = ' [Ref: ' + ref + ']';
+    var refTag = ' [المرجع: ' + ref + ']';
     if (href.indexOf('text=') >= 0) return href.replace(/([?&]text=)([^&]*)/, function(_, prefix, text) { return prefix + text + encodeURIComponent(refTag); });
-    return href + (href.indexOf('?') >= 0 ? '&' : '?') + 'text=' + encodeURIComponent('Hi WeeWonders' + refTag);
+    return href + (href.indexOf('?') >= 0 ? '&' : '?') + 'text=' + encodeURIComponent('مرحباً، أريد المساعدة بخصوص WeeWonders' + refTag);
   }
 
   function publishWhatsApp(ref, ts, cart) {
