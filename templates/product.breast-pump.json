@@ -32,7 +32,6 @@
         },
         "gift_3": {
           "type": "gift",
-          "disabled": true,
           "settings": {
             "applies_to": "single",
             "product": "",
@@ -42,7 +41,6 @@
         },
         "gift_4": {
           "type": "gift",
-          "disabled": true,
           "settings": {
             "applies_to": "both",
             "product": "",
