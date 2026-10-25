@@ -158,8 +158,29 @@
   const main = root.querySelector('#wwsa-main-{{ section.id }}');
   const thumbs = [...root.querySelectorAll('.wwsa-gallery__thumb')];
   let active = 0;
-  function show(i){ if(!thumbs.length || !main) return; active=(i+thumbs.length)%thumbs.length; main.src=thumbs[active].dataset.image; thumbs.forEach((t,n)=>t.classList.toggle('is-active',n===active)); }
-  thumbs.forEach((t,i)=>t.addEventListener('click',()=>show(i)));
+  function show(i) {
+    if (!thumbs.length || !main) return;
+
+    active = (i + thumbs.length) % thumbs.length;
+    const image = thumbs[active].dataset.image;
+    if (!image) return;
+
+    // The main image is rendered with Shopify's responsive srcset. Updating
+    // only `src` leaves the browser displaying the old srcset candidate.
+    // Keep both attributes in sync so thumbnail clicks always replace it.
+    main.src = image;
+    main.srcset = image;
+
+    thumbs.forEach((thumb, index) => {
+      const selected = index === active;
+      thumb.classList.toggle('is-active', selected);
+      thumb.setAttribute('aria-pressed', selected ? 'true' : 'false');
+    });
+  }
+  thumbs.forEach((thumb, index) => {
+    thumb.setAttribute('aria-pressed', index === active ? 'true' : 'false');
+    thumb.addEventListener('click', () => show(index));
+  });
   root.querySelector('.wwsa-gallery__nav--prev')?.addEventListener('click',()=>show(active-1));
   root.querySelector('.wwsa-gallery__nav--next')?.addEventListener('click',()=>show(active+1));
   const form = root.querySelector('.wwsa-product-form');
