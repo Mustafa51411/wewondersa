@@ -24,6 +24,7 @@
         },
         "gift_2": {
           "type": "gift",
+          "disabled": true,
           "settings": {
             "applies_to": "double",
             "product": "",
@@ -33,8 +34,9 @@
         },
         "gift_3": {
           "type": "gift",
+          "disabled": true,
           "settings": {
-            "applies_to": "single",
+            "applies_to": "double",
             "product": "",
             "title": "وسادة رضاعة",
             "price_text": "مجاناً"
@@ -42,7 +44,6 @@
         },
         "gift_4": {
           "type": "gift",
-          "disabled": true,
           "settings": {
             "applies_to": "both",
             "product": "",
