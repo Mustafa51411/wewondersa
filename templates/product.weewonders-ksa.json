@@ -1,0 +1,153 @@
+{
+  "sections": {
+    "ww-sa-product": {
+      "type": "ww-sa-product",
+      "settings": {},
+      "blocks": {
+        "g_1": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "g_2": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "g_3": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "g_4": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "g_5": {
+          "type": "gallery",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "g_1",
+        "g_2",
+        "g_3",
+        "g_4",
+        "g_5"
+      ]
+    },
+    "ww-sa-doctors": {
+      "type": "ww-sa-doctors",
+      "settings": {}
+    },
+    "ww-sa-advantage": {
+      "type": "ww-sa-advantage",
+      "settings": {}
+    },
+    "ww-sa-carousel": {
+      "type": "ww-sa-carousel",
+      "settings": {},
+      "blocks": {
+        "s_1": {
+          "type": "slide",
+          "settings": {}
+        },
+        "s_2": {
+          "type": "slide",
+          "settings": {}
+        },
+        "s_3": {
+          "type": "slide",
+          "settings": {}
+        },
+        "s_4": {
+          "type": "slide",
+          "settings": {}
+        },
+        "s_5": {
+          "type": "slide",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "s_1",
+        "s_2",
+        "s_3",
+        "s_4",
+        "s_5"
+      ]
+    },
+    "ww-sa-days": {
+      "type": "ww-sa-days",
+      "settings": {}
+    },
+    "ww-sa-whatsapp": {
+      "type": "ww-sa-whatsapp",
+      "settings": {},
+      "blocks": {
+        "r_1": {
+          "type": "shot",
+          "settings": {}
+        },
+        "r_2": {
+          "type": "shot",
+          "settings": {}
+        },
+        "r_3": {
+          "type": "shot",
+          "settings": {}
+        },
+        "r_4": {
+          "type": "shot",
+          "settings": {}
+        },
+        "r_5": {
+          "type": "shot",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "r_1",
+        "r_2",
+        "r_3",
+        "r_4",
+        "r_5"
+      ]
+    },
+    "ww-sa-claim": {
+      "type": "ww-sa-claim",
+      "settings": {}
+    },
+    "ww-sa-difference": {
+      "type": "ww-sa-difference",
+      "settings": {}
+    },
+    "ww-sa-steps": {
+      "type": "ww-sa-steps",
+      "settings": {}
+    },
+    "ww-sa-warranty": {
+      "type": "ww-sa-warranty",
+      "settings": {}
+    },
+    "ww-sa-offer-bottom": {
+      "type": "ww-sa-offer-bottom",
+      "settings": {}
+    },
+    "ww-sa-faq": {
+      "type": "ww-sa-faq",
+      "settings": {}
+    }
+  },
+  "order": [
+    "ww-sa-product",
+    "ww-sa-doctors",
+    "ww-sa-advantage",
+    "ww-sa-carousel",
+    "ww-sa-days",
+    "ww-sa-whatsapp",
+    "ww-sa-claim",
+    "ww-sa-difference",
+    "ww-sa-steps",
+    "ww-sa-warranty",
+    "ww-sa-offer-bottom",
+    "ww-sa-faq"
+  ]
+}

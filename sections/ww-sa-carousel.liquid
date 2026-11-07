@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="{{ 'ww-sa-pdp.css' | asset_url }}">
+<style>@font-face{font-family:'Cairo';font-style:normal;font-weight:200 1000;font-display:swap;src:url({{ 'ww-sa-cairo-ar.woff2' | asset_url }}) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}@font-face{font-family:'Cairo';font-style:normal;font-weight:200 1000;font-display:swap;src:url({{ 'ww-sa-cairo-lat.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}</style>
+<div class="ww-sa" dir="rtl" lang="ar">
+<section class="section pc">
+  <div class="wrap">
+    <div class="pc-wrap">
+      <button class="pc-nav pc-prev" type="button" aria-label="السابق" onclick="pcStep('pcTrack-{{ section.id }}',1)">›</button>
+      <div class="pc-track" id="pcTrack-{{ section.id }}">
+        {%- for b in section.blocks -%}
+        <figure class="slot pc-s" {{ b.shopify_attributes }}>
+          {%- if b.settings.image != blank -%}<img src="{{ b.settings.image | image_url: width: 900 }}" alt="{{ b.settings.image.alt | escape }}" loading="lazy" width="900" height="1125">
+          {%- else -%}<div class="ph"><span>صورة {{ forloop.index }}</span></div>{%- endif -%}
+        </figure>
+        {%- endfor -%}
+      </div>
+      <button class="pc-nav pc-next" type="button" aria-label="التالي" onclick="pcStep('pcTrack-{{ section.id }}',-1)">‹</button>
+    </div>
+  </div>
+</section>
+<script>window.pcStep=function(id,d){var e=document.getElementById(id);if(!e)return;e.scrollBy({left:d*e.clientWidth*.8,behavior:"smooth"})};</script>
+</div>
+{% schema %}
+{
+ "name": "WW SA Picture carousel",
+ "settings": [],
+ "blocks": [
+  {
+   "type": "slide",
+   "name": "Picture",
+   "settings": [
+    {
+     "type": "image_picker",
+     "id": "image",
+     "label": "Picture (4:5 works best)"
+    }
+   ]
+  }
+ ],
+ "max_blocks": 12,
+ "presets": [
+  {
+   "name": "WW SA Picture carousel",
+   "blocks": [
+    {
+     "type": "slide"
+    },
+    {
+     "type": "slide"
+    },
+    {
+     "type": "slide"
+    },
+    {
+     "type": "slide"
+    },
+    {
+     "type": "slide"
+    }
+   ]
+  }
+ ]
+}
+{% endschema %}

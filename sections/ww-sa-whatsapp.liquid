@@ -1,0 +1,77 @@
+<link rel="stylesheet" href="{{ 'ww-sa-pdp.css' | asset_url }}">
+<style>@font-face{font-family:'Cairo';font-style:normal;font-weight:200 1000;font-display:swap;src:url({{ 'ww-sa-cairo-ar.woff2' | asset_url }}) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}@font-face{font-family:'Cairo';font-style:normal;font-weight:200 1000;font-display:swap;src:url({{ 'ww-sa-cairo-lat.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}</style>
+<div class="ww-sa" dir="rtl" lang="ar">
+<section class="section wa">
+  <div class="wrap">
+    <div class="center"><h2>{{ section.settings.heading }} <span class="hl">{{ section.settings.highlight }}</span></h2></div>
+    <div class="wa-wrap">
+      <button class="pc-nav pc-prev" type="button" aria-label="السابق" onclick="pcStep('waTrack-{{ section.id }}',1)">›</button>
+      <div class="pc-track wa-track" id="waTrack-{{ section.id }}">
+        {%- for b in section.blocks -%}
+        <figure class="slot wa-s" {{ b.shopify_attributes }}>
+          {%- if b.settings.image != blank -%}<img src="{{ b.settings.image | image_url: width: 700 }}" alt="{{ b.settings.image.alt | escape }}" loading="lazy" width="700" height="1244">
+          {%- else -%}<div class="ph"><span>سكرين شوت {{ forloop.index }}</span></div>{%- endif -%}
+        </figure>
+        {%- endfor -%}
+      </div>
+      <button class="pc-nav pc-next" type="button" aria-label="التالي" onclick="pcStep('waTrack-{{ section.id }}',-1)">‹</button>
+    </div>
+  </div>
+</section>
+<script>window.pcStep=function(id,d){var e=document.getElementById(id);if(!e)return;e.scrollBy({left:d*e.clientWidth*.8,behavior:"smooth"})};</script>
+</div>
+{% schema %}
+{
+ "name": "WW SA WhatsApp reviews",
+ "settings": [
+  {
+   "type": "text",
+   "id": "heading",
+   "label": "Heading",
+   "default": "كلام الأمهات"
+  },
+  {
+   "type": "text",
+   "id": "highlight",
+   "label": "Highlighted words",
+   "default": "على واتساب"
+  }
+ ],
+ "blocks": [
+  {
+   "type": "shot",
+   "name": "Screenshot",
+   "settings": [
+    {
+     "type": "image_picker",
+     "id": "image",
+     "label": "WhatsApp screenshot (9:16 works best)"
+    }
+   ]
+  }
+ ],
+ "max_blocks": 12,
+ "presets": [
+  {
+   "name": "WW SA WhatsApp reviews",
+   "blocks": [
+    {
+     "type": "shot"
+    },
+    {
+     "type": "shot"
+    },
+    {
+     "type": "shot"
+    },
+    {
+     "type": "shot"
+    },
+    {
+     "type": "shot"
+    }
+   ]
+  }
+ ]
+}
+{% endschema %}
