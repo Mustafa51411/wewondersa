@@ -2,7 +2,12 @@
   "sections": {
     "ww-sa-product": {
       "type": "ww-sa-product",
-      "settings": {},
+      "settings": {
+        "double_variant": "مضخة مزدوجة",
+        "single_variant": "مضخة مفردة",
+        "whatsapp_number": "966593492712",
+        "after_add": "cart"
+      },
       "blocks": {
         "g_1": {
           "type": "gallery",
