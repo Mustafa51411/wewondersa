@@ -128,10 +128,6 @@
       "type": "ww-sa-steps",
       "settings": {}
     },
-    "ww-sa-warranty": {
-      "type": "ww-sa-warranty",
-      "settings": {}
-    },
     "ww-sa-offer-bottom": {
       "type": "ww-sa-offer-bottom",
       "settings": {}
@@ -151,7 +147,6 @@
     "ww-sa-claim",
     "ww-sa-difference",
     "ww-sa-steps",
-    "ww-sa-warranty",
     "ww-sa-offer-bottom",
     "ww-sa-faq"
   ]
