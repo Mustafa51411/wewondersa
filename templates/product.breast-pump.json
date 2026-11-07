@@ -14,23 +14,51 @@
       "blocks": {
         "g_1": {
           "type": "gallery",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/1_5df20f82-f37a-4f4a-996a-d6474b07e469.png"
+          }
         },
         "g_2": {
           "type": "gallery",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/2_0cca77dc-1b51-4a9a-823c-4375281d74da.png"
+          }
         },
         "g_3": {
           "type": "gallery",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/3.jpg"
+          }
         },
         "g_4": {
           "type": "gallery",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/4.jpg"
+          }
         },
         "g_5": {
           "type": "gallery",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/5.jpg"
+          }
+        },
+        "gallery_VYLH4H": {
+          "type": "gallery",
+          "settings": {
+            "image": "shopify://shop_images/carousel_before_after.jpg"
+          }
+        },
+        "gallery_qbGhBw": {
+          "type": "gallery",
+          "settings": {
+            "image": "shopify://shop_images/6_1.jpg"
+          }
+        },
+        "gallery_YG96aY": {
+          "type": "gallery",
+          "settings": {
+            "image": "shopify://shop_images/7.png"
+          }
         }
       },
       "block_order": [
@@ -38,7 +66,10 @@
         "g_2",
         "g_3",
         "g_4",
-        "g_5"
+        "g_5",
+        "gallery_VYLH4H",
+        "gallery_qbGhBw",
+        "gallery_YG96aY"
       ],
       "settings": {
         "show_topbar": false,
