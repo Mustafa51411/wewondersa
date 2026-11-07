@@ -129,6 +129,30 @@
           <ul class="ogifts"><li><span class="oc"><img src="{{ 'ww-sa-img-03.jpg' | asset_url }}" alt=""></span><span class="ot">+ عدة المقاسات مجاناً<small>4 مقاسات + أداة تساعدك تختارين مقاسك</small></span><span class="ov free">مجاناً</span></li><li><span class="oc"><img src="{{ 'ww-sa-img-04.webp' | asset_url }}" alt=""></span><span class="ot">+ أكياس حفظ الحليب (50 كيس) مجاناً</span><s class="ov">60 ر.س</s></li><li><span class="oc pad"><img src="{{ 'ww-sa-img-05.png' | asset_url }}" alt=""></span><span class="ot">+ شحن مجاني</span><span class="ov free">مجاناً</span></li></ul>
         </div>
       </div>
+
+      {%- comment -%} Free bundle gift products {%- endcomment -%}
+      {%- assign storage_gift_handle = section.settings.storage_gift_handle | default: 'milk-storage-bags-50pcs' -%}
+      {%- assign storage_gift_prod = all_products[storage_gift_handle] -%}
+      {%- if storage_gift_prod == blank or storage_gift_prod.id == blank -%}
+        {%- assign storage_gift_prod = all_products['milk-storage-bags-50pcs'] -%}
+      {%- endif -%}
+      {%- assign storage_gift_var = storage_gift_prod.selected_or_first_available_variant -%}
+      <div id="bundle-gift-data" hidden>
+        {%- assign configured_bundle_gifts = 0 -%}
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'bundle_gift' and b.settings.product != blank -%}
+            {%- assign configured_bundle_gifts = configured_bundle_gifts | plus: 1 -%}
+            {%- assign gp = b.settings.product -%}
+            {%- assign gv = gp.selected_or_first_available_variant -%}
+            {%- if gv != blank -%}
+              <span data-bundle-gift data-applies-to="{{ b.settings.applies_to | default: 'both' }}" data-variant-id="{{ gv.id }}" data-product-title="{{ gp.title | escape }}" data-available="{{ gv.available }}"></span>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if configured_bundle_gifts == 0 and storage_gift_var != blank -%}
+          <span data-bundle-gift data-applies-to="both" data-variant-id="{{ storage_gift_var.id }}" data-product-title="{{ storage_gift_prod.title | escape }}" data-available="{{ storage_gift_var.available }}"></span>
+        {%- endif -%}
+      </div>
       <button class="btn btn-atc btn-lg" id="atc" type="button" onclick="addToCart(this)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg><span>أضيفي للسلة</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
       <a class="btn btn-whatsapp btn-lg" href="https://api.whatsapp.com/send/?phone={{ section.settings.whatsapp_number }}&text=%D9%87%D9%84%D8%A7%D8%8C%20%D8%A3%D8%A8%D9%8A%20%D8%A3%D8%B7%D9%84%D8%A8%20%D9%85%D8%B6%D8%AE%D8%A9%20WeeWonders" target="_blank" rel="noopener"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>اطلبي عبر واتساب</a>
       <div class="payrow" hidden aria-label="طرق الدفع"><span>مدى</span><span>Apple Pay</span><span>Tabby</span><span>Tamara</span><span>الدفع عند الاستلام</span></div>
@@ -160,7 +184,7 @@
     document.querySelectorAll('.roffer .ocard').forEach(function(c){var on=c.dataset.name===el.dataset.name;c.classList.toggle('sel',on);c.setAttribute('aria-checked',on?'true':'false');});
   };
   window.pick=function(el){window.pickO(el);};
-  /* ADD TO CART. Standard Shopify AJAX add of the selected variant.
+  /* ADD TO CART. Multi-item bundle add including free gifts and line-item properties.
      Supports both localized /ar-sa paths and root cart endpoints with auto-fallback. */
   window.addToCart=function(btn){
     var sel=document.querySelector('#offer .ocard.sel') || document.querySelector('#offer .ocard');
@@ -170,10 +194,45 @@
     }
     if(!id)return;
 
+    var bundleName = sel ? (sel.dataset.name || '').trim() : '{{ product.title | escape }}';
+    var isDouble = (bundleName.toLowerCase().indexOf('double') >= 0 || bundleName.indexOf('مزدوج') >= 0);
+    var bundleType = isDouble ? 'double' : 'single';
+
     var label = btn.querySelector('span') || btn;
     var old = label.textContent;
     btn.disabled = true;
     label.textContent = 'جارٍ الإضافة...';
+
+    // Main pump item with line item properties for customer & checkout visibility
+    var items = [{
+      id: id,
+      quantity: 1,
+      properties: {
+        'الهدايا المجانية': 'عدة المقاسات مجاناً (4 مقاسات + أداة قياس) + أكياس حفظ الحليب (50 كيس) + شحن مجاني'
+      }
+    }];
+
+    // Bundle gifts (Milk Storage Bags / Free Gifts)
+    var giftEls = [].slice.call(document.querySelectorAll('#bundle-gift-data [data-bundle-gift]')).filter(function(g){
+      var app = g.dataset.appliesTo;
+      if(app !== bundleType && app !== 'both') return false;
+      if(g.dataset.available !== 'true') return false;
+      return true;
+    });
+
+    giftEls.forEach(function(g){
+      var gid = parseInt(g.dataset.variantId, 10);
+      if(gid && gid !== id){
+        items.push({
+          id: gid,
+          quantity: 1,
+          properties: {
+            'الهدية': 'مجاناً مع ' + bundleName,
+            '_bundle_parent': String(id)
+          }
+        });
+      }
+    });
 
     var miniCart = document.querySelector('mini-cart');
     var sectionsToFetch = (miniCart && typeof miniCart.getSectionsToRender === 'function')
@@ -181,12 +240,11 @@
       : ['mini-cart', 'cart-icon-bubble', 'mobile-cart-icon-bubble'];
 
     var bodyWithSections = {
-      id: id,
-      quantity: 1,
+      items: items,
       sections: sectionsToFetch,
       sections_url: window.location.pathname
     };
-    var simpleBody = { id: id, quantity: 1 };
+    var simpleBody = { items: items };
 
     var calls = [
       { url: '{{ routes.cart_add_url }}', body: bodyWithSections },
@@ -219,9 +277,10 @@
 
       document.dispatchEvent(new CustomEvent('ww:add-to-cart', {
         detail: {
-          name: sel ? sel.dataset.name : '{{ product.title | escape }}',
+          name: bundleName,
           price: sel ? sel.dataset.price : '',
-          variant_id: id
+          variant_id: id,
+          items: items
         }
       }));
 
@@ -437,6 +496,17 @@ document.querySelectorAll('.dvid .vframe').forEach(function(f){
      "label": "Go straight to checkout"
     }
    ]
+  },
+  {
+   "type": "header",
+   "content": "Free Bundle Gifts"
+  },
+  {
+   "type": "text",
+   "id": "storage_gift_handle",
+   "label": "Storage bags product handle",
+   "default": "milk-storage-bags-50pcs",
+   "info": "Product handle for the free milk storage bags gift."
   }
  ],
  "blocks": [
@@ -449,6 +519,37 @@ document.querySelectorAll('.dvid .vframe').forEach(function(f){
      "id": "image",
      "label": "Image",
      "info": "Leave empty to use the default image from the store files."
+    }
+   ]
+  },
+  {
+   "type": "bundle_gift",
+   "name": "Bundle Gift Product",
+   "settings": [
+    {
+     "type": "product",
+     "id": "product",
+     "label": "Gift Product"
+    },
+    {
+     "type": "select",
+     "id": "applies_to",
+     "label": "Applies to offer",
+     "default": "both",
+     "options": [
+      {
+       "value": "both",
+       "label": "Both Single and Double"
+      },
+      {
+       "value": "double",
+       "label": "Double Pump only"
+      },
+      {
+       "value": "single",
+       "label": "Single Pump only"
+      }
+     ]
     }
    ]
   }
