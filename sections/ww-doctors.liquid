@@ -1,0 +1,115 @@
+<link rel="stylesheet" href="{{ 'ww-pdp.css' | asset_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<div class="ww-pdp">
+
+{%- assign posters = "https://weewonderslb.com/cdn/shop/files/preview_images/5d838c0b1a6c44189893b854bf9268e6.thumbnail.0000000000.jpg|https://weewonderslb.com/cdn/shop/files/preview_images/ec877f01007141e6abe7d308bbf7c234.thumbnail.0000000000.jpg|https://weewonderslb.com/cdn/shop/files/preview_images/d2a5856f4bd7429fad147269f22d82e3.thumbnail.0000000000.jpg|https://weewonderslb.com/cdn/shop/files/preview_images/9331d1ee65d541a19f72e417e6297dfd.thumbnail.0000000000.jpg" | split: "|" -%}
+{%- assign vids = "https://weewonderslb.com/cdn/shop/videos/c/vp/5d838c0b1a6c44189893b854bf9268e6/5d838c0b1a6c44189893b854bf9268e6.HD-720p-1.6Mbps-65159029.mp4|https://weewonderslb.com/cdn/shop/videos/c/vp/ec877f01007141e6abe7d308bbf7c234/ec877f01007141e6abe7d308bbf7c234.HD-1080p-2.5Mbps-65159032.mp4|https://weewonderslb.com/cdn/shop/videos/c/vp/d2a5856f4bd7429fad147269f22d82e3/d2a5856f4bd7429fad147269f22d82e3.SD-480p-0.9Mbps-65159033.mp4|https://weewonderslb.com/cdn/shop/videos/c/vp/9331d1ee65d541a19f72e417e6297dfd/9331d1ee65d541a19f72e417e6297dfd.SD-480p-0.9Mbps-65159031.mp4" | split: "|" -%}
+<section class="section doctor-videos" id="doctors"><div class="wrap">
+<div class="center"><h2>{{ section.settings.heading }}</h2></div>
+<div class="vids">
+{%- assign di = 0 -%}
+{%- assign doctor_names = "د. إيليت سخن|د. ملاك قطيش|د. ثورة العلم الدين|د. فرح رسلان" | split: "|" -%}
+{%- assign doctor_topics = "الرضاعة والعمل|تجارب الأمهات في الرضاعة|ألم الحلمة والضخ|لماذا اخترت وي وندرز" | split: "|" -%}
+{%- if section.blocks.size == 0 -%}
+  {%- for doctor_index in (1..4) -%}
+    {%- assign doctor_offset = forloop.index0 -%}
+    {%- assign name_key = 'doctor_' | append: doctor_index | append: '_name' -%}
+    {%- assign topic_key = 'doctor_' | append: doctor_index | append: '_topic' -%}
+    {%- assign video_key = 'doctor_' | append: doctor_index | append: '_video' -%}
+    {%- assign poster_key = 'doctor_' | append: doctor_index | append: '_poster' -%}
+    {%- assign doctor_name = section.settings[name_key] | default: doctor_names[doctor_offset] -%}
+    {%- assign doctor_topic = section.settings[topic_key] | default: doctor_topics[doctor_offset] -%}
+    {%- assign configured_video = section.settings[video_key] -%}
+    {%- assign configured_video_source = configured_video.sources | where: 'format', 'mp4' | last -%}
+    {%- assign configured_poster = section.settings[poster_key] -%}
+    {%- capture doctor_topic_repeat -%}{{ doctor_topic }}|{{ doctor_topic }}|{{ doctor_topic }}|{{ doctor_topic }}{%- endcapture -%}
+    {%- assign doctor_topics = doctor_topic_repeat | split: '|' -%}
+    <figure class="vid dvid">
+      <div class="vframe"><video preload="none" playsinline poster="{%- if configured_poster != blank -%}{{ configured_poster | image_url: width: 600 }}{%- else -%}{{ posters[doctor_offset] }}{%- endif -%}" src="{%- if configured_video_source != blank -%}{{ configured_video_source.url }}{%- else -%}{{ vids[doctor_offset] }}{%- endif -%}" aria-label="{{ doctor_name | escape }}"></video><button class="vplay" type="button" aria-label="تشغيل فيديو من {{ doctor_name | escape }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div>
+      <figcaption class="cap"><span class="pain">{{ doctor_topics[forloop.index0] }}</span><b>{{ doctor_name }}</b><span class="stars">★★★★★</span></figcaption>
+    </figure>
+  {%- endfor -%}
+{%- endif -%}
+{%- for b in section.blocks -%}
+  {%- assign vsrc = b.settings.video.sources | where: 'format', 'mp4' | last -%}
+  {%- assign doctor_name = b.settings.name | default: doctor_names[di] | default: 'WeeWonders expert' -%}
+  {%- assign doctor_topic = b.settings.topic | default: doctor_topics[di] -%}
+  <figure class="vid dvid" {{ b.shopify_attributes }}>
+    <div class="vframe"><video preload="none" playsinline poster="{%- if b.settings.poster != blank -%}{{ b.settings.poster | image_url: width: 600 }}{%- else -%}{{ posters[di] }}{%- endif -%}" src="{%- if vsrc != blank -%}{{ vsrc.url }}{%- else -%}{{ vids[di] }}{%- endif -%}" aria-label="{{ b.settings.name | escape }}"></video><button class="vplay" type="button" aria-label="Play video from {{ b.settings.name | escape }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div>
+    <figcaption class="cap"><span class="pain">{{ doctor_topic }}</span><b>{{ doctor_name }}</b><span class="stars">★★★★★</span></figcaption>
+  </figure>
+  {%- assign di = di | plus: 1 -%}
+{%- endfor -%}
+</div></div></section>
+<script>
+document.querySelectorAll('.dvid .vframe').forEach(function(f){var v=f.querySelector('video'),b=f.querySelector('.vplay');
+function toggle(){if(v.paused){document.querySelectorAll('.dvid video').forEach(function(o){if(o!==v){ o.pause(); } });v.play();}else{ v.pause(); } }
+b.addEventListener('click',function(e){e.stopPropagation();toggle();});v.addEventListener('click',toggle);
+v.addEventListener('play',function(){f.classList.add('playing');});v.addEventListener('pause',function(){f.classList.remove('playing');});v.addEventListener('ended',function(){f.classList.remove('playing');});});
+</script>
+</div>
+{% schema %}
+{
+ "name": "WW Doctors videos",
+ "settings": [
+  {
+   "type": "text",
+   "id": "heading",
+   "label": "Heading",
+   "default": "See what doctors say about our pump."
+  },
+  { "type": "header", "content": "Visible doctor videos" },
+  { "type": "text", "id": "doctor_1_name", "label": "Video 1 name", "default": "Dr. Elite Sokhn" },
+  { "type": "text", "id": "doctor_1_topic", "label": "Video 1 topic", "default": "Breastfeeding and work" },
+  { "type": "video", "id": "doctor_1_video", "label": "Video 1 upload" },
+  { "type": "image_picker", "id": "doctor_1_poster", "label": "Video 1 thumbnail" },
+  { "type": "text", "id": "doctor_2_name", "label": "Video 2 name", "default": "Dr. Malak Koteich" },
+  { "type": "text", "id": "doctor_2_topic", "label": "Video 2 topic", "default": "Moms breastfeeding experiences" },
+  { "type": "video", "id": "doctor_2_video", "label": "Video 2 upload" },
+  { "type": "image_picker", "id": "doctor_2_poster", "label": "Video 2 thumbnail" },
+  { "type": "text", "id": "doctor_3_name", "label": "Video 3 name", "default": "Dr. Thuraya Alameddine" },
+  { "type": "text", "id": "doctor_3_topic", "label": "Video 3 topic", "default": "Nipple pain and pumping" },
+  { "type": "video", "id": "doctor_3_video", "label": "Video 3 upload" },
+  { "type": "image_picker", "id": "doctor_3_poster", "label": "Video 3 thumbnail" },
+  { "type": "text", "id": "doctor_4_name", "label": "Video 4 name", "default": "Dr. Farah Reslan" },
+  { "type": "text", "id": "doctor_4_topic", "label": "Video 4 topic", "default": "Why I chose WeeWonders" },
+  { "type": "video", "id": "doctor_4_video", "label": "Video 4 upload" },
+  { "type": "image_picker", "id": "doctor_4_poster", "label": "Video 4 thumbnail" }
+ ],
+ "blocks": [
+  {
+   "type": "doctor",
+   "name": "Doctor video",
+   "settings": [
+    {
+     "type": "text",
+     "id": "name",
+     "label": "Doctor name",
+     "default": "Dr. Name"
+    },
+    {
+     "type": "text",
+     "id": "topic",
+     "label": "Topic line",
+     "default": "Topic"
+    },
+    {
+     "type": "video",
+     "id": "video",
+     "label": "Video (upload in Shopify; empty keeps the current one)"
+    },
+    {
+     "type": "image_picker",
+     "id": "poster",
+     "label": "Cover photo"
+    }
+   ]
+  }
+ ],
+ "presets": [
+  {
+   "name": "WW Doctors videos"
+  }
+ ]
+}
+{% endschema %}

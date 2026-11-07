@@ -1,0 +1,79 @@
+<link rel="stylesheet" href="{{ 'ww-pdp.css' | asset_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<div class="ww-pdp">
+<section class="section" style="background:var(--sky-soft)" id="faq"><div class="wrap">
+<div class="center"><h2><span class="hl">{{ section.settings.h_a }}</span> {{ section.settings.h_b }}</h2></div>
+<div class="faq">
+{%- if section.blocks.size == 0 -%}
+  {%- assign faq_questions = "مفردة أم مزدوجة؟|هل تنخفض إنتاجي؟|أي مقاس فلانچ يناسبني؟|ماذا لو تعطلت؟|هل هي خفية فعلاً؟|كم سرعة التوصيل؟" | split: "|" -%}
+  {%- assign faq_answers = "المفردة تضخ جهة واحدة؛ والمزدوجة تضخ الجهتين معاً وتنصّف وقتك.|روتين مريح ومنتظم يساعدك على إكمال جلسة الضخ.|كل علبة تحتوي على 17 و19 و21 و24 ملم مع أداة تحديد المقاس.|مضختك تشمل ضماناً لمدة ستة أشهر.|تعمل داخل الحمّالة بالكامل، هادئة وبلا أنابيب أو أسلاك.|التوصيل المُتتبع في السعودية خلال 48 ساعة مع دعم يومي طوال الأسبوع." | split: "|" -%}
+  {%- for question in faq_questions -%}
+    {%- assign faq_index = forloop.index -%}
+    {%- assign question_key = 'faq_' | append: faq_index | append: '_question' -%}
+    {%- assign answer_key = 'faq_' | append: faq_index | append: '_answer' -%}
+    {%- assign question_text = section.settings[question_key] | default: question -%}
+    {%- assign answer_text = section.settings[answer_key] | default: faq_answers[forloop.index0] -%}
+    <details><summary>{{ question_text }}<span class="pm">+</span></summary><p>{{ answer_text }}</p></details>
+  {%- endfor -%}
+{%- else -%}
+  {%- for b in section.blocks -%}<details {{ b.shopify_attributes }}><summary>{{ b.settings.q }}<span class="pm">+</span></summary>{{ b.settings.a }}</details>{%- endfor -%}
+{%- endif -%}
+</div></div></section>
+</div>
+{% schema %}
+{
+ "name": "WW FAQ",
+ "settings": [
+  {
+   "type": "text",
+   "id": "h_a",
+   "label": "Heading (marker)",
+   "default": "Questions"
+  },
+  {
+   "type": "text",
+   "id": "h_b",
+   "label": "Heading (rest)",
+   "default": "mothers ask"
+  },
+  { "type": "header", "content": "Visible FAQ questions" },
+  { "type": "text", "id": "faq_1_question", "label": "Question 1", "default": "Single or Double?" },
+  { "type": "textarea", "id": "faq_1_answer", "label": "Answer 1", "default": "Single pumps one side; double pumps both at once and halves your time." },
+  { "type": "text", "id": "faq_2_question", "label": "Question 2", "default": "Will it tank my supply?" },
+  { "type": "textarea", "id": "faq_2_answer", "label": "Answer 2", "default": "A comfortable, consistent routine helps you complete your pumping session." },
+  { "type": "text", "id": "faq_3_question", "label": "Question 3", "default": "Which flange size fits me?" },
+  { "type": "textarea", "id": "faq_3_answer", "label": "Answer 3", "default": "Every box has 17, 19, 21 and 24mm plus a sizing tool." },
+  { "type": "text", "id": "faq_4_question", "label": "Question 4", "default": "What if it breaks?" },
+  { "type": "textarea", "id": "faq_4_answer", "label": "Answer 4", "default": "Your pump includes a six-month warranty handled in Lebanon." },
+  { "type": "text", "id": "faq_5_question", "label": "Question 5", "default": "Is it really discreet?" },
+  { "type": "textarea", "id": "faq_5_answer", "label": "Answer 5", "default": "It is fully in-bra, quiet and has no tubes or cords." },
+  { "type": "text", "id": "faq_6_question", "label": "Question 6", "default": "How fast is delivery?" },
+  { "type": "textarea", "id": "faq_6_answer", "label": "Answer 6", "default": "Tracked delivery across Lebanon takes 48 hours with WhatsApp support seven days a week." }
+ ],
+ "blocks": [
+  {
+   "type": "faq",
+   "name": "Question",
+   "settings": [
+    {
+     "type": "text",
+     "id": "q",
+     "label": "Question",
+     "default": "Question?"
+    },
+    {
+     "type": "richtext",
+     "id": "a",
+     "label": "Answer",
+     "default": "<p>Answer</p>"
+    }
+   ]
+  }
+ ],
+ "presets": [
+  {
+   "name": "WW FAQ"
+  }
+ ]
+}
+{% endschema %}

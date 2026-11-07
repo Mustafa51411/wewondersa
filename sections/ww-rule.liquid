@@ -1,0 +1,118 @@
+<link rel="stylesheet" href="{{ 'ww-pdp.css' | asset_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<div class="ww-pdp">
+<section class="claim" id="how" style="border-bottom:0"><div class="wrap">
+<p class="lede">{{ section.settings.lede }}</p>
+<h2 class="fm-headline">{{ section.settings.h_a }}<span class="hl-solid">{{ section.settings.h_b }}</span></h2>
+<div class="scenario-split"><div class="scenario neg"><span class="sc-badge">{{ section.settings.neg_badge }}</span><div class="sc-img"><img src="{% if section.settings.neg_img != blank %}{{ section.settings.neg_img | image_url: width: 1280 }}{% else %}https://weewonderslb.com/cdn/shop/files/2.png{% endif %}" alt="{{ section.settings.neg_alt | escape }}" width="1280" height="720" loading="lazy"></div><div class="sc-chain"><div class="sc-step">{{ section.settings.neg_s1 }}</div><div class="sc-arrow">↓</div><div class="sc-step">{{ section.settings.neg_s2 }}</div><div class="sc-arrow">↓</div><div class="sc-result bad">{{ section.settings.neg_res }}</div></div></div><div class="scenario pos"><span class="sc-badge">{{ section.settings.pos_badge }}</span><div class="sc-img"><img src="{% if section.settings.pos_img != blank %}{{ section.settings.pos_img | image_url: width: 1280 }}{% else %}https://weewonderslb.com/cdn/shop/files/1_dd494a15-3af9-40b9-9f86-fddb81075f9b.png{% endif %}" alt="{{ section.settings.pos_alt | escape }}" width="1280" height="720" loading="lazy"></div><div class="sc-chain"><div class="sc-step">{{ section.settings.pos_s1 }}</div><div class="sc-arrow">↓</div><div class="sc-step">{{ section.settings.pos_s2 }}</div><div class="sc-arrow">↓</div><div class="sc-result good">{{ section.settings.pos_res }}</div></div></div></div></div></section>
+</div>
+{% schema %}
+{
+ "name": "WW The simple rule",
+ "settings": [
+  {
+   "type": "text",
+   "id": "lede",
+   "label": "Small line above",
+   "default": "The simple rule"
+  },
+  {
+   "type": "text",
+   "id": "h_a",
+   "label": "Headline line 1",
+   "default": "Empty consistently,"
+  },
+  {
+   "type": "text",
+   "id": "h_b",
+   "label": "Headline line 2 (marker)",
+   "default": "so milk keeps coming"
+  },
+  {
+   "type": "header",
+   "content": "Left card"
+  },
+  {
+   "type": "text",
+   "id": "neg_badge",
+   "label": "Emoji",
+   "default": "😣"
+  },
+  {
+   "type": "image_picker",
+   "id": "neg_img",
+   "label": "Image",
+   "info": "Empty keeps the current store image"
+  },
+  {
+   "type": "text",
+   "id": "neg_alt",
+   "label": "Image description",
+   "default": "Half-emptied breast: milk not emptied, low supply next time"
+  },
+  {
+   "type": "text",
+   "id": "neg_s1",
+   "label": "Step 1",
+   "default": "Half emptied"
+  },
+  {
+   "type": "text",
+   "id": "neg_s2",
+   "label": "Step 2",
+   "default": "Body reads it as: not needed"
+  },
+  {
+   "type": "text",
+   "id": "neg_res",
+   "label": "Result",
+   "default": "Less milk"
+  },
+  {
+   "type": "header",
+   "content": "Right card"
+  },
+  {
+   "type": "text",
+   "id": "pos_badge",
+   "label": "Emoji",
+   "default": "🙂‍↕️"
+  },
+  {
+   "type": "image_picker",
+   "id": "pos_img",
+   "label": "Image",
+   "info": "Empty keeps the current store image"
+  },
+  {
+   "type": "text",
+   "id": "pos_alt",
+   "label": "Image description",
+   "default": "Fully emptied breast: milk fully emptied, high supply next time"
+  },
+  {
+   "type": "text",
+   "id": "pos_s1",
+   "label": "Step 1",
+   "default": "Fully emptied"
+  },
+  {
+   "type": "text",
+   "id": "pos_s2",
+   "label": "Step 2",
+   "default": "Body reads it as: keep up"
+  },
+  {
+   "type": "text",
+   "id": "pos_res",
+   "label": "Result",
+   "default": "More milk"
+  }
+ ],
+ "presets": [
+  {
+   "name": "WW The simple rule"
+  }
+ ]
+}
+{% endschema %}

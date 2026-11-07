@@ -9,534 +9,368 @@
  */
 {
   "sections": {
-    "saudi_hero": {
-      "type": "ww-saudi-hero",
+    "ww_product_UGy4NT": {
+      "type": "ww-product",
       "blocks": {
-        "gift_1": {
-          "type": "gift",
-          "disabled": true,
+        "gallery_tT6Gx3": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "gallery_njrBgL": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "gallery_9yDCUg": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "gallery_6XcCWi": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "gallery_bXFKWD": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "gallery_ENtzhY": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "gallery_wjdrpR": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "gallery_nGzWBP": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "gallery_Ge4xp7": {
+          "type": "gallery",
+          "settings": {}
+        },
+        "offer_QYKgq9": {
+          "type": "offer",
           "settings": {
-            "applies_to": "none",
-            "product": "",
-            "title": "حقيبة تخزين",
-            "price_text": "مجاناً"
+            "variant_title": "مضخة مزدوجة",
+            "name": "مضخة مزدوجة",
+            "flag": "الأكثر طلباً",
+            "badge": "وفّري 100 ر.س",
+            "was_price": "799 ر.س",
+            "gifts": "sizing|+ طقم قياس مجاني|4 مقاسات + أداة تساعدك على اختيار مقاسك|FREE\nbags|+ أكياس تخزين الحليب (50 قطعة)||45 ر.س\nwarmer|+ سخان زجاجات سريع||150 ر.س\ndelivery|+ توصيل مجاني||FREE"
           }
         },
-        "gift_2": {
-          "type": "gift",
+        "offer_c4ibpi": {
+          "type": "offer",
           "settings": {
-            "applies_to": "double",
-            "product": "",
-            "title": "مسخن رضاعة",
-            "price_text": "مجاناً"
-          }
-        },
-        "gift_3": {
-          "type": "gift",
-          "settings": {
-            "applies_to": "single",
-            "product": "",
-            "title": "وسادة رضاعة",
-            "price_text": "مجاناً"
-          }
-        },
-        "gift_4": {
-          "type": "gift",
-          "disabled": true,
-          "settings": {
-            "applies_to": "both",
-            "product": "",
-            "title": "أكياس حفظ الحليب",
-            "price_text": "مجاناً"
+            "variant_title": "مضخة مفردة",
+            "name": "مضخة مفردة",
+            "flag": "",
+            "badge": "وفّري 50 ر.س",
+            "was_price": "449 ر.س",
+            "gifts": "sizing|+ طقم قياس مجاني|4 مقاسات + أداة تساعدك على اختيار مقاسك|FREE\nbags|+ أكياس تخزين الحليب (50 قطعة)||45 ر.س\npillow|+ وسادة رضاعة||55 ر.س\ndelivery|+ توصيل مجاني||FREE"
           }
         }
       },
       "block_order": [
-        "gift_1",
-        "gift_2",
-        "gift_3",
-        "gift_4"
+        "gallery_tT6Gx3",
+        "gallery_njrBgL",
+        "gallery_9yDCUg",
+        "gallery_6XcCWi",
+        "gallery_bXFKWD",
+        "gallery_ENtzhY",
+        "gallery_wjdrpR",
+        "gallery_nGzWBP",
+        "gallery_Ge4xp7",
+        "offer_QYKgq9",
+        "offer_c4ibpi"
       ],
+      "name": "WW Product (top)",
       "settings": {
-        "rating": "4.8/5",
-        "social_proof": "محبوبة من آلاف الأمهات في السعودية",
-        "heading_prefix": "حليب أكثر",
-        "heading_highlight": "خلال أسبوع",
-        "heading_suffix": "مع مضخة WeeWonders",
-        "promise": "بدون ألم، بدون ساعات ضخ طويلة، وبدون إعدادات معقدة.",
-        "feature_1": "4 مقاسات + أداة تساعدك تختارين المناسب",
-        "feature_2": "تفرغ الحليب بالكامل لتدعم الإدرار",
-        "feature_3": "ألم أقل من أول يوم",
-        "feature_4": "بدون يدين، هادئة ولا تسرب",
-        "spec_1_value": "5–6",
-        "spec_1_label": "جلسات لكل شحنة",
-        "spec_2_value": "180 مل",
-        "spec_2_label": "كوب مانع للتسرب",
-        "spec_3_value": "4 أوضاع",
-        "spec_3_label": "12 مستوى لكل وضع",
-        "variant_label": "اختاري مجموعتك",
-        "double_offer_title": "مضخة مزدوجة",
-        "single_offer_title": "مضخة مفردة",
-        "variant_perk_1": "عدة المقاسات مجاناً",
-        "variant_perk_2": "شحن مجاني",
-        "popular_badge": "الأكثر طلباً",
-        "offer_note": "عدة المقاسات مجانية في كل علبة",
-        "add_to_cart_label": "جربيها الآن بدون مخاطرة",
-        "bundle_saving_prefix": "وفّري",
-        "bundle_saving_suffix": "عن شراء مضختين مفردتين",
-        "included_gifts_label": "الهدايا المجانية",
-        "whatsapp_number": "",
-        "whatsapp_label": "اطلبي عبر واتساب",
-        "whatsapp_message": "مرحباً، أريد طلب مضخة WeeWonders",
+        "hide_announcement_bar": false,
+        "topbar_text": "عرض نوفمبر الأسود فعّال الآن!",
+        "show_nav": false,
+        "nav_how": "كيف يعمل",
+        "nav_reviews": "التقييمات",
+        "nav_faq": "الأسئلة الشائعة",
+        "stamp_big": "6",
+        "stamp_small": "شهر ضمان",
+        "show_gallery_warranty_badge": false,
+        "rating": "4.8",
+        "rating_note": "محبوبة من آلاف الأمهات في السعودية",
+        "heading": "صُمِّمت لتناسب جسمك ويومك",
+        "product_name": "مضخة وي وندرز اللاسلكية للرضاعة",
+        "promise": "بدون ألم، وبدون ساعات ضخ طويلة، وبدون إعداد معقد.",
+        "ksp_1": "اضخي أثناء قيامك بكل شيء آخر",
+        "ksp_2": "مانعة التسرب 100%",
+        "ksp_3": "ألم أقل من اليوم الأول",
+        "ksp_4": "بطارية تدوم طوال يومك",
+        "spec_1_big": "5–6",
+        "spec_1_small": "جلسة / شحنة",
+        "spec_2_big": "180 ml",
+        "spec_2_small": "كوب مانع للتسرب",
+        "spec_3_big": "4 أنماط",
+        "spec_3_small": "12 مستوى لكل نمط",
+        "atc_label": "أضف إلى السلة",
+        "after_add": "cart",
+        "show_whatsapp_buttons": false,
+        "wa_label": "اطلبي عبر واتساب",
+        "wa_phone": "",
+        "wa_message": "مرحباً، أريد طلب مضخة وي وندرز",
+        "show_sticky_whatsapp": false,
+        "sticky_whatsapp_label": "اطلبي عبر واتساب",
         "guarantee_title": "ضمان 6 أشهر",
-        "guarantee_text": "إذا توقفت عن العمل أو حصل أي عطل، نحن معك.",
-        "sticky_label": "جربيها الآن بدون مخاطرة"
+        "guarantee_text": "إذا توقفت عن العمل أو حدثت أي مشكلة، نحن نغطي ذلك.",
+        "trust_1": "توصيل 48 ساعة",
+        "trust_2": "ضمان 6 أشهر",
+        "trust_3": "خدمة عملاء 7 أيام",
+        "trust_4": "بدون مخاطرة",
+        "storage_gift_handle": "milk-storage-box",
+        "warmer_gift_handle": "bottle-warmer",
+        "pillow_gift_handle": "breastfeeding-pillow"
       }
     },
-    "saudi_videos": {
-      "type": "ww-saudi-videos",
+    "ww_doctors_7BMrEf": {
+      "type": "ww-doctors",
+      "name": "WW Doctors videos",
+      "settings": {
+        "heading": "شاهدي ما يقوله الأطباء عن مضختنا.",
+        "doctor_1_name": "د. إيليت سخن",
+        "doctor_1_topic": "الرضاعة والعمل",
+        "doctor_2_name": "د. ملاك قطيش",
+        "doctor_2_topic": "تجارب الأمهات في الرضاعة",
+        "doctor_3_name": "د. ثورة العلم الدين",
+        "doctor_3_topic": "ألم الحلمة والضخ",
+        "doctor_4_name": "د. فرح رسلان",
+        "doctor_4_topic": "لماذا اخترت وي وندرز"
+      }
+    },
+    "weewonders_whatsapp_wall_Nymgan": {
+      "type": "weewonders-whatsapp-wall",
       "blocks": {
-        "video_1": {
-          "type": "video",
+        "screenshot_RFkWDX": {
+          "type": "screenshot",
           "settings": {
-            "video": "shopify://files/videos/We Wonders Video V03 Second Shoot.mp4",
-            "video_url": "",
-            "label": "تجربة أم",
-            "name": "نورة",
-            "rating": "★★★★★"
+            "image": "",
+            "asset_name": "ww-wa-1.jpg",
+            "message": "",
+            "name": "",
+            "caption": ""
           }
         },
-        "video_2": {
-          "type": "video",
+        "screenshot_xzUjwX": {
+          "type": "screenshot",
           "settings": {
-            "video": "shopify://files/videos/2-VO WeeWonders-hook1.mp4",
-            "video_url": "",
-            "label": "تجربتها مع الشفاط",
-            "name": "مهى",
-            "rating": "★★★★★"
+            "image": "",
+            "asset_name": "ww-wa-2.jpg",
+            "message": "",
+            "name": "",
+            "caption": ""
           }
         },
-        "video_3": {
-          "type": "video",
+        "screenshot_K8aWmW": {
+          "type": "screenshot",
           "settings": {
-            "video": "shopify://files/videos/Dr. Elite Sokhn.mp4",
-            "video_url": "",
-            "label": "الرضاعة والعمل",
-            "name": "د. ايليت سخن",
-            "rating": "★★★★★"
+            "image": "",
+            "asset_name": "ww-wa-3.png",
+            "message": "",
+            "name": "",
+            "caption": ""
           }
         },
-        "video_4": {
-          "type": "video",
+        "screenshot_EVXcXr": {
+          "type": "screenshot",
           "settings": {
-            "video": "shopify://files/videos/weewonders-1-KSA--.mp4",
-            "video_url": "",
-            "label": "تجربة رضاعة",
-            "name": "ام جديدة",
-            "rating": "★★★★★"
+            "image": "",
+            "asset_name": "ww-wa-4.jpg",
+            "message": "",
+            "name": "",
+            "caption": ""
           }
         },
-        "video_5": {
-          "type": "video",
+        "screenshot_PFkD3J": {
+          "type": "screenshot",
           "settings": {
-            "video": "shopify://files/videos/6-VO WeeWonders_final.mp4",
-            "video_url": "",
-            "label": "تجربة أم",
-            "name": "جنى",
-            "rating": "★★★★★"
+            "image": "",
+            "asset_name": "ww-wa-5.jpg",
+            "message": "",
+            "name": "",
+            "caption": ""
+          }
+        },
+        "screenshot_qHqCkL": {
+          "type": "screenshot",
+          "settings": {
+            "image": "",
+            "asset_name": "ww-wa-6.png",
+            "message": "",
+            "name": "",
+            "caption": ""
+          }
+        },
+        "screenshot_43aU4Y": {
+          "type": "screenshot",
+          "settings": {
+            "image": "",
+            "asset_name": "ww-wa-7.jpg",
+            "message": "",
+            "name": "",
+            "caption": ""
           }
         }
       },
       "block_order": [
-        "video_1",
-        "video_2",
-        "video_3",
-        "video_4",
-        "video_5"
+        "screenshot_RFkWDX",
+        "screenshot_xzUjwX",
+        "screenshot_K8aWmW",
+        "screenshot_EVXcXr",
+        "screenshot_PFkD3J",
+        "screenshot_qHqCkL",
+        "screenshot_43aU4Y"
       ],
+      "name": "WhatsApp Wall",
       "settings": {
-        "heading_prefix": "اسمعي قصص",
-        "heading_highlight": "أمهات WeeWonders",
-        "lead": "قصص حقيقية من أمهات وطبيبات جربن المضخة."
+        "eyebrow": "من واتسابنا",
+        "heading": "اسمعي من أمهات وي وندرز.",
+        "heading_plain": "اسمعي من",
+        "heading_highlight": "أمهات وي وندرز",
+        "subheading": "",
+        "privacy_note": "",
+        "show_stats": true,
+        "stats_aria_label": "نتائج أبلغت عنها العملاء",
+        "stat_1_number": 94,
+        "stat_1_label": "مريحة طوال اليوم",
+        "stat_2_number": 91,
+        "stat_2_label": "تدفق أنعم",
+        "stat_3_number": 89,
+        "stat_3_label": "ثقة أكبر",
+        "stat_4_number": 92,
+        "stat_4_label": "أفضل من مضختي القديمة",
+        "stats_note": "نتائج مذكورة ذاتياً، مؤكدة",
+        "show_stats_note": true,
+        "show_cta": false,
+        "cta_heading": "",
+        "cta_text": "",
+        "cta_button": "المحادثة على واتساب",
+        "whatsapp_url": "",
+        "bg": "#F5EFE6",
+        "pad_top": 52,
+        "pad_bottom": 0
       }
     },
-    "saudi_journey": {
-      "type": "ww-saudi-journey",
-      "blocks": {
-        "step_1": {
-          "type": "step",
-          "settings": {
-            "title": "اليوم الأول",
-            "text": "تعرفي على المقاس والإعدادات المناسبة لك."
-          }
-        },
-        "step_2": {
-          "type": "step",
-          "settings": {
-            "title": "الأسبوع الأول",
-            "text": "روتين أسهل وراحة أكثر مع كل جلسة."
-          }
-        },
-        "step_3": {
-          "type": "step",
-          "settings": {
-            "title": "الأسبوع الثاني",
-            "text": "تفريغ أفضل وإشارة أوضح للجسم."
-          }
-        },
-        "step_4": {
-          "type": "step",
-          "settings": {
-            "title": "الأسبوع الثالث",
-            "text": "يصبح الضخ جزءاً طبيعياً من يومك."
-          }
-        },
-        "step_5": {
-          "type": "step",
-          "settings": {
-            "title": "نهاية الشهر",
-            "text": "استمري على الروتين الأنسب لجسمك."
-          }
-        }
-      },
-      "block_order": [
-        "step_1",
-        "step_2",
-        "step_3",
-        "step_4",
-        "step_5"
-      ],
+    "ww_reel_VCeV4Y": {
+      "type": "ww-reel",
+      "name": "WW Photo reel",
       "settings": {
-        "rule_label": "القاعدة البسيطة",
-        "claim_prefix": "تفريغ كامل",
-        "claim_highlight": "حليب أكثر",
-        "less_title": "تفريغ غير كامل",
-        "less_chain": "الجسم يقرأها: لا حاجة للمزيد",
-        "less_result": "حليب أقل",
-        "more_title": "تفريغ كامل",
-        "more_chain": "الجسم يقرأها: استمري",
-        "more_result": "حليب أكثر",
-        "myth_eyebrow": "خلينا نصحح المعلومة",
-        "myth_title": "الضخ لا يجفف حليبك",
-        "myth_copy": "الثدي ينتج الحليب حسب الطلب. كلما تم تفريغه بشكل أفضل، وصلت إشارة أوضح للجسم لإنتاج المزيد.",
-        "timeline_prefix": "شهرك الأول",
-        "timeline_highlight": "مع WeeWonders",
-        "timeline_lead": "خطوات بسيطة ونتائج تتطور مع الاستمرار.",
-        "disclaimer": "كل جسم مختلف. تختلف النتائج من أم لأخرى ولا يمكن ضمانها."
+        "seconds": 70
       }
     },
-    "saudi_proof": {
-      "type": "ww-saudi-proof",
-      "blocks": {
-        "fit_1": {
-          "type": "fit_feature",
-          "settings": {
-            "icon": "◷",
-            "title": "مقاس مناسب لك",
-            "text": "4 مقاسات + أداة قياس داخل العلبة."
-          }
-        },
-        "fit_2": {
-          "type": "fit_feature",
-          "settings": {
-            "icon": "♫",
-            "title": "هادئة جداً",
-            "text": "صوت منخفض يساعدك تضخين براحة."
-          }
-        },
-        "fit_3": {
-          "type": "fit_feature",
-          "settings": {
-            "icon": "♢",
-            "title": "مانعة للتسرب",
-            "text": "ثبات أفضل حتى مع الحركة."
-          }
-        },
-        "fit_4": {
-          "type": "fit_feature",
-          "settings": {
-            "icon": "▭",
-            "title": "حرة اليدين",
-            "text": "ارتديها وواصلي يومك."
-          }
-        },
-        "review_1": {
-          "type": "review",
-          "settings": {
-            "label": "بدون ألم",
-            "name": "ملاك",
-            "rating": "★★★★★",
-            "text": "خلال عشر دقائق جمعت كمية ممتازة وبدون ألم."
-          }
-        },
-        "review_2": {
-          "type": "review",
-          "settings": {
-            "label": "إدرار أفضل",
-            "name": "عميلة موثقة",
-            "rating": "★★★★★",
-            "text": "استخدمتها باستمرار ولاحظت فرقاً في راحتي وروتيني."
-          }
-        },
-        "review_3": {
-          "type": "review",
-          "settings": {
-            "label": "مجهود أقل",
-            "name": "عميلة موثقة",
-            "rating": "★★★★★",
-            "text": "فعالة وسريعة وسهلة الاستخدام."
-          }
-        },
-        "review_4": {
-          "type": "review",
-          "settings": {
-            "label": "حرية أكبر",
-            "name": "أم عاملة",
-            "rating": "★★★★★",
-            "text": "أقدر أستخدمها وأنا أكمل يومي."
-          }
-        },
-        "proof_1": {
-          "type": "proof",
-          "settings": {
-            "label": "رسالة عميلة 1"
-          }
-        },
-        "proof_2": {
-          "type": "proof",
-          "settings": {
-            "label": "رسالة عميلة 2"
-          }
-        },
-        "proof_3": {
-          "type": "proof",
-          "settings": {
-            "label": "رسالة عميلة 3"
-          }
-        },
-        "proof_4": {
-          "type": "proof",
-          "settings": {
-            "label": "رسالة عميلة 4"
-          }
-        },
-        "proof_5": {
-          "type": "proof",
-          "settings": {
-            "label": "رسالة عميلة 5"
-          }
-        }
-      },
-      "block_order": [
-        "fit_1",
-        "fit_2",
-        "fit_3",
-        "fit_4",
-        "review_1",
-        "review_2",
-        "review_3",
-        "review_4",
-        "proof_1",
-        "proof_2",
-        "proof_3",
-        "proof_4",
-        "proof_5"
-      ],
+    "ww_rule_MjtaJr": {
+      "type": "ww-rule",
+      "name": "WW The simple rule",
       "settings": {
-        "fit_prefix": "جربتِ قبل وما ضبط معك؟",
-        "fit_highlight": "غالباً كان المقاس",
-        "fit_lead": "المقاس الصحيح يفرق في الراحة، منع التسرب، وكمية الحليب.",
-        "review_prefix": "آراء أمهات حقيقيات",
-        "review_highlight": "جربن WeeWonders",
-        "proof_prefix": "رسائل حقيقية من",
-        "proof_highlight": "أمهات WeeWonders",
-        "proof_lead": "اضغطي على أي صورة لعرضها كاملة."
+        "lede": "القاعدة البسيطة",
+        "h_a": "",
+        "h_b": "ليستمر الحليب",
+        "neg_badge": "😣",
+        "neg_alt": "صدر نصفه فارغ: لم يُفرَغ بالكامل، إنتاج أقل في المرة القادمة",
+        "neg_s1": "نصف الإفراغ",
+        "neg_s2": "الجسم يقرأه: غير مطلوب",
+        "neg_res": "حليب أقل",
+        "pos_badge": "🙂‍↕️",
+        "pos_alt": "صدر مُفرَغ بالكامل: إفراغ كامل، إنتاج أعلى في المرة القادمة",
+        "pos_s1": "إفراغ كامل",
+        "pos_s2": "الجسم يقرأه: واصلي",
+        "pos_res": "حليب أكثر"
       }
     },
-    "saudi_difference": {
-      "type": "ww-saudi-difference",
-      "blocks": {
-        "bad_1": {
-          "type": "compare_item",
-          "settings": {
-            "column": "other",
-            "text": "مقاس واحد لا يناسب الجميع"
-          }
-        },
-        "bad_2": {
-          "type": "compare_item",
-          "settings": {
-            "column": "other",
-            "text": "تسرب مع الحركة"
-          }
-        },
-        "bad_3": {
-          "type": "compare_item",
-          "settings": {
-            "column": "other",
-            "text": "ألم مع كل جلسة"
-          }
-        },
-        "good_1": {
-          "type": "compare_item",
-          "settings": {
-            "column": "ours",
-            "text": "4 مقاسات + أداة قياس"
-          }
-        },
-        "good_2": {
-          "type": "compare_item",
-          "settings": {
-            "column": "ours",
-            "text": "مانعة للتسرب حتى مقلوبة"
-          }
-        },
-        "good_3": {
-          "type": "compare_item",
-          "settings": {
-            "column": "ours",
-            "text": "تفريغ كامل وراحة أكثر"
-          }
-        },
-        "how_1": {
-          "type": "step",
-          "settings": {
-            "title": "ركبي القطع",
-            "text": "ثوانٍ وتصبح جاهزة."
-          }
-        },
-        "how_2": {
-          "type": "step",
-          "settings": {
-            "title": "اختاري مقاسك",
-            "text": "استخدمي أداة القياس."
-          }
-        },
-        "how_3": {
-          "type": "step",
-          "settings": {
-            "title": "ضعيها داخل حمالة الصدر",
-            "text": "خفيفة وغير ملفتة."
-          }
-        },
-        "how_4": {
-          "type": "step",
-          "settings": {
-            "title": "ابدئي الضخ",
-            "text": "اختاري الوضع المريح."
-          }
-        },
-        "how_5": {
-          "type": "step",
-          "settings": {
-            "title": "اسكبي الحليب",
-            "text": "الكوب مصمم لتسهيل السكب."
-          }
-        }
-      },
-      "block_order": [
-        "bad_1",
-        "bad_2",
-        "bad_3",
-        "good_1",
-        "good_2",
-        "good_3",
-        "how_1",
-        "how_2",
-        "how_3",
-        "how_4",
-        "how_5"
-      ],
+    "ww_difference_LYJXzr": {
+      "type": "ww-difference",
+      "name": "WW The Difference",
       "settings": {
-        "compare_prefix": "الفرق اللي تسويه",
-        "compare_highlight": "WeeWonders",
-        "other_title": "المضخات الأخرى",
-        "our_title": "مضخة WeeWonders",
-        "steps_prefix": "خمس خطوات، وبعدها",
-        "steps_highlight": "يداك حرة"
+        "show_feature_intro": true,
+        "feature_image_alt": "مضخة وي وندرز اللاسلكية للرضاعة",
+        "feature_heading": "ما الذي يجعل هذه المضخة",
+        "feature_highlight": "مختلفة؟",
+        "feature_1_title": "مقاسات تناسبك",
+        "feature_1_text": "تأتي بـ 4 مقاسات + أداة، فلا تخمين لمقاسك أبداً.",
+        "feature_2_title": "هادئة تماماً",
+        "feature_2_text": "أقل من 50 ديسيبل، لا أحد يسمعها.",
+        "feature_3_title": "مانعة التسرب",
+        "feature_3_text": "تحفظ الإغلاق حتى مقلوبة.",
+        "feature_4_title": "حرة اليدين فعلاً",
+        "feature_4_text": "ارتدئيها أثناء قيامك بأي شيء آخر.",
+        "h_a": "ما يميز",
+        "h_b": "وي وندرز",
+        "other_title": "مضخات أخرى",
+        "wee_title": "WeeWonders",
+        "wee_sub": "المضخة",
+        "pairs": "يومك يدور حولها|حرة اليدين، تعمل من تلقاء نفسها\nمقاس واحد لا يناسبك فعلاً|4 مقاسات + أداة تحدد مقاسك\nضعيفة لأداء المهمة|لطيفة معك وقوية بما يكفي لسحب الحليب\nلا تشعر أنها أنهت فعلها|تُفرغ تماماً فلا يبقى حليب خلفها"
       }
     },
-    "saudi_offer_faq": {
-      "type": "ww-saudi-offer-faq",
-      "blocks": {
-        "faq_1": {
-          "type": "faq",
-          "settings": {
-            "question": "هل أختار مضخة مفردة أو مزدوجة؟",
-            "answer": "<p>المزدوجة توفر الوقت إذا كنت تضخين كثيراً، والمفردة خيار خفيف للاستخدام الأقل.</p>"
-          }
-        },
-        "faq_2": {
-          "type": "faq",
-          "settings": {
-            "question": "هل ستؤثر على إدرار الحليب؟",
-            "answer": "<p>تفريغ الثدي بشكل جيد ومنتظم يساعد الجسم على الاستمرار في إنتاج الحليب.</p>"
-          }
-        },
-        "faq_3": {
-          "type": "faq",
-          "settings": {
-            "question": "كيف أعرف المقاس المناسب؟",
-            "answer": "<p>تأتي العلبة مع 4 مقاسات وأداة قياس لتساعدك في اختيار الأنسب.</p>"
-          }
-        },
-        "faq_4": {
-          "type": "faq",
-          "settings": {
-            "question": "ماذا لو تعطلت؟",
-            "answer": "<p>المضخة مشمولة بضمان 6 أشهر. تواصلي معنا وسنساعدك.</p>"
-          }
-        },
-        "faq_5": {
-          "type": "faq",
-          "settings": {
-            "question": "هل هي هادئة؟",
-            "answer": "<p>نعم، مصممة بصوت منخفض لاستخدام أكثر راحة وخصوصية.</p>"
-          }
-        },
-        "faq_6": {
-          "type": "faq",
-          "settings": {
-            "question": "كم يستغرق التوصيل؟",
-            "answer": "<p>يختلف حسب مدينتك. يمكنك تعديل هذه الإجابة من محرر القالب.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "faq_1",
-        "faq_2",
-        "faq_3",
-        "faq_4",
-        "faq_5",
-        "faq_6"
-      ],
+    "ww_steps_CxVbwg": {
+      "type": "ww-steps",
+      "name": "WW How it works (steps)",
       "settings": {
-        "guarantee_prefix": "جربيها بدون",
-        "guarantee_highlight": "أي مخاطرة",
-        "seal_number": "6",
-        "seal_label": "شهور ضمان",
-        "guarantee_title": "ضمان 6 أشهر",
-        "guarantee_text": "إذا حصل عطل في المضخة، تواصلي معنا وسنساعدك.",
-        "trust_1": "دفع آمن",
-        "trust_2": "دعم حقيقي",
-        "trust_3": "توصيل سريع",
-        "offer_prefix": "امنحي حليبك",
-        "offer_highlight": "طريقة أسهل للخروج",
-        "offer_perk_1": "عدة المقاسات مجاناً",
-        "offer_perk_2": "شحن مجاني",
-        "offer_button": "اختاري عرضك",
-        "faq_prefix": "أسئلة تسألها",
-        "faq_highlight": "الأمهات",
-        "open_first": false
+        "h_a": "خمس خطوات، ثم",
+        "h_b": "حرة اليدين"
+      }
+    },
+    "ww_warranty_UQHa8L": {
+      "type": "ww-warranty",
+      "name": "WW Warranty badge",
+      "settings": {
+        "big": "6",
+        "small": "شهر ضمان",
+        "bold": "ضمان كامل لمدة 6 أشهر",
+        "rest": "على المنتج.",
+        "line2": "إذا تعطل، تُعيدينه."
+      }
+    },
+    "ww_offer_bottom_riaPD8": {
+      "type": "ww-offer-bottom",
+      "name": "WW Bottom offer",
+      "settings": {
+        "h_a": "أعِطِ حليبك",
+        "h_b": "مخرجاً",
+        "button": "اطلبي طقمك الآن",
+        "default_badge": "",
+        "default_summary": "طقم قياس مجاني، هدايا وتوصيل",
+        "chip_1": "ضمان 6 أشهر",
+        "chip_2": "طقم قياس مجاني",
+        "chip_3": "توصيل 48 ساعة"
+      }
+    },
+    "ww_faq_TcwtHC": {
+      "type": "ww-faq",
+      "name": "WW FAQ",
+      "settings": {
+        "h_a": "أسئلة",
+        "h_b": "تسألها الأمهات",
+        "faq_1_question": "مفردة أم مزدوجة؟",
+        "faq_1_answer": "المفردة تضخ جهة واحدة؛ والمزدوجة تضخ الجهتين معاً وتنصّف وقتك.",
+        "faq_2_question": "هل ينخفض إنتاجي؟",
+        "faq_2_answer": "روتين مريح ومنتظم يساعدك على إكمال جلسة الضخ.",
+        "faq_3_question": "أي مقاس فلانچ يناسبني؟",
+        "faq_3_answer": "كل علبة تحتوي على 17 و19 و21 و24 ملم مع أداة تحديد المقاس.",
+        "faq_4_question": "ماذا لو تعطلت؟",
+        "faq_4_answer": "مضختك تشمل ضماناً لمدة ستة أشهر.",
+        "faq_5_question": "هل هي خفية فعلاً؟",
+        "faq_5_answer": "تعمل داخل الحمّالة بالكامل، هادئة وبلا أنابيب أو أسلاك.",
+        "faq_6_question": "كم سرعة التوصيل؟",
+        "faq_6_answer": "التوصيل المُتتبع داخل السعودية خلال 48 ساعة مع دعم يومي طوال الأسبوع."
       }
     }
   },
   "order": [
-    "saudi_hero",
-    "saudi_videos",
-    "saudi_journey",
-    "saudi_proof",
-    "saudi_difference",
-    "saudi_offer_faq"
+    "ww_product_UGy4NT",
+    "ww_doctors_7BMrEf",
+    "weewonders_whatsapp_wall_Nymgan",
+    "ww_reel_VCeV4Y",
+    "ww_rule_MjtaJr",
+    "ww_difference_LYJXzr",
+    "ww_steps_CxVbwg",
+    "ww_warranty_UQHa8L",
+    "ww_offer_bottom_riaPD8",
+    "ww_faq_TcwtHC"
   ]
 }

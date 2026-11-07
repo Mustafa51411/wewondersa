@@ -1,0 +1,815 @@
+{% comment %}
+  ============================================================
+  WeeWonders — WhatsApp Wall
+  Dedicated social-proof section for real WhatsApp screenshots
+  (separate from the Judge.me app review widget).
+
+  INSTALL (Be Yours theme):
+  1. Online Store → Themes → ⋯ → Edit code
+  2. Sections → "Add a new section" → name it: weewonders-whatsapp-wall
+  3. Delete the boilerplate, paste this entire file, Save
+  4. Customize → Product template → Add section → "WhatsApp Wall"
+  5. Add one "WhatsApp screenshot" block per screenshot.
+     To add more proof later: just add another block + upload. No code.
+
+  NOTES:
+  - Screenshots keep their natural height. Crop each export to the
+    key exchange (4–8 bubbles) before uploading for a clean rail.
+  - Tap-to-zoom lightbox included for reading Arabic chat text.
+  - All colors are locked to the WeeWonders palette.
+  ============================================================
+{% endcomment %}
+
+{%- assign sid = section.id -%}
+
+<style>
+  #ww-wa-{{ sid }} {
+    --ww-blue: #5aa8e6;
+    --ww-blue-soft: #eaf6ff;
+    --ww-border: #d7eefc;
+    --ww-navy: #1f2a37;
+    --ww-cream: #F5EFE6;
+    --ww-green: #25D366;
+    --ww-green-dark: #128C4A;
+    background: {{ section.settings.bg }};
+    padding-top: {{ section.settings.pad_top }}px;
+    padding-bottom: {{ section.settings.pad_bottom }}px;
+    overflow: hidden;
+  }
+  #ww-wa-{{ sid }} .ww-wa__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  #ww-wa-{{ sid }} .ww-wa__head {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 28px;
+  }
+  #ww-wa-{{ sid }} .ww-wa__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--ww-blue-soft);
+    border: 1px solid var(--ww-border);
+    color: var(--ww-green-dark);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 7px 14px;
+    margin-bottom: 14px;
+  }
+  #ww-wa-{{ sid }} .ww-wa__eyebrow svg { width: 15px; height: 15px; }
+  #ww-wa-{{ sid }} .ww-wa__heading {
+    color: var(--ww-navy);
+    font-size: clamp(24px, 4.2vw, 34px);
+    line-height: 1.2;
+    font-weight: 900 !important;
+    margin: 0 0 10px;
+  }
+  #ww-wa-{{ sid }} .ww-wa__heading-mark {
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    background: linear-gradient(transparent 62%, #b7e5f8 62%);
+    padding: 0 .08em;
+  }
+  #ww-wa-{{ sid }} .ww-wa__sub {
+    color: #56677b;
+    font-size: 15.5px;
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* ---- scroll rail ---- */
+  #ww-wa-{{ sid }} .ww-wa__track {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 6px 4px 22px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  #ww-wa-{{ sid }} .ww-wa__track::-webkit-scrollbar { display: none; }
+
+  #ww-wa-{{ sid }} .ww-wa__card {
+    flex: 0 0 auto;
+    width: min(76vw, 285px);
+    margin: 0;
+    scroll-snap-align: center;
+    background: #ffffff;
+    border: 1px solid var(--ww-border);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 10px 26px rgba(31, 42, 55, .07);
+  }
+  /* Keep every mobile testimonial card the same visual height. Without this,
+     one tall uploaded screenshot makes the entire horizontal rail tall and
+     leaves a large empty area before the outcome numbers. */
+  @media (max-width: 749px) {
+    #ww-wa-{{ sid }} .ww-wa__track { padding-bottom: 14px; }
+    #ww-wa-{{ sid }} .ww-wa__shot {
+      aspect-ratio: 5 / 4;
+      overflow: hidden;
+    }
+    #ww-wa-{{ sid }} .ww-wa__shot img {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  @media (min-width: 750px) {
+    #ww-wa-{{ sid }} .ww-wa__card { scroll-snap-align: start; }
+  }
+  #ww-wa-{{ sid }} .ww-wa__shot {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: var(--ww-blue-soft);
+    cursor: zoom-in;
+    line-height: 0;
+  }
+  #ww-wa-{{ sid }} .ww-wa__shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  #ww-wa-{{ sid }} .ww-wa__message {
+    min-height: 188px;
+    display: flex;
+    align-items: flex-end;
+    padding: 18px;
+    background: #efeae2;
+    line-height: 1.45;
+  }
+  #ww-wa-{{ sid }} .ww-wa__bubble {
+    margin-left: auto;
+    max-width: 88%;
+    border-radius: 9px 0 9px 9px;
+    padding: 10px 12px;
+    background: #d9fdd3;
+    color: #26342a;
+    font-size: 14px;
+    line-height: 1.45;
+    box-shadow: 0 1px 1px rgba(0,0,0,.08);
+  }
+  #ww-wa-{{ sid }} .ww-wa__zoomtag {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: rgba(31, 42, 55, .55);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+  }
+  #ww-wa-{{ sid }} .ww-wa__zoomtag svg { width: 15px; height: 15px; }
+  #ww-wa-{{ sid }} .ww-wa__meta {
+    padding: 12px 15px 14px;
+    border-top: 1px solid var(--ww-border);
+  }
+  #ww-wa-{{ sid }} .ww-wa__name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ww-navy);
+    font-weight: 700;
+    font-size: 14.5px;
+    unicode-bidi: plaintext;
+  }
+  #ww-wa-{{ sid }} .ww-wa__name svg { width: 15px; height: 15px; flex: 0 0 auto; }
+  #ww-wa-{{ sid }} .ww-wa__caption {
+    display: block;
+    margin-top: 3px;
+    color: #6b7c8f;
+    font-size: 13px;
+    line-height: 1.5;
+    unicode-bidi: plaintext;
+  }
+
+  /* ---- end-cap CTA card ---- */
+  #ww-wa-{{ sid }} .ww-wa__ctacard {
+    flex: 0 0 auto;
+    width: min(76vw, 285px);
+    scroll-snap-align: center;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    background: var(--ww-blue-soft);
+    border: 1px dashed var(--ww-blue);
+    border-radius: 22px;
+    padding: 34px 22px;
+    min-height: 320px;
+  }
+  #ww-wa-{{ sid }} .ww-wa__ctacard-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--ww-green);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 18px rgba(37, 211, 102, .35);
+  }
+  #ww-wa-{{ sid }} .ww-wa__ctacard-icon svg { width: 22px; height: 22px; }
+  #ww-wa-{{ sid }} .ww-wa__ctacard h3 {
+    margin: 0;
+    color: var(--ww-navy);
+    font-size: 17px;
+    line-height: 1.35;
+    font-weight: 700;
+  }
+  #ww-wa-{{ sid }} .ww-wa__ctacard p {
+    margin: 0;
+    color: #56677b;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  #ww-wa-{{ sid }} .ww-wa__ctabtn {
+    display: inline-block;
+    background: var(--ww-green);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 12px 22px;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  #ww-wa-{{ sid }} .ww-wa__ctabtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(37, 211, 102, .4);
+    color: #ffffff;
+  }
+
+  /* ---- customer outcome numbers ---- */
+  #ww-wa-{{ sid }} .ww-wa__stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    max-width: 950px;
+    margin: 28px auto 8px;
+    text-align: center;
+  }
+  #ww-wa-{{ sid }} .ww-wa__stat { min-width: 0; }
+  #ww-wa-{{ sid }} .ww-wa__stat-number {
+    display: block;
+    color: var(--ww-navy);
+    font-size: clamp(30px, 4vw, 50px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.04em;
+  }
+  #ww-wa-{{ sid }} .ww-wa__stat-label {
+    display: inline;
+    color: var(--ww-blue);
+    font-size: clamp(12px, 1.45vw, 16px);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    background: linear-gradient(transparent 76%, #9fddf6 76%);
+  }
+  #ww-wa-{{ sid }} .ww-wa__stat-note {
+    display: block;
+    margin-top: 10px;
+    color: #718091;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  @media (max-width: 749px) {
+    #ww-wa-{{ sid }} .ww-wa__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 34px 14px; margin-top: 34px; }
+  }
+
+  /* ---- footer row: privacy note + arrows ---- */
+  #ww-wa-{{ sid }} .ww-wa__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 2px;
+  }
+  #ww-wa-{{ sid }} .ww-wa__privacy {
+    color: #8a99aa;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  #ww-wa-{{ sid }} .ww-wa__arrows { display: none; gap: 8px; }
+  @media (min-width: 750px) {
+    #ww-wa-{{ sid }} .ww-wa__arrows { display: flex; }
+  }
+  #ww-wa-{{ sid }} .ww-wa__arrow {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--ww-border);
+    background: #fff;
+    color: var(--ww-navy);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .15s ease;
+  }
+  #ww-wa-{{ sid }} .ww-wa__arrow:hover { background: var(--ww-blue-soft); }
+  #ww-wa-{{ sid }} .ww-wa__arrow svg { width: 16px; height: 16px; }
+
+  /* ---- lightbox ---- */
+  #ww-wa-{{ sid }} .ww-wa__lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(15, 23, 42, .85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #ww-wa-{{ sid }} .ww-wa__lightbox[hidden] { display: none; }
+  #ww-wa-{{ sid }} .ww-wa__lightbox img {
+    max-width: min(92vw, 460px);
+    max-height: 86vh;
+    width: auto;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+  }
+  #ww-wa-{{ sid }} .ww-wa__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #ww-wa-{{ sid }} * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+
+<section id="ww-wa-{{ sid }}" class="ww-wa" aria-label="{{ section.settings.heading | escape }}">
+  <div class="ww-wa__inner">
+
+    <div class="ww-wa__head">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="ww-wa__eyebrow">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Z"/><path d="M16.5 13.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.3-.5 0-.2 0-.4-.1-.5-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.5 1.1 2.7c.1.2 1.9 3 4.7 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.2-.2-.2-.4-.3Z"/></svg>
+          <span>{{ section.settings.eyebrow | escape }}</span>
+        </span>
+      {%- endif -%}
+      {%- assign heading_plain = section.settings.heading_plain | default: 'اسمعي من' -%}
+      {%- assign heading_highlight = section.settings.heading_highlight | default: 'أمهات وي وندرز' -%}
+      {%- if heading_plain != blank or heading_highlight != blank -%}
+        <h2 class="ww-wa__heading" dir="auto">{{ heading_plain | escape }} <span class="ww-wa__heading-mark">{{ heading_highlight | escape }}</span></h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="ww-wa__sub" dir="auto">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="ww-wa__track" data-ww-track tabindex="0" aria-label="رسائل واتساب من العملاء">
+      {%- assign ww_default_messages = "رسالة من أم سعيدة.|طقم القياس أحدث الفرق.|أستخدمه يومياً في العمل.|طفلي أكثر سعادة." | split: "|" -%}
+      {%- for block in section.blocks -%}
+        <figure class="ww-wa__card" data-ww-card {{ block.shopify_attributes }}>
+          {%- assign shot_alt = block.settings.name | default: 'عميلة وي وندرز' | append: ' — رسالة واتساب' -%}
+          {%- if block.settings.image != blank -%}
+            <button
+              type="button"
+              class="ww-wa__shot"
+              data-ww-full="{{ block.settings.image | image_url: width: 1200 }}"
+              data-ww-alt="{{ shot_alt | escape }}"
+              aria-label="تكبير رسالة واتساب{% if block.settings.name != blank %} من {{ block.settings.name | escape }}{% endif %}"
+            >
+              <img
+                src="{{ block.settings.image | image_url: width: 600 }}"
+                srcset="{{ block.settings.image | image_url: width: 400 }} 400w, {{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w"
+                sizes="(min-width: 750px) 285px, 76vw"
+                alt="{{ shot_alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+              >
+              <span class="ww-wa__zoomtag" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </span>
+            </button>
+          {%- elsif block.settings.asset_name != blank -%}
+            <button
+              type="button"
+              class="ww-wa__shot"
+              data-ww-full="{{ block.settings.asset_name | asset_url }}"
+              data-ww-alt="{{ shot_alt | escape }}"
+              aria-label="تكبير رسالة واتساب{% if block.settings.name != blank %} من {{ block.settings.name | escape }}{% endif %}"
+            >
+              <img
+                src="{{ block.settings.asset_name | asset_url }}"
+                sizes="(min-width: 750px) 285px, 76vw"
+                alt="{{ shot_alt | escape }}"
+                loading="lazy"
+              >
+              <span class="ww-wa__zoomtag" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </span>
+            </button>
+          {%- elsif block.settings.message != blank -%}
+            <div class="ww-wa__shot ww-wa__message" aria-label="رسالة واتساب من {{ block.settings.name | default: 'عميلة' | escape }}">
+              <span class="ww-wa__bubble" dir="auto">{{ block.settings.message | escape }}</span>
+            </div>
+          {%- else -%}
+            <div class="ww-wa__shot ww-wa__message" aria-label="شهادة واتساب افتراضية">
+              <span class="ww-wa__bubble">{{ ww_default_messages[forloop.index0] | default: 'Add a testimonial message in this block.' }}</span>
+            </div>
+          {%- endif -%}
+          {%- if block.settings.name != blank or block.settings.caption != blank -%}
+            <figcaption class="ww-wa__meta">
+              {%- if block.settings.name != blank -%}
+                <span class="ww-wa__name" dir="auto">
+                  <svg viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3Zm-1.2 13.6-3-3 1.4-1.4 1.6 1.6 4-4 1.4 1.4-5.4 5.4Z"/></svg>
+                  {{ block.settings.name | escape }}
+                </span>
+              {%- endif -%}
+              {%- if block.settings.caption != blank -%}
+                <span class="ww-wa__caption" dir="auto">{{ block.settings.caption | escape }}</span>
+              {%- endif -%}
+            </figcaption>
+          {%- endif -%}
+        </figure>
+      {%- endfor -%}
+
+      {%- if section.settings.show_cta and section.settings.whatsapp_url != blank -%}
+        <div class="ww-wa__ctacard" data-ww-card>
+          <span class="ww-wa__ctacard-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm4.5 11.9c-.2.6-1.1 1-1.6 1.1-.5.1-1.1.1-1.8-.1-.4-.1-.9-.3-1.6-.6-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.7-.3h.5c.2 0 .4-.1.6.4.2.5.7 1.8.8 1.9.1.1.1.3.1.5-.1.2-.2.3-.3.5l-.4.5c-.1.1-.2.3-.1.5.1.2.6 1 1.3 1.6.9.8 1.7 1.1 1.9 1.2.2.1.4.1.5-.1.2-.2.6-.8.8-1 .2-.2.4-.2.6-.1.2.1 1.4.7 1.6.8.2.1.3.1.4.3.1.1.1.5-.1 1Z"/></svg>
+          </span>
+          <h3 dir="auto">{{ section.settings.cta_heading | escape }}</h3>
+          <p dir="auto">{{ section.settings.cta_text | escape }}</p>
+          <a class="ww-wa__ctabtn" href="{{ section.settings.whatsapp_url }}" target="_blank" rel="noopener">{{ section.settings.cta_button | escape }}</a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_stats != false -%}
+      <div class="ww-wa__stats" aria-label="{{ section.settings.stats_aria_label | default: 'نتائج أبلغت عنها العملاء' | escape }}">
+        {%- for index in (1..4) -%}
+          {%- assign number_key = 'stat_' | append: index | append: '_number' -%}
+          {%- assign label_key = 'stat_' | append: index | append: '_label' -%}
+          {%- case index -%}
+            {%- when 1 -%}{%- assign default_number = 94 -%}{%- assign default_label = 'مريحة طوال اليوم' -%}
+            {%- when 2 -%}{%- assign default_number = 91 -%}{%- assign default_label = 'تدفق أنعم' -%}
+            {%- when 3 -%}{%- assign default_number = 89 -%}{%- assign default_label = 'ثقة أكبر' -%}
+            {%- else -%}{%- assign default_number = 92 -%}{%- assign default_label = 'أفضل من مضختي القديمة' -%}
+          {%- endcase -%}
+          <div class="ww-wa__stat">
+            <strong class="ww-wa__stat-number">{{ section.settings[number_key] | default: default_number }}%</strong>
+            <span class="ww-wa__stat-label">{{ section.settings[label_key] | default: default_label }}</span>
+            {%- if section.settings.show_stats_note != false -%}<small class="ww-wa__stat-note">{{ section.settings.stats_note | default: 'نتائج مذكورة ذاتياً، مؤكدة' | escape }}</small>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="ww-wa__foot">
+      {%- if section.settings.privacy_note != blank -%}
+        <p class="ww-wa__privacy" dir="auto">{{ section.settings.privacy_note | escape }}</p>
+      {%- else -%}
+        <span></span>
+      {%- endif -%}
+      <div class="ww-wa__arrows">
+        <button type="button" class="ww-wa__arrow" data-ww-arrow="prev" aria-label="التمرير للخلف">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="ww-wa__arrow" data-ww-arrow="next" aria-label="التمرير للأمام">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ww-wa__lightbox" data-ww-lightbox hidden role="dialog" aria-modal="true" aria-label="لقطة شاشة واتساب مكبّرة">
+    <button type="button" class="ww-wa__close" data-ww-close aria-label="إغلاق">&times;</button>
+    <img src="" alt="">
+  </div>
+</section>
+
+<script>
+  (function () {
+    function initWwWall(root) {
+      if (!root || root.dataset.wwInit === "1") return;
+      root.dataset.wwInit = "1";
+
+      var track = root.querySelector("[data-ww-track]");
+      if (track) {
+        root.querySelectorAll("[data-ww-arrow]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var card = track.querySelector("[data-ww-card]");
+            var step = card ? card.getBoundingClientRect().width + 16 : 300;
+            track.scrollBy({
+              left: btn.getAttribute("data-ww-arrow") === "next" ? step : -step,
+              behavior: "smooth"
+            });
+          });
+        });
+      }
+
+      var lb = root.querySelector("[data-ww-lightbox]");
+      var lbImg = lb ? lb.querySelector("img") : null;
+
+      function closeLb() {
+        if (!lb || lb.hidden) return;
+        lb.hidden = true;
+        document.documentElement.style.overflow = "";
+      }
+
+      root.querySelectorAll("[data-ww-full]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          if (!lb || !lbImg) return;
+          lbImg.src = btn.getAttribute("data-ww-full");
+          lbImg.alt = btn.getAttribute("data-ww-alt") || "لقطة شاشة واتساب";
+          lb.hidden = false;
+          document.documentElement.style.overflow = "hidden";
+        });
+      });
+
+      if (lb) {
+        lb.addEventListener("click", function (e) {
+          if (e.target === lb || e.target.closest("[data-ww-close]")) closeLb();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeLb();
+        });
+      }
+    }
+
+    initWwWall(document.getElementById("ww-wa-{{ sid }}"));
+
+    document.addEventListener("shopify:section:load", function (e) {
+      var el = e.target.querySelector('[id^="ww-wa-"]');
+      if (el) initWwWall(el);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "WhatsApp Wall",
+  "tag": "section",
+  "class": "ww-whatsapp-wall-section",
+  "max_blocks": 50,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "من واتسابنا"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "4,000+ أم. هذا ما يرسلنه إلينا."
+    },
+    {
+      "type": "text",
+      "id": "heading_plain",
+      "label": "Headline (plain part)",
+      "default": "اسمعي من"
+    },
+    {
+      "type": "text",
+      "id": "heading_highlight",
+      "label": "Headline (highlighted part)",
+      "default": "أمهات وي وندرز"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "رسائل حقيقية من أمهات حقيقية في لبنان — غير معدّلة، بموافقتهن."
+    },
+    {
+      "type": "text",
+      "id": "privacy_note",
+      "label": "Privacy note (small print)",
+      "default": "بموافقة كل أم. الاسماء والارقام والصور مُقتطعة للخصوصية."
+    },
+    {
+      "type": "header",
+      "content": "Customer outcome numbers"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show customer outcome numbers",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stats_aria_label",
+      "label": "Numbers accessibility label",
+      "default": "نتائج أبلغت عنها العملاء"
+    },
+    {
+      "type": "number",
+      "id": "stat_1_number",
+      "label": "Number 1 (%)",
+      "default": 94
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Number 1 label",
+      "default": "مريحة طوال اليوم"
+    },
+    {
+      "type": "number",
+      "id": "stat_2_number",
+      "label": "Number 2 (%)",
+      "default": 91
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Number 2 label",
+      "default": "تدفق أنعم"
+    },
+    {
+      "type": "number",
+      "id": "stat_3_number",
+      "label": "Number 3 (%)",
+      "default": 89
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Number 3 label",
+      "default": "ثقة أكبر"
+    },
+    {
+      "type": "number",
+      "id": "stat_4_number",
+      "label": "Number 4 (%)",
+      "default": 92
+    },
+    {
+      "type": "text",
+      "id": "stat_4_label",
+      "label": "Number 4 label",
+      "default": "أفضل من مضختي القديمة"
+    },
+    {
+      "type": "text",
+      "id": "stats_note",
+      "label": "Small note below each number",
+      "default": "نتائج مذكورة ذاتياً، مؤكدة"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats_note",
+      "label": "Show the small note below each number",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "WhatsApp button card (end of row)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show the chat-with-us card",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_heading",
+      "label": "Card heading",
+      "default": "هل لديك سؤال قبل الطلب؟"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Card text",
+      "default": "راسلينا كما فعلت هذه الأمهات — من 9 صباحاً إلى 9 مساءً، 7 أيام في الأسبوع، بالعربية والإنجليزية."
+    },
+    {
+      "type": "text",
+      "id": "cta_button",
+      "label": "Button label",
+      "default": "المحادثة على واتساب"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_url",
+      "label": "WhatsApp link",
+      "info": "Example: https://wa.me/961XXXXXXXX",
+      "default": "https://wa.me/"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "bg",
+      "label": "Background",
+      "options": [
+        { "value": "#ffffff", "label": "White" },
+        { "value": "#eaf6ff", "label": "Soft blue" },
+        { "value": "#F5EFE6", "label": "Warm cream" }
+      ],
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "pad_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "pad_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "screenshot",
+      "name": "WhatsApp screenshot",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Screenshot",
+          "info": "Crop to the key exchange (4–8 bubbles). Blur or crop numbers, last names and profile photos."
+        },
+        {
+          "type": "text",
+          "id": "asset_name",
+          "label": "Theme asset filename (fallback)",
+          "info": "e.g. ww-wa-1.jpg — used when no screenshot is uploaded."
+        },
+        {
+          "type": "textarea",
+          "id": "message",
+          "label": "Editable message fallback",
+          "info": "Shown as a WhatsApp-style message until a screenshot is uploaded."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "First name (optional)"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "One-line context (optional)",
+          "info": "e.g. Supply came back — month 4 · Beirut"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "WhatsApp Wall",
+      "blocks": [
+        { "type": "screenshot" },
+        { "type": "screenshot" },
+        { "type": "screenshot" },
+        { "type": "screenshot" }
+      ]
+    }
+  ]
+}
+{% endschema %}

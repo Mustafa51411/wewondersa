@@ -1,0 +1,64 @@
+<link rel="stylesheet" href="{{ 'ww-pdp.css' | asset_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<div class="ww-pdp">
+<section class="section"><div class="wrap">
+<div class="center"><h2>{{ section.settings.h_a }} <span class="hl-solid dfx">{{ section.settings.h_b }}</span></h2></div>
+<div class="steps">
+{%- assign step_titles = "التركيب|اختاري مقاسك|أدخليها|ابدئي|اسكبي" | split: "|" -%}
+{%- assign step_texts = "تتركب في ثوانٍ.|اختاري مقاسك بالأداة.|مخفيّة داخل حمّالتك.|اختاري الوضع والمستوى.|أصبي مباشرة في أكياسك." | split: "|" -%}
+{%- if section.blocks.size == 0 -%}
+  {%- for step_title in step_titles -%}<div class="step"><div class="ph sq"><img src="{{ 'ww-step-' | append: forloop.index | append: '.jpg' | asset_url }}" alt="{{ step_title | escape }}" loading="lazy"></div><div class="num">{{ forloop.index }}</div><h3>{{ step_title }}</h3><p>{{ step_texts[forloop.index0] }}</p></div>{%- endfor -%}
+{%- else -%}
+  {%- for b in section.blocks -%}{%- assign step_title = b.settings.title | default: step_titles[forloop.index0] -%}{%- assign step_text = b.settings.text | default: step_texts[forloop.index0] -%}<div class="step" {{ b.shopify_attributes }}><div class="ph sq"><img src="{%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 600 }}{%- else -%}{{ 'ww-step-' | append: forloop.index | append: '.jpg' | asset_url }}{%- endif -%}" alt="{{ step_title | escape }}" loading="lazy"></div><div class="num">{{ forloop.index }}</div><h3>{{ step_title }}</h3><p>{{ step_text }}</p></div>{%- endfor -%}
+{%- endif -%}
+</div></div></section>
+</div>
+{% schema %}
+{
+ "name": "WW How it works (steps)",
+ "settings": [
+  {
+   "type": "text",
+   "id": "h_a",
+   "label": "Heading (plain part)",
+   "default": "Five steps, then"
+  },
+  {
+   "type": "text",
+   "id": "h_b",
+   "label": "Heading (marker)",
+   "default": "hands-free"
+  }
+ ],
+ "blocks": [
+  {
+   "type": "step",
+   "name": "Step",
+   "settings": [
+    {
+     "type": "image_picker",
+     "id": "image",
+     "label": "Step photo"
+    },
+    {
+     "type": "text",
+     "id": "title",
+     "label": "Title",
+     "default": "Step"
+    },
+    {
+     "type": "text",
+     "id": "text",
+     "label": "Text",
+     "default": "Short description"
+    }
+   ]
+  }
+ ],
+ "presets": [
+  {
+   "name": "WW How it works (steps)"
+  }
+ ]
+}
+{% endschema %}

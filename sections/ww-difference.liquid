@@ -1,0 +1,184 @@
+<link rel="stylesheet" href="{{ 'ww-pdp.css' | asset_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<div class="ww-pdp">
+{%- if section.settings.show_feature_intro -%}
+<section class="section"><div class="wrap adv">
+  <div class="float-stage">
+    <svg class="fstar s1" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="3" stroke-linejoin="round"/></svg>
+    <svg class="fstar s2" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="3" stroke-linejoin="round"/></svg>
+    <svg class="fstar s3" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="3" stroke-linejoin="round"/></svg>
+    <img class="fpump" loading="lazy" src="{%- if section.settings.feature_image != blank -%}{{ section.settings.feature_image | image_url: width: 900 }}{%- else -%}{{ 'ww-pump.png' | asset_url }}{%- endif -%}" alt="{{ section.settings.feature_image_alt | escape }}">
+    <div class="fshadow"></div>
+  </div>
+  <div>
+    <h2>{{ section.settings.feature_heading }} <span class="hl">{{ section.settings.feature_highlight }}</span></h2>
+    <div class="adv-list" style="margin-top:22px">
+      {%- for index in (1..4) -%}
+        {%- assign title_key = 'feature_' | append: index | append: '_title' -%}
+        {%- assign text_key = 'feature_' | append: index | append: '_text' -%}
+        <div class="adv-item"><div class="i" aria-hidden="true">
+          {%- case index -%}
+            {%- when 1 -%}<svg width="44" height="44" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M6 15h30v14H6z" fill="var(--sky)"/><g stroke="var(--navy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="32" height="15" rx="3"/><path d="M9 11v6M15 11v9M21 11v6M27 11v9"/><path d="M8 33h22M8 33l3-2.4M8 33l3 2.4M30 33l-3-2.4M30 33l-3 2.4" stroke-width="1.7"/></g></svg>
+            {%- when 2 -%}<svg width="44" height="44" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M5 17h7l8-7v22l-8-7H5z" fill="var(--sky)"/><g stroke="var(--navy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14h6l8-7v26l-8-7H7z"/><path d="M26 15a7 7 0 010 10M30 11.5a12 12 0 010 17"/></g></svg>
+            {%- when 3 -%}<svg width="44" height="44" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 7c6 7 10 12 10 18a10 10 0 01-20 0c0-6 4-11 10-18z" fill="var(--sky)"/><g stroke="var(--navy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4c6 7 10 12 10 18a10 10 0 01-20 0c0-6 4-11 10-18z"/><path d="M14.5 23l3.5 3.5 7-7"/></g></svg>
+            {%- else -%}<svg width="44" height="44" viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M22 9c7 0 12 6 12 14 0 8-5 14-12 14S10 31 10 23C10 15 15 9 22 9z" fill="var(--sky)"/><g stroke="var(--navy)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4c7 0 12 6 12 14 0 8-5 14-12 14S7 26 7 18C7 10 12 4 19 4z"/><rect x="14" y="9" width="10" height="2.6" rx="1.3"/><path d="M8.5 22h21M12 28c4 2.4 10 2.4 14 0" stroke-width="1.8"/></g></svg>
+          {%- endcase -%}
+        </div><div><b>{{ section.settings[title_key] }}</b><small>{{ section.settings[text_key] }}</small></div></div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div></section>
+{%- endif -%}
+<section class="section diff"><div class="wrap">
+<div class="center"><h2>{{ section.settings.h_a }} <span class="hl-solid dfx">{{ section.settings.h_b }}</span></h2></div>
+<div class="dsplit">
+<div class="dcol dother"><div class="dtitle">{{ section.settings.other_title | replace: ' ', '<br>' }}</div><div class="dpump"><img loading="lazy" src="{%- if section.settings.other_img != blank -%}{{ section.settings.other_img | image_url: width: 600 }}{%- else -%}{{ 'ww-other-pump.jpg' | asset_url }}{%- endif -%}" alt="مضختات أخرى"></div></div>
+<div class="dcol dwee"><div class="dtitle"><em>{{ section.settings.wee_title }}</em><br>{{ section.settings.wee_sub }}</div><div class="dpump fl"><svg class="fstar s1" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="3" stroke-linejoin="round"/></svg><svg class="fstar s2" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="3.6" stroke-linejoin="round"/></svg><svg class="fstar s3" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="4" stroke-linejoin="round"/></svg><img loading="lazy" src="{%- if section.settings.wee_img != blank -%}{{ section.settings.wee_img | image_url: width: 900 }}{%- else -%}{{ 'ww-pump.png' | asset_url }}{%- endif -%}" alt="مضخة وي وندرز اللاسلكية للرضاعة"></div></div>
+</div>
+<div class="dpairs">
+{%- assign lines = section.settings.pairs | newline_to_br | split: '<br />' -%}
+{%- for l in lines -%}{%- assign pr = l | strip | split: '|' -%}{%- if pr.size > 1 -%}
+<div class="dpair"><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>{{ pr[0] | strip }}</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>{{ pr[1] | strip }}</span></div></div>
+{%- endif -%}{%- endfor -%}
+</div></div></section>
+</div>
+{% schema %}
+{
+ "name": "WW The Difference",
+ "settings": [
+  {
+   "type": "header",
+   "content": "What makes this one different?"
+  },
+  {
+   "type": "checkbox",
+   "id": "show_feature_intro",
+   "label": "Show feature intro",
+   "default": true
+  },
+  {
+   "type": "image_picker",
+   "id": "feature_image",
+   "label": "Feature intro pump image"
+  },
+  {
+   "type": "text",
+   "id": "feature_image_alt",
+   "label": "Feature intro image description",
+   "default": "WeeWonders wearable breast pump"
+  },
+  {
+   "type": "text",
+   "id": "feature_heading",
+   "label": "Feature intro heading",
+   "default": "What makes this one"
+  },
+  {
+   "type": "text",
+   "id": "feature_highlight",
+   "label": "Feature intro highlighted word",
+   "default": "different?"
+  },
+  {
+   "type": "text",
+   "id": "feature_1_title",
+   "label": "Feature 1 title",
+   "default": "Sized to you"
+  },
+  {
+   "type": "text",
+   "id": "feature_1_text",
+   "label": "Feature 1 description",
+   "default": "Comes with 4 flange sizes + a tool, so you never guess your size."
+  },
+  {
+   "type": "text",
+   "id": "feature_2_title",
+   "label": "Feature 2 title",
+   "default": "Whisper quiet"
+  },
+  {
+   "type": "text",
+   "id": "feature_2_text",
+   "label": "Feature 2 description",
+   "default": "Under 50dB, no one hears it."
+  },
+  {
+   "type": "text",
+   "id": "feature_3_title",
+   "label": "Feature 3 title",
+   "default": "Leak-proof"
+  },
+  {
+   "type": "text",
+   "id": "feature_3_text",
+   "label": "Feature 3 description",
+   "default": "Seals even upside down."
+  },
+  {
+   "type": "text",
+   "id": "feature_4_title",
+   "label": "Feature 4 title",
+   "default": "Truly hands-free"
+  },
+  {
+   "type": "text",
+   "id": "feature_4_text",
+   "label": "Feature 4 description",
+   "default": "Wear it while you do anything else."
+  },
+  {
+   "type": "text",
+   "id": "h_a",
+   "label": "Heading (plain part)",
+   "default": "The WeeWonders"
+  },
+  {
+   "type": "text",
+   "id": "h_b",
+   "label": "Heading (marker word)",
+   "default": "Difference"
+  },
+  {
+   "type": "text",
+   "id": "other_title",
+   "label": "Left title",
+   "default": "Other pumps"
+  },
+  {
+   "type": "image_picker",
+   "id": "other_img",
+   "label": "Left pump image"
+  },
+  {
+   "type": "text",
+   "id": "wee_title",
+   "label": "Right title (italic)",
+   "default": "WeeWonders"
+  },
+  {
+   "type": "text",
+   "id": "wee_sub",
+   "label": "Right title (second line)",
+   "default": "Pump"
+  },
+  {
+   "type": "image_picker",
+   "id": "wee_img",
+   "label": "Right pump image",
+   "info": "Transparent PNG. Empty keeps the current one."
+  },
+  {
+   "type": "textarea",
+   "id": "pairs",
+   "label": "Rows, one per line: other pumps | WeeWonders",
+   "default": "Your day revolves around it|Hands-free, it works on its own\nOne size, never actually yours|4 sizes + a tool to find yours\nToo weak to do the job|Soft on you, strong enough for the milk\nNever feels like it actually finished|Empties fully, so no milk is left behind"
+  }
+ ],
+ "presets": [
+  {
+   "name": "WW The Difference"
+  }
+ ]
+}
+{% endschema %}

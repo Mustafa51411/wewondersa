@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="{{ 'ww-pdp.css' | asset_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<div class="ww-pdp">
+<section class="reel" aria-label="أمهات وي وندرز">
+<style>.ww-pdp .rtrack{animation-duration:{{ section.settings.seconds }}s}@media(max-width:900px){.ww-pdp .rtrack{animation-duration:{{ section.settings.seconds | times: 0.953 | round: 1 }}s } }</style>
+<div class="rtrack">
+{%- if section.blocks.size == 0 -%}
+ {%- for pass in (1..2) -%}{%- for ri in (1..6) -%}{%- assign fallback_image_key = 'reel_image_' | append: ri -%}{%- assign fallback_image = section.settings[fallback_image_key] -%}<div class="rtile"{% if pass == 2 %} aria-hidden="true"{% endif %}><img src="{%- if fallback_image != blank -%}{{ fallback_image | image_url: width: 700 }}{%- else -%}{{ 'ww-reel-' | append: ri | append: '.jpg' | asset_url }}{%- endif -%}" alt="أم تستخدم المضخة" loading="lazy"></div>{%- endfor -%}{%- endfor -%}
+{%- else -%}
+{%- for pass in (1..2) -%}{%- for b in section.blocks -%}
+ {%- assign ri = forloop.index -%}
+ <div class="rtile"{% if pass == 2 %} aria-hidden="true"{% endif %} {% if pass == 1 %}{{ b.shopify_attributes }}{% endif %}><img src="{%- if b.settings.image != blank -%}{{ b.settings.image | image_url: width: 700 }}{%- else -%}{{ 'ww-reel-' | append: ri | append: '.jpg' | asset_url }}{%- endif -%}" alt="{% if pass == 1 %}{{ b.settings.alt | escape }}{% endif %}" loading="lazy"></div>
+{%- endfor -%}{%- endfor -%}
+{%- endif -%}
+</div></section>
+</div>
+{% schema %}
+{
+ "name": "WW Photo reel",
+ "settings": [
+ {
+  "type": "range",
+   "id": "seconds",
+   "label": "Seconds for one full loop (higher = slower)",
+   "min": 30,
+   "max": 140,
+   "step": 5,
+  "default": 70
+  },
+  {
+   "type": "header",
+   "content": "Default reel photos"
+  },
+  {
+   "type": "image_picker",
+   "id": "reel_image_1",
+   "label": "Photo 1"
+  },
+  {
+   "type": "image_picker",
+   "id": "reel_image_2",
+   "label": "Photo 2"
+  },
+  {
+   "type": "image_picker",
+   "id": "reel_image_3",
+   "label": "Photo 3"
+  },
+  {
+   "type": "image_picker",
+   "id": "reel_image_4",
+   "label": "Photo 4"
+  },
+  {
+   "type": "image_picker",
+   "id": "reel_image_5",
+   "label": "Photo 5"
+  },
+  {
+   "type": "image_picker",
+   "id": "reel_image_6",
+   "label": "Photo 6"
+  }
+ ],
+ "blocks": [
+  {
+   "type": "photo",
+   "name": "Photo",
+   "settings": [
+    {
+     "type": "image_picker",
+     "id": "image",
+     "label": "Photo",
+     "info": "Portrait photos work best"
+    },
+    {
+     "type": "text",
+     "id": "alt",
+     "label": "Description (for accessibility)",
+     "default": "Mom wearing the pump"
+    }
+   ]
+  }
+ ],
+ "presets": [
+  {
+   "name": "WW Photo reel"
+  }
+ ]
+}
+{% endschema %}

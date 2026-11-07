@@ -1,0 +1,799 @@
+<link rel="stylesheet" href="{{ 'ww-pdp.css' | asset_url }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<div class="ww-pdp">
+
+{%- assign fallback_gallery_image = product.featured_image -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'gallery' and block.settings.image != blank -%}
+    {%- assign fallback_gallery_image = block.settings.image -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign wa_num = section.settings.wa_phone | remove: '+' | remove: ' ' | remove: '-' | remove: '(' | remove: ')' -%}
+{%- capture wa_default_msg -%}{{ section.settings.wa_message }}: {{ product.title }} - مضخة مزدوجة{%- endcapture -%}
+{%- assign fallback_storage_gift = all_products[section.settings.storage_gift_handle] -%}
+{%- assign fallback_warmer_gift = all_products[section.settings.warmer_gift_handle] -%}
+{%- assign fallback_pillow_gift = all_products[section.settings.pillow_gift_handle] -%}
+
+{%- if section.settings.hide_announcement_bar != true -%}
+  <div class="topbar">{{ section.settings.topbar_text }}</div>
+{%- endif -%}
+
+{%- if section.settings.show_nav -%}
+<header class="head">
+  <div class="wrap">
+    {%- if section.settings.logo != blank -%}
+      <img width="200" height="69" src="{{ section.settings.logo | image_url: width: 400 }}" alt="{{ shop.name | escape }}">
+    {%- else -%}
+      <span class="ww-brand-text">{{ shop.name }}</span>
+    {%- endif -%}
+    <nav>
+      <a href="#how">{{ section.settings.nav_how | default: "كيف يعمل" }}</a>
+      <a href="#reviews">{{ section.settings.nav_reviews | default: "التقييمات" }}</a>
+      <a href="#faq">{{ section.settings.nav_faq | default: "الأسئلة الشائعة" }}</a>
+    </nav>
+    <div class="rate"><span class="stars">★★★★★</span> {{ section.settings.rating }}</div>
+  </div>
+</header>
+{%- endif -%}
+
+<section class="pdp" id="ww-top">
+  <div class="wrap">
+    <div class="gallery">
+      <div class="g-main">
+        {%- if fallback_gallery_image != blank -%}
+          <img width="1200" height="960" loading="eager" fetchpriority="high" id="mainimg" src="{{ fallback_gallery_image | image_url: width: 1400 }}" alt="{{ product.title | escape }}">
+        {%- endif -%}
+        <div class="g-nav g-prev" onclick="galStep(-1)">‹</div>
+        <div class="g-nav g-next" onclick="galStep(1)">›</div>
+        {%- if section.settings.show_gallery_warranty_badge -%}
+        <div class="stamp s1">
+          <div class="scallop">
+            <svg viewBox="0 0 100 100"><path d="M96.8,60.7 L86.9,67.8 L87.5,79.9 L75.6,82.1 L70.8,93.2 L59.1,90.0 L50.0,98.0 L40.9,90.0 L29.2,93.2 L24.4,82.1 L12.5,79.9 L13.1,67.8 L3.2,60.7 L9.0,50.0 L3.2,39.3 L13.1,32.2 L12.5,20.1 L24.4,17.9 L29.2,6.8 L40.9,10.0 L50.0,2.0 L59.1,10.0 L70.8,6.8 L75.6,17.9 L87.5,20.1 L86.9,32.2 L96.8,39.3 L91.0,50.0 Z" fill="var(--navy)"/></svg>
+            <div class="txt"><b>{{ section.settings.stamp_big }}</b><small>{{ section.settings.stamp_small | replace: ' ', '<br>' }}</small></div>
+          </div>
+        </div>
+        {%- endif -%}
+      </div>
+      <div class="g-thumbs" id="thumbs">
+      {%- assign gi = 0 -%}
+      {%- for b in section.blocks -%}
+        {%- if b.type == 'gallery' -%}
+          {%- assign gallery_image = b.settings.image | default: product.images[gi] | default: product.featured_image -%}
+          {%- if gallery_image != blank -%}
+            <button {% if gi == 0 %}class="active"{% endif %} onclick="galSet({{ gi }})" aria-label="صورة {{ gi | plus: 1 }}" data-src="{{ gallery_image | image_url: width: 1400 }}" {{ b.shopify_attributes }}>
+              <img width="300" height="300" loading="{% if gi < 6 %}eager{% else %}lazy{% endif %}" src="{{ gallery_image | image_url: width: 300 }}" alt="{{ product.title | escape }}">
+            </button>
+            {%- assign gi = gi | plus: 1 -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="buy">
+      <div class="rate"><span class="stars">★★★★★</span> {{ section.settings.rating }}/5 <span class="en">{{ section.settings.rating_note }}</span></div>
+      <h1><span class="hl">{{ section.settings.heading }}</span></h1>
+      <div class="pname">{{ section.settings.product_name }}</div>
+      <p class="promise">{{ section.settings.promise }}</p>
+      <ul class="ksp">
+        <li><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>{{ section.settings.ksp_1 }}</li>
+        <li><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c4 5 7 9 7 13a7 7 0 11-14 0c0-4 3-8 7-13z"/></svg></span>{{ section.settings.ksp_2 }}</li>
+        <li><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.6a5.5 5.5 0 00-9.3-4A5.5 5.5 0 002 8.5c0 6 9.5 11 9.5 11s9.3-5 9.3-10.9z"/></svg></span>{{ section.settings.ksp_3 }}</li>
+        <li><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="14" height="10" rx="3"/><path d="M21 10v4"/></svg></span>{{ section.settings.ksp_4 }}</li>
+      </ul>
+
+      <div class="specrow">
+        <div><b>{{ section.settings.spec_1_big }}</b><small>{{ section.settings.spec_1_small }}</small></div>
+        <div><b>{{ section.settings.spec_2_big }}</b><small>{{ section.settings.spec_2_small }}</small></div>
+        <div><b>{{ section.settings.spec_3_big }}</b><small>{{ section.settings.spec_3_small }}</small></div>
+      </div>
+
+      <div class="offer" id="offer" role="radiogroup" aria-label="اختاري طقمك">
+      {%- assign oi = 0 -%}
+      {%- for b in section.blocks -%}
+        {%- if b.type == 'offer' -%}
+          {%- assign ov = nil -%}
+          {%- for v in product.variants -%}
+            {%- if v.title == b.settings.variant_title -%}
+              {%- assign ov = v -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if ov == nil -%}
+            {%- assign b_title_lower = b.settings.variant_title | downcase -%}
+            {%- for v in product.variants -%}
+              {%- assign v_title_lower = v.title | downcase -%}
+              {%- if b_title_lower contains 'double' and v_title_lower contains 'double' -%}
+                {%- assign ov = v -%}
+                {%- break -%}
+              {%- elsif b_title_lower contains 'single' and v_title_lower contains 'single' -%}
+                {%- assign ov = v -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- if ov == nil and product.variants.size > oi -%}
+            {%- assign ov = product.variants[oi] -%}
+          {%- endif -%}
+          {%- if ov == nil -%}
+            {%- assign ov = product.variants.first -%}
+          {%- endif -%}
+
+          <div class="ocard{% if oi == 0 %} sel{% endif %}" role="radio" aria-checked="{% if oi == 0 %}true{% else %}false{% endif %}" tabindex="0" data-name="{{ b.settings.name | escape }}" data-price="{{ ov.price | money_without_trailing_zeros }}" data-variant-id="{{ ov.id }}" data-available="{{ ov.available }}" onclick="pickO(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickO(this)}" {{ b.shopify_attributes }}>
+            {%- if b.settings.flag != blank -%}
+              <span class="flag">
+                <svg viewBox="0 0 100 100"><path d="M96.8,60.7 L86.9,67.8 L87.5,79.9 L75.6,82.1 L70.8,93.2 L59.1,90.0 L50.0,98.0 L40.9,90.0 L29.2,93.2 L24.4,82.1 L12.5,79.9 L13.1,67.8 L3.2,60.7 L9.0,50.0 L3.2,39.3 L13.1,32.2 L12.5,20.1 L24.4,17.9 L29.2,6.8 L40.9,10.0 L50.0,2.0 L59.1,10.0 L70.8,6.8 L75.6,17.9 L87.5,20.1 L86.9,32.2 L96.8,39.3 L91.0,50.0 Z" fill="var(--navy)"/></svg>
+                <span>{{ b.settings.flag | replace: ' ', '<br>' }}</span>
+              </span>
+            {%- endif -%}
+            <div class="ohead">
+              <span class="oradio"></span>
+              {%- assign offer_image = b.settings.image | default: ov.featured_image | default: product.featured_image -%}
+              {%- if offer_image != blank -%}<img class="oimg" width="76" height="76" loading="eager" src="{{ offer_image | image_url: width: 200 }}" alt="{{ b.settings.name | escape }}">{%- endif -%}
+              <div class="otitle"><span class="oname">{{ b.settings.name }}</span><span class="obadge">{{ b.settings.badge }}</span></div>
+              <div class="oprice"><span class="onow">{{ ov.price | money_without_trailing_zeros }}</span><span class="owas">{{ b.settings.was_price }}</span></div>
+            </div>
+            <ul class="ogifts">
+            {%- assign glines = b.settings.gifts | newline_to_br | split: '<br />' -%}
+            {%- for gl in glines -%}
+              {%- assign gp = gl | strip | split: '|' -%}
+              {%- if gp.size > 1 -%}
+                {%- assign gk = gp[0] | strip | downcase -%}
+                {%- case gk -%}
+                  {%- when 'sizing' -%}{%- assign gimg = 'ww-gift-sizing.jpg' -%}
+                  {%- when 'bags' -%}{%- assign gimg = 'ww-gift-bags.webp' -%}
+                  {%- when 'warmer' -%}{%- assign gimg = 'ww-gift-warmer.jpg' -%}
+                  {%- when 'pillow' -%}{%- assign gimg = 'ww-gift-pillow.jpg' -%}
+                  {%- else -%}{%- assign gimg = 'ww-gift-delivery.png' -%}
+                {%- endcase -%}
+                {%- assign gv = gp[3] | strip -%}
+                <li>
+                  <span class="oc{% if gk == 'delivery' %} pad{% endif %}"><img src="{{ gimg | asset_url }}" alt=""></span>
+                  <span class="ot">{{ gp[1] | strip }}{% if gp[2] != blank %}<small>{{ gp[2] | strip }}</small>{% endif %}</span>
+                  {% if gv == 'FREE' or gv == 'مجاناً' %}<span class="ov free">مجاناً</span>{% else %}<s class="ov">{{ gv }}</s>{% endif %}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+            </ul>
+          </div>
+          {%- assign oi = oi | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      </div>
+
+      {%- comment -%} Real bundle gift items from theme blocks {%- endcomment -%}
+      <div id="bundle-gift-data" hidden>
+        {%- assign configured_bundle_gifts = 0 -%}
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'bundle_gift' and b.settings.product != blank -%}
+            {%- assign configured_bundle_gifts = configured_bundle_gifts | plus: 1 -%}
+            {%- assign gp = b.settings.product -%}
+            {%- assign gv = gp.selected_or_first_available_variant -%}
+            {%- if gv != blank -%}
+              <span data-bundle-gift data-applies-to="{{ b.settings.applies_to }}" data-variant-id="{{ gv.id }}" data-product-title="{{ gp.title | escape }}" data-available="{{ gv.available }}"></span>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if configured_bundle_gifts == 0 -%}
+          {%- if fallback_storage_gift != blank -%}{%- assign storage_variant = fallback_storage_gift.selected_or_first_available_variant -%}{%- if storage_variant != blank -%}<span data-bundle-gift data-applies-to="both" data-variant-id="{{ storage_variant.id }}" data-product-title="{{ fallback_storage_gift.title | escape }}" data-available="{{ storage_variant.available }}"></span>{%- endif -%}{%- endif -%}
+          {%- if fallback_warmer_gift != blank -%}{%- assign warmer_variant = fallback_warmer_gift.selected_or_first_available_variant -%}{%- if warmer_variant != blank -%}<span data-bundle-gift data-applies-to="double" data-variant-id="{{ warmer_variant.id }}" data-product-title="{{ fallback_warmer_gift.title | escape }}" data-available="{{ warmer_variant.available }}"></span>{%- endif -%}{%- endif -%}
+          {%- if fallback_pillow_gift != blank -%}{%- assign pillow_variant = fallback_pillow_gift.selected_or_first_available_variant -%}{%- if pillow_variant != blank -%}<span data-bundle-gift data-applies-to="single" data-variant-id="{{ pillow_variant.id }}" data-product-title="{{ fallback_pillow_gift.title | escape }}" data-available="{{ pillow_variant.available }}"></span>{%- endif -%}{%- endif -%}
+        {%- endif -%}
+      </div>
+
+      <button class="btn btn-atc btn-lg" id="atc" type="button" onclick="addToCart(this)" data-label="{{ section.settings.atc_label | escape }}" data-sold-out-label="نفدت الكمية">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>
+        <span>{{ section.settings.atc_label }}</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+      </button>
+
+      {%- if section.settings.show_whatsapp_buttons -%}
+      <a class="btn btn-whatsapp btn-lg"
+         id="ww-wa-btn"
+         data-whatsapp-order
+         data-whatsapp-number="{{ wa_num | escape }}"
+         data-whatsapp-message="{{ section.settings.wa_message | escape }}"
+         data-product-title="{{ product.title | escape }}"
+         href="https://api.whatsapp.com/send/?phone={{ wa_num }}&text={{ wa_default_msg | strip | url_encode }}&type=phone_number&app_absent=0"
+         target="_blank" rel="noopener">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        {{ section.settings.wa_label }}
+      </a>
+      {%- endif -%}
+
+      <div class="guarbox">
+        <span class="gi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+        <div><b>{{ section.settings.guarantee_title }}</b><small>{{ section.settings.guarantee_text }}</small></div>
+      </div>
+
+      <div class="trust">
+        <div class="t"><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="14" height="10" rx="3"/><path d="M21 10v4"/></svg></div>{{ section.settings.trust_1 }}</div>
+        <div class="t"><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/></svg></div>{{ section.settings.trust_2 }}</div>
+        <div class="t"><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 01-11.8 7L4 20l1.1-4.6A8 8 0 1121 12z"/></svg></div>{{ section.settings.trust_3 }}</div>
+        <div class="t"><div class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg></div>{{ section.settings.trust_4 }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="buybar" id="buybar">
+  <div class="wrap">
+    <div class="p" id="barprice">
+      {{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}
+      <small id="barname">{{ product.title }}</small>
+    </div>
+    <button class="btn btn-cta" type="button" onclick="document.getElementById('atc').scrollIntoView({behavior:'smooth',block:'center'})">
+      {{ section.settings.atc_label }}
+    </button>
+  </div>
+</div>
+
+{%- if section.settings.show_whatsapp_buttons and section.settings.show_sticky_whatsapp -%}
+  <a class="ww-wa-float"
+     data-whatsapp-order
+     data-whatsapp-number="{{ wa_num | escape }}"
+     data-whatsapp-message="{{ section.settings.wa_message | escape }}"
+     data-product-title="{{ product.title | escape }}"
+     href="https://api.whatsapp.com/send/?phone={{ wa_num }}&text={{ wa_default_msg | strip | url_encode }}&type=phone_number&app_absent=0"
+     target="_blank" rel="noopener"
+     aria-label="{{ section.settings.sticky_whatsapp_label | escape }}"
+     title="{{ section.settings.sticky_whatsapp_label | escape }}">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16.04 3A12.94 12.94 0 0 0 4.87 22.46L3 29l6.72-1.76A12.98 12.98 0 1 0 16.04 3Zm0 23.76c-2.1 0-4.15-.57-5.93-1.64l-.42-.25-3.99 1.05 1.07-3.89-.27-.44A10.72 10.72 0 1 1 16.04 26.76Zm5.88-8.03c-.32-.16-1.91-.94-2.2-1.05-.3-.11-.51-.16-.73.16-.21.32-.83 1.05-1.02 1.27-.19.21-.38.24-.7.08-.32-.16-1.36-.5-2.59-1.6-.96-.85-1.6-1.91-1.79-2.23-.19-.32-.02-.5.14-.66.15-.14.32-.37.49-.56.16-.19.21-.32.32-.54.11-.21.05-.4-.03-.56-.08-.16-.73-1.75-1-2.4-.26-.63-.53-.55-.73-.56h-.62c-.22 0-.57.08-.86.4-.3.32-1.13 1.1-1.13 2.69s1.16 3.12 1.32 3.34c.16.21 2.28 3.48 5.52 4.88.77.33 1.37.53 1.84.68.77.25 1.48.21 2.04.13.62-.09 1.91-.78 2.18-1.53.27-.75.27-1.4.19-1.53-.08-.13-.3-.21-.62-.37Z"/></svg>
+  </a>
+{%- endif -%}
+
+<script>
+(function(){
+  var thumbs = [].slice.call(document.querySelectorAll('#thumbs button'));
+  var main = document.getElementById('mainimg');
+  var gi = 0;
+
+  window.galSet = function(i) {
+    if (!thumbs.length || !main) return;
+    gi = (i + thumbs.length) % thumbs.length;
+    main.src = thumbs[gi].getAttribute('data-src');
+    thumbs.forEach(function(b, k) { b.classList.toggle('active', k === gi); });
+  };
+
+  window.galStep = function(d) {
+    galSet(gi + d);
+  };
+
+  if (thumbs.length && main) {
+    galSet(0);
+  }
+
+  function setAddButtonState(offer) {
+    var atc = document.getElementById('atc');
+    if (!atc) return;
+    var label = atc.querySelector('span') || atc;
+    var available = offer && offer.dataset.available === 'true';
+    atc.disabled = !available;
+    label.textContent = available ? atc.dataset.label : atc.dataset.soldOutLabel;
+  }
+
+  window.pickO = function(el) {
+    document.querySelectorAll('#offer .ocard').forEach(function(v) {
+      v.classList.remove('sel');
+      v.setAttribute('aria-checked', 'false');
+    });
+    el.classList.add('sel');
+    el.setAttribute('aria-checked', 'true');
+    setAddButtonState(el);
+
+    var barPrice = document.getElementById('barprice');
+    if (barPrice && barPrice.childNodes[0]) barPrice.childNodes[0].textContent = el.dataset.price;
+    var barName = document.getElementById('barname');
+    if (barName) barName.textContent = el.dataset.name;
+
+    // Dynamically update WhatsApp links and attribution payloads
+    document.querySelectorAll('[data-whatsapp-order]').forEach(function(link) {
+      var baseMsg = link.dataset.whatsappMessage || '{{ section.settings.wa_message | escape }}';
+      var prodTitle = link.dataset.productTitle || '{{ product.title | escape }}';
+      var fullMsg = baseMsg + ': ' + prodTitle + ' - ' + el.dataset.name;
+      link.href = 'https://api.whatsapp.com/send/?phone=' + link.dataset.whatsappNumber + '&text=' + encodeURIComponent(fullMsg) + '&type=phone_number&app_absent=0';
+    });
+
+    // Sync bottom reprise offer if on the page
+    document.querySelectorAll('.roffer .ocard').forEach(function(c) {
+      var on = c.dataset.name === el.dataset.name;
+      c.classList.toggle('sel', on);
+      c.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+  };
+
+  window.addToCart = function(btn) {
+    var sel = document.querySelector('#offer .ocard.sel') || document.querySelector('#offer .ocard');
+    if (!sel || sel.dataset.available !== 'true') return;
+    var id = parseInt(sel.dataset.variantId, 10);
+    if (!id) return;
+    var label = btn.querySelector('span') || btn;
+    var old = label.textContent;
+    btn.disabled = true;
+    label.textContent = 'جارٍ الإضافة...';
+
+    var bundleName = sel.dataset.name || '{{ product.title | escape }}';
+    var bundleType = (bundleName.toLowerCase().indexOf('double') >= 0 || bundleName.indexOf('مزدوج') >= 0) ? 'double' : 'single';
+
+    var items = [{
+      id: id,
+      quantity: 1,
+      properties: { '_WeeWonders bundle': bundleName }
+    }];
+
+    var giftEls = Array.prototype.slice.call(document.querySelectorAll('#bundle-gift-data [data-bundle-gift]')).filter(function(g) {
+      var app = g.dataset.appliesTo;
+      return app === bundleType || app === 'both';
+    });
+
+    giftEls.forEach(function(g) {
+      var gid = parseInt(g.dataset.variantId, 10);
+      if (gid) {
+        items.push({
+          id: gid,
+          quantity: 1,
+          properties: {
+            '_WeeWonders free gift': 'Yes',
+            '_Bundle option': bundleName,
+            '_Bundle parent variant': String(id)
+          }
+        });
+      }
+    });
+
+    var root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+    fetch(root + 'cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ items: items })
+    })
+    .then(function(r) {
+      if (!r.ok) {
+        return r.json().then(function(err) { throw new Error(err.description || 'فشلت الإضافة إلى السلة'); });
+      }
+      return r.json();
+    })
+    .then(function(data) {
+      document.dispatchEvent(new CustomEvent('ww:add-to-cart', {
+        detail: { name: bundleName, price: sel.dataset.price, variant_id: id, items: items }
+      }));
+      var afterAdd = '{{ section.settings.after_add | default: "cart" }}';
+      if (afterAdd === 'checkout') {
+        window.location.href = root + 'checkout';
+      } else {
+        window.location.href = root + 'cart';
+      }
+    })
+    .catch(function(err) {
+      console.error(err);
+      label.textContent = 'حاولي مرة أخرى';
+      btn.disabled = false;
+      setTimeout(function() { label.textContent = old; }, 2000);
+    });
+  };
+
+  var bar = document.getElementById('buybar');
+  setAddButtonState(document.querySelector('#offer .ocard.sel') || document.querySelector('#offer .ocard'));
+  window.addEventListener('scroll', function() {
+    if (bar) bar.classList.toggle('show', window.scrollY > 640);
+  }, { passive: true });
+})();
+</script>
+
+</div>
+
+{% schema %}
+{
+ "name": "WW Product (top)",
+ "settings": [
+  {
+   "type": "header",
+   "content": "Top of page"
+  },
+  {
+   "type": "checkbox",
+   "id": "hide_announcement_bar",
+   "label": "Hide announcement bar",
+   "default": false
+  },
+  {
+   "type": "text",
+   "id": "topbar_text",
+   "label": "Announcement text",
+   "default": "Free sizing kit in every box • Delivery in 48 hours • 6-month warranty • WhatsApp support 7 days"
+  },
+  {
+   "type": "checkbox",
+   "id": "show_nav",
+   "label": "Show mini menu (logo, links, rating)",
+   "default": false
+  },
+  {
+   "type": "image_picker",
+   "id": "logo",
+   "label": "Custom logo (optional)",
+   "info": "Leave empty to use default WeeWonders logo"
+  },
+  {
+   "type": "text",
+   "id": "nav_how",
+   "label": "Mini menu: How it works link text",
+   "default": "How it works"
+  },
+  {
+   "type": "text",
+   "id": "nav_reviews",
+   "label": "Mini menu: Reviews link text",
+   "default": "Reviews"
+  },
+  {
+   "type": "text",
+   "id": "nav_faq",
+   "label": "Mini menu: FAQ link text",
+   "default": "FAQ"
+  },
+  {
+   "type": "header",
+   "content": "Gallery badge and rating"
+  },
+  {
+   "type": "text",
+   "id": "stamp_big",
+   "label": "Badge number",
+   "default": "6"
+  },
+  {
+   "type": "text",
+   "id": "stamp_small",
+   "label": "Badge text",
+   "default": "Month warranty"
+  },
+  {
+   "type": "checkbox",
+   "id": "show_gallery_warranty_badge",
+   "label": "Show warranty badge on gallery image",
+   "default": false
+  },
+  {
+   "type": "text",
+   "id": "rating",
+   "label": "Rating number",
+   "default": "4.8"
+  },
+  {
+   "type": "text",
+   "id": "rating_note",
+   "label": "Rating note",
+   "default": "Loved by thousands of Lebanese mothers"
+  },
+  {
+   "type": "header",
+   "content": "Headline"
+  },
+  {
+   "type": "text",
+   "id": "heading",
+   "label": "Headline",
+   "default": "Made to fit your body and your day"
+  },
+  {
+   "type": "text",
+   "id": "product_name",
+   "label": "Product name",
+   "default": "The WeeWonders Wearable Breast Pump"
+  },
+  {
+   "type": "textarea",
+   "id": "promise",
+   "label": "Promise line",
+   "default": "Without the pain, the long pumping hours, or the complicated setup."
+  },
+  {
+   "type": "header",
+   "content": "Key points"
+  },
+  {
+   "type": "text",
+   "id": "ksp_1",
+   "label": "Point 1",
+   "default": "Pump while you do everything else"
+  },
+  {
+   "type": "text",
+   "id": "ksp_2",
+   "label": "Point 2",
+   "default": "100% leak-proof"
+  },
+  {
+   "type": "text",
+   "id": "ksp_3",
+   "label": "Point 3",
+   "default": "Less pain from day one"
+  },
+  {
+   "type": "text",
+   "id": "ksp_4",
+   "label": "Point 4",
+   "default": "Battery that lasts you all day"
+  },
+  {
+   "type": "header",
+   "content": "Spec row"
+  },
+  {
+   "type": "text",
+   "id": "spec_1_big",
+   "label": "Spec 1 big",
+   "default": "5–6"
+  },
+  {
+   "type": "text",
+   "id": "spec_1_small",
+   "label": "Spec 1 small",
+   "default": "sessions / charge"
+  },
+  {
+   "type": "text",
+   "id": "spec_2_big",
+   "label": "Spec 2 big",
+   "default": "180 ml"
+  },
+  {
+   "type": "text",
+   "id": "spec_2_small",
+   "label": "Spec 2 small",
+   "default": "leak-proof cup"
+  },
+  {
+   "type": "text",
+   "id": "spec_3_big",
+   "label": "Spec 3 big",
+   "default": "4 modes"
+  },
+  {
+   "type": "text",
+   "id": "spec_3_small",
+   "label": "Spec 3 small",
+   "default": "12 levels each"
+  },
+  {
+   "type": "header",
+   "content": "Buttons"
+  },
+  {
+   "type": "text",
+   "id": "atc_label",
+   "label": "Add to cart label",
+   "default": "Add to cart"
+  },
+  {
+   "type": "select",
+   "id": "after_add",
+   "label": "After adding to cart",
+   "options": [
+    {
+     "value": "cart",
+     "label": "Go to cart"
+    },
+    {
+     "value": "checkout",
+     "label": "Go to checkout"
+    }
+   ],
+   "default": "cart"
+  },
+  {
+   "type": "checkbox",
+   "id": "show_whatsapp_buttons",
+   "label": "Show WhatsApp order buttons",
+   "default": false
+  },
+  {
+   "type": "text",
+   "id": "wa_label",
+   "label": "WhatsApp button label",
+   "default": "Order on WhatsApp"
+  },
+  {
+   "type": "text",
+   "id": "wa_phone",
+   "label": "WhatsApp number (digits only)",
+   "default": ""
+  },
+  {
+   "type": "text",
+   "id": "wa_message",
+   "label": "WhatsApp message",
+   "default": "مرحباً، أريد طلب مضخة وي وندرز"
+  },
+  {
+   "type": "checkbox",
+   "id": "show_sticky_whatsapp",
+   "label": "Show sticky floating WhatsApp button",
+   "default": true
+  },
+  {
+   "type": "text",
+   "id": "sticky_whatsapp_label",
+   "label": "Sticky WhatsApp label",
+   "default": "Order on WhatsApp"
+  },
+  {
+   "type": "header",
+   "content": "Warranty box and trust row"
+  },
+  {
+   "type": "text",
+   "id": "guarantee_title",
+   "label": "Warranty title",
+   "default": "6-month warranty"
+  },
+  {
+   "type": "textarea",
+   "id": "guarantee_text",
+   "label": "Warranty text",
+   "default": "If it stops working or something goes wrong, we’ve got you covered."
+  },
+  {
+   "type": "text",
+   "id": "trust_1",
+   "label": "Trust 1",
+   "default": "48h delivery"
+  },
+  {
+   "type": "text",
+   "id": "trust_2",
+   "label": "Trust 2",
+   "default": "6-month warranty"
+  },
+  {
+   "type": "text",
+   "id": "trust_3",
+   "label": "Trust 3",
+   "default": "WhatsApp 7 days"
+  },
+  {
+   "type": "text",
+   "id": "trust_4",
+   "label": "Trust 4",
+   "default": "Risk-free"
+  },
+  {
+   "type": "header",
+   "content": "Fallback free-gift products"
+  },
+  {
+   "type": "text",
+   "id": "storage_gift_handle",
+   "label": "Storage bags product handle",
+   "default": "milk-storage-box",
+   "info": "Used only when no Free bundle gift blocks have been added."
+  },
+  {
+   "type": "text",
+   "id": "warmer_gift_handle",
+   "label": "Bottle warmer product handle",
+   "default": "bottle-warmer",
+   "info": "Included with the Double Pump offer."
+  },
+  {
+   "type": "text",
+   "id": "pillow_gift_handle",
+   "label": "Breastfeeding pillow product handle",
+   "default": "breastfeeding-pillow",
+   "info": "Included with the Single Pump offer."
+  }
+ ],
+ "blocks": [
+  {
+   "type": "gallery",
+   "name": "Gallery photo",
+   "settings": [
+    {
+     "type": "image_picker",
+     "id": "image",
+     "label": "Photo",
+     "info": "Leave empty to use the current photo from the store"
+    }
+   ]
+  },
+  {
+   "type": "offer",
+   "name": "Offer card",
+   "settings": [
+    {
+     "type": "text",
+     "id": "variant_title",
+     "label": "Variant title (must match product variant)",
+     "default": "Double Pump Set"
+    },
+    {
+     "type": "text",
+     "id": "name",
+     "label": "Name",
+     "default": "Double Pump Set"
+    },
+    {
+     "type": "text",
+     "id": "flag",
+     "label": "Flag (empty for none)",
+     "default": "Most popular"
+    },
+    {
+     "type": "text",
+     "id": "badge",
+     "label": "Savings badge",
+     "default": "Save $50"
+    },
+    {
+     "type": "text",
+     "id": "was_price",
+     "label": "Crossed-out price",
+     "default": "$220"
+    },
+    {
+     "type": "image_picker",
+     "id": "image",
+     "label": "Offer photo"
+    },
+    {
+     "type": "textarea",
+     "id": "gifts",
+     "label": "Included gifts, one per line: icon | title | small note | value",
+     "default": "sizing|+ FREE Sizing Kit|4 sizes + a tool to find your fit|FREE\nbags|+ FREE Storage Bags (50 pcs)||$12\nwarmer|+ FREE Fast Bottle Warmer||$40\ndelivery|+ FREE Delivery||FREE",
+     "info": "Icons: sizing, bags, warmer, pillow, delivery. Value: FREE or a price."
+    }
+   ]
+  },
+  {
+   "type": "bundle_gift",
+   "name": "Free bundle gift",
+   "settings": [
+    {
+     "type": "product",
+     "id": "product",
+     "label": "Gift product"
+    },
+    {
+     "type": "image_picker",
+     "id": "image",
+     "label": "Optional card image override"
+    },
+    {
+     "type": "text",
+     "id": "label",
+     "label": "Gift label (optional)"
+    },
+    {
+     "type": "select",
+     "id": "applies_to",
+     "label": "Include with",
+     "default": "both",
+     "options": [
+      {
+       "value": "double",
+       "label": "Double Pump only"
+      },
+      {
+       "value": "single",
+       "label": "Single Pump only"
+      },
+      {
+       "value": "both",
+       "label": "Both options"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "presets": [
+  {
+   "name": "WW Product (top)"
+  }
+ ]
+}
+{% endschema %}
