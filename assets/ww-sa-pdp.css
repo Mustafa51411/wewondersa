@@ -67,7 +67,7 @@
 .ww-sa .g-main img{width:100%;height:100%;object-fit:cover;border-radius:22px}
 .ww-sa .g-main::before{content:"";position:absolute;top:-8%;left:-8%;right:-8%;bottom:-8%;z-index:-1;
     background:radial-gradient(circle, rgba(143,217,245,.5) 0%, rgba(143,217,245,.14) 45%, rgba(143,217,245,0) 70%);border-radius:50%}
-.ww-sa .g-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.9);border:1px solid var(--line);display:grid;place-items:center;cursor:pointer;font-size:1.1rem;color:var(--navy)}
+.ww-sa .g-nav{position:absolute;top:50%;transform:translateY(-50%);width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.9);border:1px solid var(--line);display:grid;place-items:center;cursor:pointer;font-size:1.8rem;color:var(--navy)}
 .ww-sa .g-prev{left:12px}
 .ww-sa .g-next{right:12px}
 .ww-sa .scallop{position:relative;width:112px;height:112px;display:grid;place-items:center;filter:drop-shadow(0 10px 20px rgba(26,43,60,.35))}
