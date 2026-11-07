@@ -3,7 +3,7 @@
     --blue:#3FA9DE; --sky:#8FD9F5; --sky-soft:#EAF6FC; --sky-soft2:#F5FBFD;
     --white:#fff; --line:#E3EEF4;
     --good:#2E9E66; --bad:#D6493F; --star:var(--blue);
-    --fd:'Plus Jakarta Sans',system-ui,sans-serif; --fb:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+    --fd:'Cairo',system-ui,sans-serif; --fb:'Cairo',system-ui,-apple-system,sans-serif;
     --wrap:1200px; --shadow:0 18px 50px -22px rgba(26,43,60,.28);
   }
 .ww-pdp *{box-sizing:border-box;margin:0;padding:0}
