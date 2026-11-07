@@ -175,12 +175,25 @@
     btn.disabled = true;
     label.textContent = 'جارٍ الإضافة...';
 
+    var miniCart = document.querySelector('mini-cart');
+    var sectionsToFetch = (miniCart && typeof miniCart.getSectionsToRender === 'function')
+      ? miniCart.getSectionsToRender().map(function(s){ return s.section || s.id; })
+      : ['mini-cart', 'cart-icon-bubble', 'mobile-cart-icon-bubble'];
+
+    var bodyWithSections = {
+      id: id,
+      quantity: 1,
+      sections: sectionsToFetch,
+      sections_url: window.location.pathname
+    };
+    var simpleBody = { id: id, quantity: 1 };
+
     var calls = [
-      { url: '{{ routes.cart_add_url }}', body: { id: id, quantity: 1 } },
-      { url: '{{ routes.cart_add_url }}', body: { items: [{ id: id, quantity: 1 }] } },
-      { url: '/cart/add.js', body: { id: id, quantity: 1 } },
-      { url: '/cart/add.js', body: { items: [{ id: id, quantity: 1 }] } },
-      { url: '/cart/add', body: { id: id, quantity: 1 } }
+      { url: '{{ routes.cart_add_url }}', body: bodyWithSections },
+      { url: '/cart/add.js', body: bodyWithSections },
+      { url: '{{ routes.cart_add_url }}', body: simpleBody },
+      { url: '/cart/add.js', body: simpleBody },
+      { url: '/cart/add', body: simpleBody }
     ];
 
     function tryNext(idx){
@@ -201,7 +214,9 @@
 
     tryNext(0)
     .then(function(data){
-      label.textContent = 'تمت الإضافة!';
+      btn.disabled = false;
+      label.textContent = old;
+
       document.dispatchEvent(new CustomEvent('ww:add-to-cart', {
         detail: {
           name: sel ? sel.dataset.name : '{{ product.title | escape }}',
@@ -210,11 +225,16 @@
         }
       }));
 
-      var after = '{{ section.settings.after_add | default: "cart" }}';
-      if(after === 'checkout'){
-        window.location.href = '{{ routes.cart_url | replace: "/cart", "/checkout" }}';
+      if(miniCart && typeof miniCart.renderContents === 'function' && data && data.sections){
+        miniCart.renderContents(data);
+        document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { product: data } }));
       } else {
-        window.location.href = '{{ routes.cart_url }}';
+        var after = '{{ section.settings.after_add | default: "cart" }}';
+        if(after === 'checkout'){
+          window.location.href = '{{ routes.cart_url | replace: "/cart", "/checkout" }}';
+        } else {
+          window.location.href = '{{ routes.cart_url }}';
+        }
       }
     })
     .catch(function(err){
