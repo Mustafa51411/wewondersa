@@ -4,7 +4,7 @@
 {%- assign gal_urls = "https://weewonderssa.com/cdn/shop/files/carousel_hero1.jpg|https://weewonderssa.com/cdn/shop/files/mechanism.jpg|https://weewonderssa.com/cdn/shop/files/carousel_objection_handling.jpg|https://weewonderssa.com/cdn/shop/files/product1.png|https://weewonderssa.com/cdn/shop/files/product3.png" | split: "|" -%}
 {%- assign gi = 0 -%}{%- assign gal_first = '' -%}
 {%- for b in section.blocks -%}{%- if b.type == 'gallery' -%}{%- if gi == 0 -%}{%- if b.settings.image != blank -%}{%- capture gal_first -%}{{ b.settings.image | image_url: width: 1200 }}{%- endcapture -%}{%- endif -%}{%- endif -%}{%- assign gi = gi | plus: 1 -%}{%- endif -%}{%- endfor -%}
-{%- if gal_first == blank -%}{%- assign gal_first = gal_urls[0] -%}{%- endif -%}
+{%- if gal_first == blank -%}{%- if product.images.size > 0 -%}{%- capture gal_first -%}{{ product.images[0] | image_url: width: 1200 }}{%- endcapture -%}{%- else -%}{%- assign gal_first = gal_urls[0] -%}{%- endif -%}{%- endif -%}
 {%- assign dbl = product.variants.first -%}{%- assign sgl = product.variants.last -%}
 {%- for v in product.variants -%}{%- if v.title == section.settings.double_variant -%}{%- assign dbl = v -%}{%- endif -%}{%- if v.title == section.settings.single_variant -%}{%- assign sgl = v -%}{%- endif -%}{%- endfor -%}
 {%- assign dbl_price = dbl.price | divided_by: 100.0 | round -%}
@@ -33,7 +33,7 @@
         {%- assign gi = 0 -%}
         {%- for b in section.blocks -%}{%- if b.type == 'gallery' -%}
           {%- if b.settings.image != blank -%}{%- capture gsrc -%}{{ b.settings.image | image_url: width: 1200 }}{%- endcapture -%}{%- capture gthumb -%}{{ b.settings.image | image_url: width: 300 }}{%- endcapture -%}
-          {%- else -%}{%- assign gsrc = gal_urls[gi] -%}{%- assign gthumb = gal_urls[gi] -%}{%- endif -%}
+          {%- else -%}{%- if product.images[gi] != blank -%}{%- capture gsrc -%}{{ product.images[gi] | image_url: width: 1200 }}{%- endcapture -%}{%- capture gthumb -%}{{ product.images[gi] | image_url: width: 300 }}{%- endcapture -%}{%- else -%}{%- assign gsrc = gal_urls[gi] -%}{%- assign gthumb = gal_urls[gi] -%}{%- endif -%}{%- endif -%}
           <button type="button" class="{% if gi == 0 %}active{% endif %}" onclick="galSet({{ gi }})" aria-label="صورة {{ gi | plus: 1 }}" data-src="{{ gsrc }}" {{ b.shopify_attributes }}><img width="300" height="300" loading="eager" src="{{ gthumb }}" alt=""></button>
           {%- assign gi = gi | plus: 1 -%}
         {%- endif -%}{%- endfor -%}
