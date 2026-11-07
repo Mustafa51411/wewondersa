@@ -326,6 +326,7 @@
       return r.json();
     })
     .then(function(data) {
+      document.dispatchEvent(new CustomEvent('ww:add-to-cart', { detail: { name: sel.dataset.name, price: sel.dataset.price, variant_id: id } }));
       var afterAdd = '{{ section.settings.after_add | default: "cart" }}';
       if (afterAdd === 'checkout') {
         window.location.href = '{{ routes.checkout_url }}';
