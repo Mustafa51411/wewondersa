@@ -11,7 +11,6 @@
   "sections": {
     "ww-sa-product": {
       "type": "ww-sa-product",
-      "settings": {},
       "blocks": {
         "g_1": {
           "type": "gallery",
@@ -40,7 +39,16 @@
         "g_3",
         "g_4",
         "g_5"
-      ]
+      ],
+      "settings": {
+        "show_topbar": false,
+        "topbar_text": "عدة المقاسات مجاناً مع كل علبة • توصيل سريع • ضمان 6 أشهر • دعم واتساب 7 أيام",
+        "show_nav": false,
+        "whatsapp_number": "966593492712",
+        "double_variant": "Double Pump",
+        "single_variant": "Single Pump",
+        "after_add": "cart"
+      }
     },
     "ww-sa-doctors": {
       "type": "ww-sa-doctors",
@@ -52,19 +60,24 @@
     },
     "ww-sa-carousel": {
       "type": "ww-sa-carousel",
-      "settings": {},
       "blocks": {
         "s_1": {
           "type": "slide",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/breast-pump-wee-wonders-ksa.png"
+          }
         },
         "s_2": {
           "type": "slide",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/Copy_for_LP_Listicle_KSA_10.png"
+          }
         },
         "s_3": {
           "type": "slide",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/advertorial1_12.jpg"
+          }
         },
         "s_4": {
           "type": "slide",
@@ -81,7 +94,8 @@
         "s_3",
         "s_4",
         "s_5"
-      ]
+      ],
+      "settings": {}
     },
     "ww-sa-days": {
       "type": "ww-sa-days",
@@ -89,7 +103,6 @@
     },
     "ww-sa-whatsapp": {
       "type": "ww-sa-whatsapp",
-      "settings": {},
       "blocks": {
         "r_1": {
           "type": "shot",
@@ -118,7 +131,11 @@
         "r_3",
         "r_4",
         "r_5"
-      ]
+      ],
+      "settings": {
+        "heading": "كلام الأمهات",
+        "highlight": "على واتساب"
+      }
     },
     "ww-sa-claim": {
       "type": "ww-sa-claim",
@@ -138,7 +155,10 @@
     },
     "ww-sa-offer-bottom": {
       "type": "ww-sa-offer-bottom",
-      "settings": {}
+      "settings": {
+        "double_variant": "Double Pump",
+        "single_variant": "Single Pump"
+      }
     },
     "ww-sa-faq": {
       "type": "ww-sa-faq",
