@@ -35,7 +35,7 @@
       </div>
       <div class="wwsa-gallery__thumbs" aria-label="صور المنتج">
         {%- assign gallery_count = 0 -%}
-        {%- for media in product.media limit: 6 -%}
+        {%- for media in product.media -%}
           {%- assign gallery_count = gallery_count | plus: 1 -%}
           <button class="wwsa-gallery__thumb{% if forloop.first %} is-active{% endif %}" type="button" data-image="{{ media.preview_image | image_url: width: 1400 }}" aria-label="عرض الصورة {{ forloop.index }}">
             {{ media.preview_image | image_url: width: 220 | image_tag: loading: 'lazy', alt: media.alt | default: product.title }}

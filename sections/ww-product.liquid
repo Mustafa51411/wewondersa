@@ -62,18 +62,35 @@
         {%- endif -%}
       </div>
       <div class="g-thumbs" id="thumbs">
-      {%- assign gi = 0 -%}
+      {%- assign custom_block_count = 0 -%}
       {%- for b in section.blocks -%}
-        {%- if b.type == 'gallery' -%}
-          {%- assign gallery_image = b.settings.image | default: product.images[gi] | default: product.featured_image -%}
-          {%- if gallery_image != blank -%}
-            <button {% if gi == 0 %}class="active"{% endif %} onclick="galSet({{ gi }})" aria-label="صورة {{ gi | plus: 1 }}" data-src="{{ gallery_image | image_url: width: 1400 }}" {{ b.shopify_attributes }}>
-              <img width="300" height="300" loading="{% if gi < 6 %}eager{% else %}lazy{% endif %}" src="{{ gallery_image | image_url: width: 300 }}" alt="{{ product.title | escape }}">
+        {%- if b.type == 'gallery' and b.settings.image != blank -%}
+          {%- assign custom_block_count = custom_block_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if custom_block_count > 0 -%}
+        {%- assign gi = 0 -%}
+        {%- for b in section.blocks -%}
+          {%- if b.type == 'gallery' and b.settings.image != blank -%}
+            <button {% if gi == 0 %}class="active"{% endif %} onclick="galSet({{ gi }})" aria-label="صورة {{ gi | plus: 1 }}" data-src="{{ b.settings.image | image_url: width: 1400 }}" {{ b.shopify_attributes }}>
+              <img width="300" height="300" loading="{% if gi < 6 %}eager{% else %}lazy{% endif %}" src="{{ b.settings.image | image_url: width: 300 }}" alt="{{ product.title | escape }}">
             </button>
             {%- assign gi = gi | plus: 1 -%}
           {%- endif -%}
-        {%- endif -%}
-      {%- endfor -%}
+        {%- endfor -%}
+      {%- elsif product.media.size > 0 -%}
+        {%- for media in product.media -%}
+          <button {% if forloop.first %}class="active"{% endif %} onclick="galSet({{ forloop.index0 }})" aria-label="صورة {{ forloop.index }}" data-src="{{ media.preview_image | image_url: width: 1400 }}">
+            <img width="300" height="300" loading="{% if forloop.index <= 6 %}eager{% else %}lazy{% endif %}" src="{{ media.preview_image | image_url: width: 300 }}" alt="{{ media.alt | default: product.title | escape }}">
+          </button>
+        {%- endfor -%}
+      {%- elsif product.images.size > 0 -%}
+        {%- for img in product.images -%}
+          <button {% if forloop.first %}class="active"{% endif %} onclick="galSet({{ forloop.index0 }})" aria-label="صورة {{ forloop.index }}" data-src="{{ img | image_url: width: 1400 }}">
+            <img width="300" height="300" loading="{% if forloop.index <= 6 %}eager{% else %}lazy{% endif %}" src="{{ img | image_url: width: 300 }}" alt="{{ img.alt | default: product.title | escape }}">
+          </button>
+        {%- endfor -%}
+      {%- endif -%}
       </div>
     </div>
 

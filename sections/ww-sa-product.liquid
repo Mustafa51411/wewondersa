@@ -2,9 +2,27 @@
 <style>@font-face{font-family:'Cairo';font-style:normal;font-weight:200 1000;font-display:swap;src:url({{ 'ww-sa-cairo-ar.woff2' | asset_url }}) format('woff2');unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}@font-face{font-family:'Cairo';font-style:normal;font-weight:200 1000;font-display:swap;src:url({{ 'ww-sa-cairo-lat.woff2' | asset_url }}) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}</style>
 <div class="ww-sa" dir="rtl" lang="ar">
 {%- assign gal_urls = "https://weewonderssa.com/cdn/shop/files/carousel_hero1.jpg|https://weewonderssa.com/cdn/shop/files/mechanism.jpg|https://weewonderssa.com/cdn/shop/files/carousel_objection_handling.jpg|https://weewonderssa.com/cdn/shop/files/product1.png|https://weewonderssa.com/cdn/shop/files/product3.png" | split: "|" -%}
-{%- assign gi = 0 -%}{%- assign gal_first = '' -%}
-{%- for b in section.blocks -%}{%- if b.type == 'gallery' -%}{%- if gi == 0 -%}{%- if b.settings.image != blank -%}{%- capture gal_first -%}{{ b.settings.image | image_url: width: 1200 }}{%- endcapture -%}{%- endif -%}{%- endif -%}{%- assign gi = gi | plus: 1 -%}{%- endif -%}{%- endfor -%}
-{%- if gal_first == blank -%}{%- if product.images.size > 0 -%}{%- capture gal_first -%}{{ product.images[0] | image_url: width: 1200 }}{%- endcapture -%}{%- else -%}{%- assign gal_first = gal_urls[0] -%}{%- endif -%}{%- endif -%}
+{%- assign custom_block_count = 0 -%}
+{%- for b in section.blocks -%}
+  {%- if b.type == 'gallery' and b.settings.image != blank -%}
+    {%- assign custom_block_count = custom_block_count | plus: 1 -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign gal_first = '' -%}
+{%- if custom_block_count > 0 -%}
+  {%- for b in section.blocks -%}
+    {%- if b.type == 'gallery' and b.settings.image != blank -%}
+      {%- capture gal_first -%}{{ b.settings.image | image_url: width: 1200 }}{%- endcapture -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- elsif product.featured_media != blank -%}
+  {%- capture gal_first -%}{{ product.featured_media.preview_image | image_url: width: 1200 }}{%- endcapture -%}
+{%- elsif product.images.size > 0 -%}
+  {%- capture gal_first -%}{{ product.images[0] | image_url: width: 1200 }}{%- endcapture -%}
+{%- else -%}
+  {%- assign gal_first = gal_urls[0] -%}
+{%- endif -%}
 {%- assign dbl = product.variants.first -%}{%- assign sgl = product.variants.last -%}
 {%- for v in product.variants -%}{%- if v.title == section.settings.double_variant -%}{%- assign dbl = v -%}{%- endif -%}{%- if v.title == section.settings.single_variant -%}{%- assign sgl = v -%}{%- endif -%}{%- endfor -%}
 {%- assign dbl_price = dbl.price | divided_by: 100.0 | round -%}
@@ -34,13 +52,43 @@
         </button>
       </div>
       <div class="g-thumbs" id="thumbs">
-        {%- assign gi = 0 -%}
-        {%- for b in section.blocks -%}{%- if b.type == 'gallery' -%}
-          {%- if b.settings.image != blank -%}{%- capture gsrc -%}{{ b.settings.image | image_url: width: 1200 }}{%- endcapture -%}{%- capture gthumb -%}{{ b.settings.image | image_url: width: 300 }}{%- endcapture -%}
-          {%- else -%}{%- if product.images[gi] != blank -%}{%- capture gsrc -%}{{ product.images[gi] | image_url: width: 1200 }}{%- endcapture -%}{%- capture gthumb -%}{{ product.images[gi] | image_url: width: 300 }}{%- endcapture -%}{%- else -%}{%- assign gsrc = gal_urls[gi] -%}{%- assign gthumb = gal_urls[gi] -%}{%- endif -%}{%- endif -%}
-          <button type="button" class="{% if gi == 0 %}active{% endif %}" onclick="galSet({{ gi }})" aria-label="صورة {{ gi | plus: 1 }}" data-src="{{ gsrc }}" {{ b.shopify_attributes }}><img width="300" height="300" loading="eager" src="{{ gthumb }}" alt=""></button>
-          {%- assign gi = gi | plus: 1 -%}
-        {%- endif -%}{%- endfor -%}
+        {%- if custom_block_count > 0 -%}
+          {%- assign gi = 0 -%}
+          {%- for b in section.blocks -%}
+            {%- if b.type == 'gallery' and b.settings.image != blank -%}
+              {%- capture gsrc -%}{{ b.settings.image | image_url: width: 1200 }}{%- endcapture -%}
+              {%- capture gthumb -%}{{ b.settings.image | image_url: width: 300 }}{%- endcapture -%}
+              <button type="button" class="{% if gi == 0 %}active{% endif %}" onclick="galSet({{ gi }})" aria-label="صورة {{ gi | plus: 1 }}" data-src="{{ gsrc }}" {{ b.shopify_attributes }}>
+                <img width="300" height="300" loading="eager" src="{{ gthumb }}" alt="">
+              </button>
+              {%- assign gi = gi | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- elsif product.media.size > 0 -%}
+          {%- for media in product.media -%}
+            {%- capture gsrc -%}{{ media.preview_image | image_url: width: 1200 }}{%- endcapture -%}
+            {%- capture gthumb -%}{{ media.preview_image | image_url: width: 300 }}{%- endcapture -%}
+            {%- assign g_alt = media.alt | default: product.title | escape -%}
+            <button type="button" class="{% if forloop.first %}active{% endif %}" onclick="galSet({{ forloop.index0 }})" aria-label="صورة {{ forloop.index }}" data-src="{{ gsrc }}">
+              <img width="300" height="300" loading="{% if forloop.index <= 6 %}eager{% else %}lazy{% endif %}" src="{{ gthumb }}" alt="{{ g_alt }}">
+            </button>
+          {%- endfor -%}
+        {%- elsif product.images.size > 0 -%}
+          {%- for img in product.images -%}
+            {%- capture gsrc -%}{{ img | image_url: width: 1200 }}{%- endcapture -%}
+            {%- capture gthumb -%}{{ img | image_url: width: 300 }}{%- endcapture -%}
+            {%- assign g_alt = img.alt | default: product.title | escape -%}
+            <button type="button" class="{% if forloop.first %}active{% endif %}" onclick="galSet({{ forloop.index0 }})" aria-label="صورة {{ forloop.index }}" data-src="{{ gsrc }}">
+              <img width="300" height="300" loading="{% if forloop.index <= 6 %}eager{% else %}lazy{% endif %}" src="{{ gthumb }}" alt="{{ g_alt }}">
+            </button>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for fallback_url in gal_urls -%}
+            <button type="button" class="{% if forloop.first %}active{% endif %}" onclick="galSet({{ forloop.index0 }})" aria-label="صورة {{ forloop.index }}" data-src="{{ fallback_url }}">
+              <img width="300" height="300" loading="eager" src="{{ fallback_url }}" alt="">
+            </button>
+          {%- endfor -%}
+        {%- endif -%}
       </div>
     </div>
     <div class="buy">
@@ -60,7 +108,7 @@
         <div><b>4 أوضاع</b><small>12 مستوى لكل وضع</small></div>
       </div>
       <div class="offer" id="offer" role="radiogroup" aria-label="اختاري عرضك">
-        <div class="ocard sel" role="radio" aria-checked="true" tabindex="0" data-name="مضخة مزدوجة" data-price="{{ dbl_price }} ر.س" data-variant-id="{{ dbl.id }}" onclick="pickO(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickO(this)}">
+        <div class="ocard sel" role="radio" aria-checked="true" tabindex="0" data-name="مضخة مزدوجة" data-price="{{ dbl_price }} ر.س" data-variant-id="{{ dbl.id | default: product.selected_or_first_available_variant.id | default: product.variants.first.id }}" onclick="pickO(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickO(this)}">
           <span class="flag"><svg viewBox="0 0 100 100"><path d="M96.8,60.7 L86.9,67.8 L87.5,79.9 L75.6,82.1 L70.8,93.2 L59.1,90.0 L50.0,98.0 L40.9,90.0 L29.2,93.2 L24.4,82.1 L12.5,79.9 L13.1,67.8 L3.2,60.7 L9.0,50.0 L3.2,39.3 L13.1,32.2 L12.5,20.1 L24.4,17.9 L29.2,6.8 L40.9,10.0 L50.0,2.0 L59.1,10.0 L70.8,6.8 L75.6,17.9 L87.5,20.1 L86.9,32.2 L96.8,39.3 L91.0,50.0 Z" fill="var(--navy)"/></svg><span>الأكثر<br>طلباً</span></span>
           <div class="ohead">
             <span class="oradio"></span>
@@ -70,7 +118,7 @@
           </div>
           <ul class="ogifts"><li><span class="oc"><img src="{{ 'ww-sa-img-03.jpg' | asset_url }}" alt=""></span><span class="ot">+ عدة المقاسات مجاناً<small>4 مقاسات + أداة تساعدك تختارين مقاسك</small></span><span class="ov free">مجاناً</span></li><li><span class="oc"><img src="{{ 'ww-sa-img-04.webp' | asset_url }}" alt=""></span><span class="ot">+ أكياس حفظ الحليب (50 كيس) مجاناً</span><s class="ov">60 ر.س</s></li><li><span class="oc pad"><img src="{{ 'ww-sa-img-05.png' | asset_url }}" alt=""></span><span class="ot">+ شحن مجاني</span><span class="ov free">مجاناً</span></li></ul>
         </div>
-        <div class="ocard" role="radio" aria-checked="false" tabindex="0" data-name="مضخة مفردة" data-price="{{ sgl_price }} ر.س" data-variant-id="{{ sgl.id }}" onclick="pickO(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickO(this)}">
+        <div class="ocard" role="radio" aria-checked="false" tabindex="0" data-name="مضخة مفردة" data-price="{{ sgl_price }} ر.س" data-variant-id="{{ sgl.id | default: product.variants.last.id | default: product.selected_or_first_available_variant.id }}" onclick="pickO(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();pickO(this)}">
           
           <div class="ohead">
             <span class="oradio"></span>
@@ -101,7 +149,7 @@
 <script>
 (function(){
   var thumbs=[].slice.call(document.querySelectorAll('#thumbs button')),main=document.getElementById('mainimg'),gi=0;
-  window.galSet=function(i){if(!thumbs.length)return;gi=(i+thumbs.length)%thumbs.length;main.src=thumbs[gi].getAttribute('data-src');thumbs.forEach(function(b,k){b.classList.toggle('active',k===gi);});};
+  window.galSet=function(i){if(!thumbs.length)return;gi=(i+thumbs.length)%thumbs.length;main.src=thumbs[gi].getAttribute('data-src');thumbs.forEach(function(b,k){b.classList.toggle('active',k===gi);});if(thumbs[gi]&&typeof thumbs[gi].scrollIntoView==='function'){thumbs[gi].scrollIntoView({behavior:'smooth',block:'nearest',inline:'nearest'});}};
   window.galStep=function(d){window.galSet(gi+d);};
   window.pickO=function(el){
     document.querySelectorAll('#offer .ocard').forEach(function(v){v.classList.remove('sel');v.setAttribute('aria-checked','false');});
@@ -113,18 +161,68 @@
   };
   window.pick=function(el){window.pickO(el);};
   /* ADD TO CART. Standard Shopify AJAX add of the selected variant.
-     If the old theme uses Kaching / free-gift logic, port it here (see INSTALL.txt). */
+     Supports both localized /ar-sa paths and root cart endpoints with auto-fallback. */
   window.addToCart=function(btn){
-    var sel=document.querySelector('#offer .ocard.sel');if(!sel)return;
-    var id=parseInt(sel.dataset.variantId,10);if(!id)return;
-    var label=btn.querySelector('span'),old=label.textContent;btn.disabled=true;label.textContent='جارٍ الإضافة...';
-    fetch('{{ routes.cart_add_url }}.js',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({items:[{id:id,quantity:1}]})})
-    .then(function(r){if(!r.ok)throw new Error('add failed');return r.json();})
-    .then(function(){
-      document.dispatchEvent(new CustomEvent('ww:add-to-cart',{detail:{name:sel.dataset.name,price:sel.dataset.price,variant_id:id}}));
-      window.location.href={% if section.settings.after_add == 'checkout' %}'/checkout'{% else %}'{{ routes.cart_url }}'{% endif %};
+    var sel=document.querySelector('#offer .ocard.sel') || document.querySelector('#offer .ocard');
+    var id = sel ? parseInt(sel.dataset.variantId, 10) : 0;
+    if(!id){
+      id = parseInt('{{ product.selected_or_first_available_variant.id | default: product.variants.first.id }}', 10);
+    }
+    if(!id)return;
+
+    var label = btn.querySelector('span') || btn;
+    var old = label.textContent;
+    btn.disabled = true;
+    label.textContent = 'جارٍ الإضافة...';
+
+    var calls = [
+      { url: '{{ routes.cart_add_url }}', body: { id: id, quantity: 1 } },
+      { url: '{{ routes.cart_add_url }}', body: { items: [{ id: id, quantity: 1 }] } },
+      { url: '/cart/add.js', body: { id: id, quantity: 1 } },
+      { url: '/cart/add.js', body: { items: [{ id: id, quantity: 1 }] } },
+      { url: '/cart/add', body: { id: id, quantity: 1 } }
+    ];
+
+    function tryNext(idx){
+      if(idx >= calls.length){
+        return Promise.reject(new Error('All cart endpoints failed'));
+      }
+      return fetch(calls[idx].url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(calls[idx].body)
+      }).then(function(r){
+        if(!r.ok) return tryNext(idx + 1);
+        return r.json();
+      }).catch(function(){
+        return tryNext(idx + 1);
+      });
+    }
+
+    tryNext(0)
+    .then(function(data){
+      label.textContent = 'تمت الإضافة!';
+      document.dispatchEvent(new CustomEvent('ww:add-to-cart', {
+        detail: {
+          name: sel ? sel.dataset.name : '{{ product.title | escape }}',
+          price: sel ? sel.dataset.price : '',
+          variant_id: id
+        }
+      }));
+
+      var after = '{{ section.settings.after_add | default: "cart" }}';
+      if(after === 'checkout'){
+        window.location.href = '{{ routes.cart_url | replace: "/cart", "/checkout" }}';
+      } else {
+        window.location.href = '{{ routes.cart_url }}';
+      }
     })
-    .catch(function(){label.textContent='حاولي مرة ثانية';btn.disabled=false;setTimeout(function(){label.textContent=old;},1800);});
+    .catch(function(err){
+      console.error('Add to cart error:', err);
+      label.textContent = 'حاولي مرة ثانية';
+      btn.disabled = false;
+      setTimeout(function(){ label.textContent = old; }, 1800);
+    });
   };
 })();
 document.addEventListener('DOMContentLoaded',function(){
