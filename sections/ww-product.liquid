@@ -307,48 +307,17 @@
 
   window.addToCart = function(btn) {
     var sel = document.querySelector('#offer .ocard.sel') || document.querySelector('#offer .ocard');
-    if (!sel || sel.dataset.available !== 'true') return;
+    if (!sel) return;
     var id = parseInt(sel.dataset.variantId, 10);
     if (!id) return;
     var label = btn.querySelector('span') || btn;
     var old = label.textContent;
     btn.disabled = true;
     label.textContent = 'جارٍ الإضافة...';
-
-    var bundleName = sel.dataset.name || '{{ product.title | escape }}';
-    var bundleType = (bundleName.toLowerCase().indexOf('double') >= 0 || bundleName.indexOf('مزدوج') >= 0) ? 'double' : 'single';
-
-    var items = [{
-      id: id,
-      quantity: 1,
-      properties: { '_WeeWonders bundle': bundleName }
-    }];
-
-    var giftEls = Array.prototype.slice.call(document.querySelectorAll('#bundle-gift-data [data-bundle-gift]')).filter(function(g) {
-      var app = g.dataset.appliesTo;
-      return app === bundleType || app === 'both';
-    });
-
-    giftEls.forEach(function(g) {
-      var gid = parseInt(g.dataset.variantId, 10);
-      if (gid) {
-        items.push({
-          id: gid,
-          quantity: 1,
-          properties: {
-            '_WeeWonders free gift': 'Yes',
-            '_Bundle option': bundleName,
-            '_Bundle parent variant': String(id)
-          }
-        });
-      }
-    });
-
-    var root = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
-    fetch(root + 'cart/add.js', {
+    fetch('{{ routes.cart_add_url }}', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ items: items })
+      body: JSON.stringify({ items: [{ id: id, quantity: 1 }] })
     })
     .then(function(r) {
       if (!r.ok) {
@@ -357,14 +326,11 @@
       return r.json();
     })
     .then(function(data) {
-      document.dispatchEvent(new CustomEvent('ww:add-to-cart', {
-        detail: { name: bundleName, price: sel.dataset.price, variant_id: id, items: items }
-      }));
       var afterAdd = '{{ section.settings.after_add | default: "cart" }}';
       if (afterAdd === 'checkout') {
-        window.location.href = root + 'checkout';
+        window.location.href = '{{ routes.checkout_url }}';
       } else {
-        window.location.href = root + 'cart';
+        window.location.href = '{{ routes.cart_url }}';
       }
     })
     .catch(function(err) {
