@@ -26,8 +26,12 @@
     <div class="gallery">
       <div class="g-main">
         <img width="1200" height="960" loading="eager" fetchpriority="high" id="mainimg" src="{{ gal_first }}" alt="مضخة WeeWonders">
-        <div class="g-nav g-prev" onclick="galStep(-1)">›</div>
-        <div class="g-nav g-next" onclick="galStep(1)">‹</div>
+        <button type="button" class="g-nav g-prev" onclick="galStep(-1)" aria-label="الصورة السابقة">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button type="button" class="g-nav g-next" onclick="galStep(1)" aria-label="الصورة التالية">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
       </div>
       <div class="g-thumbs" id="thumbs">
         {%- assign gi = 0 -%}

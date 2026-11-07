@@ -69,7 +69,9 @@
 .wwsa-gallery { position: sticky; top: 24px; }
 .wwsa-gallery__main { aspect-ratio: 1; background: #f2f7f9; border: 1px solid var(--wwsa-line); border-radius: 22px; overflow: hidden; position: relative; }
 .wwsa-gallery__main img { height: 100%; object-fit: cover; width: 100%; }
-.wwsa-gallery__nav { background: rgba(255,255,255,.92); border: 1px solid var(--wwsa-line); border-radius: 50%; color: var(--wwsa-navy); cursor: pointer; display: grid; font-size: 1.25rem; height: 42px; place-items: center; position: absolute; top: 50%; transform: translateY(-50%); width: 42px; z-index: 2; }
+.wwsa-gallery__nav { background: rgba(255,255,255,.92); border: 1px solid var(--wwsa-line); border-radius: 50%; color: var(--wwsa-navy); cursor: pointer; display: grid; height: 54px; place-items: center; position: absolute; top: 50%; transform: translateY(-50%); width: 54px; z-index: 2; padding: 0; outline: none; -webkit-appearance: none; box-shadow: 0 4px 14px rgba(0,0,0,.18); transition: background .2s, transform .2s, box-shadow .2s; }
+.wwsa-gallery__nav:hover { background: #fff; transform: translateY(-50%) scale(1.06); box-shadow: 0 6px 18px rgba(0,0,0,.22); }
+.wwsa-gallery__nav svg { width: 32px; height: 32px; display: block; stroke: currentColor; }
 .wwsa-gallery__nav--prev { right: 12px; }
 .wwsa-gallery__nav--next { left: 12px; }
 .wwsa-gallery__thumbs { display: grid; gap: 9px; grid-template-columns: repeat(6, 1fr); margin-top: 12px; }

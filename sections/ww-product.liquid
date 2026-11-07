@@ -46,8 +46,12 @@
         {%- if fallback_gallery_image != blank -%}
           <img width="1200" height="960" loading="eager" fetchpriority="high" id="mainimg" src="{{ fallback_gallery_image | image_url: width: 1400 }}" alt="{{ product.title | escape }}">
         {%- endif -%}
-        <div class="g-nav g-prev" onclick="galStep(-1)">‹</div>
-        <div class="g-nav g-next" onclick="galStep(1)">›</div>
+        <button type="button" class="g-nav g-prev" onclick="galStep(-1)" aria-label="Previous image">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="g-nav g-next" onclick="galStep(1)" aria-label="Next image">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
         {%- if section.settings.show_gallery_warranty_badge -%}
         <div class="stamp s1">
           <div class="scallop">

@@ -130,7 +130,11 @@
     },
     "ww-sa-offer-bottom": {
       "type": "ww-sa-offer-bottom",
-      "settings": {}
+      "settings": {
+        "double_variant": "مضخة مزدوجة",
+        "single_variant": "مضخة مفردة",
+        "after_add": "cart"
+      }
     },
     "ww-sa-faq": {
       "type": "ww-sa-faq",

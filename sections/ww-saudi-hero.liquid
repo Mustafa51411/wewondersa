@@ -26,8 +26,12 @@
         {%- else -%}
           <img id="wwsa-main-{{ section.id }}" src="{{ 'ww-sa-img-02.jpg' | asset_url }}" alt="{{ product.title | escape }}" width="1200" height="1200" loading="eager">
         {%- endif -%}
-        <button class="wwsa-gallery__nav wwsa-gallery__nav--prev" type="button" aria-label="الصورة السابقة">‹</button>
-        <button class="wwsa-gallery__nav wwsa-gallery__nav--next" type="button" aria-label="الصورة التالية">›</button>
+        <button class="wwsa-gallery__nav wwsa-gallery__nav--prev" type="button" aria-label="الصورة السابقة">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="wwsa-gallery__nav wwsa-gallery__nav--next" type="button" aria-label="الصورة التالية">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
       </div>
       <div class="wwsa-gallery__thumbs" aria-label="صور المنتج">
         {%- assign gallery_count = 0 -%}
