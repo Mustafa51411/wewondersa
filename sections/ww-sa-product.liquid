@@ -24,7 +24,9 @@
   {%- assign gal_first = gal_urls[0] -%}
 {%- endif -%}
 {%- assign dbl = product.variants.first -%}{%- assign sgl = product.variants.last -%}
-{%- for v in product.variants -%}{%- if v.title == section.settings.double_variant -%}{%- assign dbl = v -%}{%- endif -%}{%- if v.title == section.settings.single_variant -%}{%- assign sgl = v -%}{%- endif -%}{%- endfor -%}
+{%- assign dbl_found = false -%}{%- assign sgl_found = false -%}
+{%- for v in product.variants -%}{%- if v.title == section.settings.double_variant -%}{%- assign dbl = v -%}{%- assign dbl_found = true -%}{%- endif -%}{%- if v.title == section.settings.single_variant -%}{%- assign sgl = v -%}{%- assign sgl_found = true -%}{%- endif -%}{%- endfor -%}
+{%- unless dbl_found and sgl_found -%}{%- assign price_sorted = product.variants | sort: 'price' -%}{%- unless dbl_found -%}{%- assign dbl = price_sorted.last -%}{%- endunless -%}{%- unless sgl_found -%}{%- assign sgl = price_sorted.first -%}{%- endunless -%}{%- endunless -%}
 {%- assign dbl_price = dbl.price | divided_by: 100.0 | round -%}
 {%- assign sgl_price = sgl.price | divided_by: 100.0 | round -%}
 {%- assign dbl_save = 0 -%}{%- if dbl.compare_at_price > dbl.price -%}{%- assign dbl_save = dbl.compare_at_price | minus: dbl.price | divided_by: 100.0 | round -%}{%- endif -%}
