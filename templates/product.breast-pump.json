@@ -51,10 +51,6 @@
         "storage_gift_handle": "milk-storage-bags-50pcs"
       }
     },
-    "ww-sa-doctors": {
-      "type": "ww-sa-doctors",
-      "settings": {}
-    },
     "ww-sa-advantage": {
       "type": "ww-sa-advantage",
       "settings": {}
@@ -192,6 +188,10 @@
       "type": "ww-sa-steps",
       "settings": {}
     },
+    "ww-sa-doctors": {
+      "type": "ww-sa-doctors",
+      "settings": {}
+    },
     "ww-sa-offer-bottom": {
       "type": "ww-sa-offer-bottom",
       "settings": {
@@ -206,14 +206,14 @@
   },
   "order": [
     "ww-sa-product",
-    "ww-sa-doctors",
-    "ww-sa-advantage",
     "ww-sa-carousel",
+    "ww-sa-advantage",
     "ww-sa-days",
     "ww-sa-whatsapp",
     "ww-sa-claim",
     "ww-sa-difference",
     "ww-sa-steps",
+    "ww-sa-doctors",
     "ww-sa-offer-bottom",
     "ww-sa-faq"
   ]
