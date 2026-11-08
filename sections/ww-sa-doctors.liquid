@@ -3,24 +3,244 @@
 <div class="ww-sa" dir="rtl" lang="ar">
 <section class="section doctor-videos" id="doctors">
   <div class="wrap">
-    <div class="center"><h2>اسمعيها من أمهات وطبيبات <span class="hl">جرّبن المضخة</span></h2></div>
+    <div class="center">
+      <h2>{{ section.settings.heading_prefix | default: 'اسمعيها من أمهات وطبيبات' }} {% if section.settings.heading_highlight != blank %}<span class="hl">{{ section.settings.heading_highlight }}</span>{% endif %}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="sub" style="color:var(--muted);margin-top:8px;font-size:1.05rem;">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
     <div class="vids">
-<figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/357122ab183d4474973f358529c201ae.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/357122ab183d4474973f358529c201ae/HD-720p-1.6Mbps-67072483.mp4" aria-label="د. إيليت سخن"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: د. إيليت سخن"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">الرضاعة والعمل</span><b>د. إيليت سخن</b><span class="stars">★★★★★</span></figcaption></figure>
-<figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/178cd5038c8c4173b650d27296215520.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/178cd5038c8c4173b650d27296215520/HD-1080p-7.2Mbps-71120658.mp4" aria-label="نورة"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: نورة"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">تجربة أم</span><b>نورة</b><span class="stars">★★★★★</span></figcaption></figure>
-<figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/f464929baf6f4962884362467b21dd5c.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/f464929baf6f4962884362467b21dd5c/HD-1080p-7.2Mbps-71126738.mp4" aria-label="مها"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: مها"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">تجربتها مع الشفاط</span><b>مها</b><span class="stars">★★★★★</span></figcaption></figure>
-<figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/4b59e0403d9847caa53dc8e2f5681be2.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/4b59e0403d9847caa53dc8e2f5681be2/HD-1080p-7.2Mbps-71121180.mp4" aria-label="أم جديدة"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: أم جديدة"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">تجربة رضاعة</span><b>أم جديدة</b><span class="stars">★★★★★</span></figcaption></figure>
-<figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/316f29ab16b841059ea27a1f0413b3d8.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/316f29ab16b841059ea27a1f0413b3d8/HD-1080p-7.2Mbps-71128905.mp4" aria-label="جنى"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: جنى"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">تجربة أم</span><b>جنى</b><span class="stars">★★★★★</span></figcaption></figure>
-</div>
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- assign video_url = '' -%}
+          {%- if block.settings.video != blank -%}
+            {%- for s in block.settings.video.sources -%}
+              {%- if s.format == 'mp4' -%}
+                {%- assign video_url = s.url -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if video_url == blank and block.settings.video.sources.size > 0 -%}
+              {%- assign video_url = block.settings.video.sources[0].url -%}
+            {%- endif -%}
+          {%- elsif block.settings.video_url != blank -%}
+            {%- assign video_url = block.settings.video_url -%}
+          {%- endif -%}
+
+          {%- assign poster_url = '' -%}
+          {%- if block.settings.cover_image != blank -%}
+            {%- assign poster_url = block.settings.cover_image | image_url: width: 800 -%}
+          {%- elsif block.settings.poster_url != blank -%}
+            {%- assign poster_url = block.settings.poster_url -%}
+          {%- elsif block.settings.video != blank and block.settings.video.preview_image != blank -%}
+            {%- assign poster_url = block.settings.video.preview_image | image_url: width: 800 -%}
+          {%- endif -%}
+
+          {%- assign author_name = block.settings.author | default: 'أم من WeeWonders' -%}
+          <figure class="vid dvid" {{ block.shopify_attributes }}>
+            <div class="vframe">
+              {%- if video_url != blank -%}
+                <video preload="none" playsinline poster="{{ poster_url }}" src="{{ video_url }}" aria-label="{{ author_name | escape }}"></video>
+                <button class="vplay" type="button" aria-label="شغّلي الفيديو: {{ author_name | escape }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+              {%- elsif poster_url != blank -%}
+                <img src="{{ poster_url }}" alt="{{ author_name | escape }}" style="width:100%;height:100%;object-fit:cover;display:block;">
+              {%- endif -%}
+            </div>
+            <figcaption class="cap">
+              {%- if block.settings.tag != blank -%}<span class="pain">{{ block.settings.tag }}</span>{%- endif -%}
+              <b>{{ author_name }}</b>
+              {%- if block.settings.stars != blank -%}<span class="stars">{{ block.settings.stars }}</span>{%- endif -%}
+            </figcaption>
+          </figure>
+        {%- endfor -%}
+      {%- else -%}
+        <figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/357122ab183d4474973f358529c201ae.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/357122ab183d4474973f358529c201ae/HD-720p-1.6Mbps-67072483.mp4" aria-label="د. إيليت سخن"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: د. إيليت سخن"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">الرضاعة والعمل</span><b>د. إيليت سخن</b><span class="stars">★★★★★</span></figcaption></figure>
+        <figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/178cd5038c8c4173b650d27296215520.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/178cd5038c8c4173b650d27296215520/HD-1080p-7.2Mbps-71120658.mp4" aria-label="نورة"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: نورة"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">تجربة أم</span><b>نورة</b><span class="stars">★★★★★</span></figcaption></figure>
+        <figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/f464929baf6f4962884362467b21dd5c.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/f464929baf6f4962884362467b21dd5c/HD-1080p-7.2Mbps-71126738.mp4" aria-label="مها"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: مها"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">تجربتها مع الشفاط</span><b>مها</b><span class="stars">★★★★★</span></figcaption></figure>
+        <figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/4b59e0403d9847caa53dc8e2f5681be2.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/4b59e0403d9847caa53dc8e2f5681be2/HD-1080p-7.2Mbps-71121180.mp4" aria-label="أم جديدة"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: أم جديدة"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">تجربة رضاعة</span><b>أم جديدة</b><span class="stars">★★★★★</span></figcaption></figure>
+        <figure class="vid dvid"><div class="vframe"><video preload="none" playsinline poster="https://weewonderssa.com/cdn/shop/files/preview_images/316f29ab16b841059ea27a1f0413b3d8.thumbnail.0000000000_700x.jpg" src="https://weewonderssa.com/cdn/shop/videos/c/vp/316f29ab16b841059ea27a1f0413b3d8/HD-1080p-7.2Mbps-71128905.mp4" aria-label="جنى"></video><button class="vplay" type="button" aria-label="شغّلي الفيديو: جنى"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div><figcaption class="cap"><span class="pain">تجربة أم</span><b>جنى</b><span class="stars">★★★★★</span></figcaption></figure>
+      {%- endif -%}
+    </div>
   </div>
 </section>
 </div>
+<script>
+(function(){
+  function initDocVideos(root){
+    var scope = root || document;
+    scope.querySelectorAll('.dvid .vframe').forEach(function(f){
+      if(f.dataset.vidInit) return;
+      f.dataset.vidInit = 'true';
+      var v = f.querySelector('video'), b = f.querySelector('.vplay');
+      if(!v) return;
+      function toggle(e){
+        if(e) e.stopPropagation();
+        if(v.paused){
+          document.querySelectorAll('.dvid video').forEach(function(o){
+            if(o !== v){
+              o.pause();
+              var p = o.closest('.vframe');
+              if(p) p.classList.remove('playing');
+            }
+          });
+          v.play();
+          f.classList.add('playing');
+        } else {
+          v.pause();
+          f.classList.remove('playing');
+        }
+      }
+      if(b) b.addEventListener('click', toggle);
+      f.addEventListener('click', function(e){
+        if(e.target === v || e.target === b || (b && b.contains(e.target))){
+          toggle(e);
+        }
+      });
+      v.addEventListener('ended', function(){ f.classList.remove('playing'); });
+      v.addEventListener('pause', function(){ f.classList.remove('playing'); });
+      v.addEventListener('play', function(){ f.classList.add('playing'); });
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', function(){ initDocVideos(); });
+  } else {
+    initDocVideos();
+  }
+
+  document.addEventListener('shopify:section:load', function(e){
+    if(e.target && (e.target.id === 'shopify-section-{{ section.id }}' || e.target.querySelector('#doctors'))){
+      initDocVideos(e.target);
+    }
+  });
+})();
+</script>
 {% schema %}
 {
  "name": "WW SA Mom videos",
- "settings": [],
+ "settings": [
+  {
+   "type": "text",
+   "id": "heading_prefix",
+   "label": "Heading text",
+   "default": "اسمعيها من أمهات وطبيبات"
+  },
+  {
+   "type": "text",
+   "id": "heading_highlight",
+   "label": "Highlighted text (colored)",
+   "default": "جرّبن المضخة"
+  },
+  {
+   "type": "text",
+   "id": "subheading",
+   "label": "Subheading (optional)"
+  }
+ ],
+ "blocks": [
+  {
+   "type": "video_item",
+   "name": "Video item",
+   "settings": [
+    {
+     "type": "video",
+     "id": "video",
+     "label": "Shopify-hosted video",
+     "info": "Upload or select a video from Shopify files"
+    },
+    {
+     "type": "url",
+     "id": "video_url",
+     "label": "Direct MP4 video URL (optional)",
+     "info": "Used if direct URL or external link is preferred"
+    },
+    {
+     "type": "image_picker",
+     "id": "cover_image",
+     "label": "Custom thumbnail image",
+     "info": "Cover image displayed before playback"
+    },
+    {
+     "type": "url",
+     "id": "poster_url",
+     "label": "Direct thumbnail URL (optional)"
+    },
+    {
+     "type": "text",
+     "id": "author",
+     "label": "Author name",
+     "default": "أم من WeeWonders"
+    },
+    {
+     "type": "text",
+     "id": "tag",
+     "label": "Tag badge (e.g. تجربة أم)",
+     "default": "تجربة أم"
+    },
+    {
+     "type": "text",
+     "id": "stars",
+     "label": "Rating stars",
+     "default": "★★★★★"
+    }
+   ]
+  }
+ ],
  "presets": [
   {
-   "name": "WW SA Mom videos"
+   "name": "WW SA Mom videos",
+   "blocks": [
+    {
+     "type": "video_item",
+     "settings": {
+      "author": "د. إيليت سخن",
+      "tag": "الرضاعة والعمل",
+      "video_url": "https://weewonderssa.com/cdn/shop/videos/c/vp/357122ab183d4474973f358529c201ae/HD-720p-1.6Mbps-67072483.mp4",
+      "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/357122ab183d4474973f358529c201ae.thumbnail.0000000000_700x.jpg",
+      "stars": "★★★★★"
+     }
+    },
+    {
+     "type": "video_item",
+     "settings": {
+      "author": "نورة",
+      "tag": "تجربة أم",
+      "video_url": "https://weewonderssa.com/cdn/shop/videos/c/vp/178cd5038c8c4173b650d27296215520/HD-1080p-7.2Mbps-71120658.mp4",
+      "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/178cd5038c8c4173b650d27296215520.thumbnail.0000000000_700x.jpg",
+      "stars": "★★★★★"
+     }
+    },
+    {
+     "type": "video_item",
+     "settings": {
+      "author": "مها",
+      "tag": "تجربتها مع الشفاط",
+      "video_url": "https://weewonderssa.com/cdn/shop/videos/c/vp/f464929baf6f4962884362467b21dd5c/HD-1080p-7.2Mbps-71126738.mp4",
+      "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/f464929baf6f4962884362467b21dd5c.thumbnail.0000000000_700x.jpg",
+      "stars": "★★★★★"
+     }
+    },
+    {
+     "type": "video_item",
+     "settings": {
+      "author": "أم جديدة",
+      "tag": "تجربة رضاعة",
+      "video_url": "https://weewonderssa.com/cdn/shop/videos/c/vp/4b59e0403d9847caa53dc8e2f5681be2/HD-1080p-7.2Mbps-71121180.mp4",
+      "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/4b59e0403d9847caa53dc8e2f5681be2.thumbnail.0000000000_700x.jpg",
+      "stars": "★★★★★"
+     }
+    },
+    {
+     "type": "video_item",
+     "settings": {
+      "author": "جنى",
+      "tag": "تجربة أم",
+      "video_url": "https://weewonderssa.com/cdn/shop/videos/c/vp/316f29ab16b841059ea27a1f0413b3d8/HD-1080p-7.2Mbps-71128905.mp4",
+      "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/316f29ab16b841059ea27a1f0413b3d8.thumbnail.0000000000_700x.jpg",
+      "stars": "★★★★★"
+     }
+    }
+   ]
   }
  ]
 }
