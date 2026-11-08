@@ -1,13 +1,16 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "ww-sa-product": {
       "type": "ww-sa-product",
-      "settings": {
-        "double_variant": "مضخة مزدوجة",
-        "single_variant": "مضخة مفردة",
-        "whatsapp_number": "966593492712",
-        "after_add": "cart"
-      },
       "blocks": {
         "g_1": {
           "type": "gallery",
@@ -36,7 +39,13 @@
         "g_3",
         "g_4",
         "g_5"
-      ]
+      ],
+      "settings": {
+        "whatsapp_number": "966593492712",
+        "double_variant": "مضخة مزدوجة",
+        "single_variant": "مضخة مفردة",
+        "after_add": "cart"
+      }
     },
     "ww-sa-doctors": {
       "type": "ww-sa-doctors",
@@ -48,7 +57,6 @@
     },
     "ww-sa-carousel": {
       "type": "ww-sa-carousel",
-      "settings": {},
       "blocks": {
         "s_1": {
           "type": "slide",
@@ -77,7 +85,8 @@
         "s_3",
         "s_4",
         "s_5"
-      ]
+      ],
+      "settings": {}
     },
     "ww-sa-days": {
       "type": "ww-sa-days",
@@ -85,7 +94,6 @@
     },
     "ww-sa-whatsapp": {
       "type": "ww-sa-whatsapp",
-      "settings": {},
       "blocks": {
         "r_1": {
           "type": "shot",
@@ -114,7 +122,8 @@
         "r_3",
         "r_4",
         "r_5"
-      ]
+      ],
+      "settings": {}
     },
     "ww-sa-claim": {
       "type": "ww-sa-claim",
@@ -132,8 +141,7 @@
       "type": "ww-sa-offer-bottom",
       "settings": {
         "double_variant": "مضخة مزدوجة",
-        "single_variant": "مضخة مفردة",
-        "after_add": "cart"
+        "single_variant": "مضخة مفردة"
       }
     },
     "ww-sa-faq": {
