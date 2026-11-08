@@ -82,11 +82,15 @@
         },
         "s_4": {
           "type": "slide",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/product3.png"
+          }
         },
         "s_5": {
           "type": "slide",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/breast-pump-wee-wonders-ksa.png"
+          }
         }
       },
       "block_order": [
