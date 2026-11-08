@@ -109,6 +109,24 @@
     "ww-sa-whatsapp": {
       "type": "ww-sa-whatsapp",
       "blocks": {
+        "shot_Ah4pGR": {
+          "type": "shot",
+          "settings": {
+            "image": "shopify://shop_images/whatsapp_review_6.jpg"
+          }
+        },
+        "shot_DM34xR": {
+          "type": "shot",
+          "settings": {
+            "image": "shopify://shop_images/whatsapp_review_7.jpg"
+          }
+        },
+        "r_2": {
+          "type": "shot",
+          "settings": {
+            "image": "shopify://shop_images/whatsapp_review_4.jpg"
+          }
+        },
         "r_1": {
           "type": "shot",
           "settings": {
@@ -121,10 +139,10 @@
             "image": "shopify://shop_images/whatsapp_review_2.jpg"
           }
         },
-        "r_2": {
+        "shot_q7LiX4": {
           "type": "shot",
           "settings": {
-            "image": "shopify://shop_images/whatsapp_review_4.jpg"
+            "image": "shopify://shop_images/whatsapp_review_8.jpg"
           }
         },
         "r_3": {
@@ -141,13 +159,18 @@
         },
         "r_5": {
           "type": "shot",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/whatsapp_review_9.jpg"
+          }
         }
       },
       "block_order": [
+        "shot_Ah4pGR",
+        "shot_DM34xR",
+        "r_2",
         "r_1",
         "shot_3qEBmA",
-        "r_2",
+        "shot_q7LiX4",
         "r_3",
         "r_4",
         "r_5"
