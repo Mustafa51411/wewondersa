@@ -111,19 +111,33 @@
       "blocks": {
         "r_1": {
           "type": "shot",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/whatsapp_review_5.jpg"
+          }
+        },
+        "shot_3qEBmA": {
+          "type": "shot",
+          "settings": {
+            "image": "shopify://shop_images/whatsapp_review_2.jpg"
+          }
         },
         "r_2": {
           "type": "shot",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/whatsapp_review_4.jpg"
+          }
         },
         "r_3": {
           "type": "shot",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/whatsapp_review_1.jpg"
+          }
         },
         "r_4": {
           "type": "shot",
-          "settings": {}
+          "settings": {
+            "image": "shopify://shop_images/whatsapp_review_3.jpg"
+          }
         },
         "r_5": {
           "type": "shot",
@@ -132,6 +146,7 @@
       },
       "block_order": [
         "r_1",
+        "shot_3qEBmA",
         "r_2",
         "r_3",
         "r_4",
