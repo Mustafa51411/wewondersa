@@ -3,28 +3,69 @@
 <div class="ww-sa" dir="rtl" lang="ar">
 <section class="section diff">
   <div class="wrap">
-    <div class="center"><h2><span class="hl-solid dfx">الفرق</span> اللي تسويه WeeWonders</h2></div>
+    <div class="center"><h2><span class="hl-solid dfx">{{ section.settings.heading_highlight }}</span>{{ section.settings.heading_suffix }}</h2></div>
     <div class="dsplit">
+      {% assign oi = section.settings.other_image %}
+      {% assign wim = section.settings.wee_image %}
       <div class="dcol dother">
-        <div class="dtitle">المضخات<br>الأخرى</div>
-        <div class="dpump"><img loading="lazy" src="{{ 'ww-sa-img-08.jpg' | asset_url }}" alt="مضخة تقليدية"></div>
+        <div class="dtitle">{{ section.settings.other_title_1 }}<br>{{ section.settings.other_title_2 }}</div>
+        <div class="dpump"><img loading="lazy" src="{% if oi != blank %}{{ oi | image_url: width: 800 }}{% else %}{{ 'ww-sa-img-08.jpg' | asset_url }}{% endif %}" alt="{{ section.settings.other_title_1 | escape }}"></div>
       </div>
       <div class="dcol dwee">
-        <div class="dtitle"><em>WeeWonders</em><br>مضخة</div>
-        <div class="dpump fl"><svg class="fstar s1" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="3" stroke-linejoin="round"/></svg><svg class="fstar s2" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="3.6" stroke-linejoin="round"/></svg><svg class="fstar s3" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="4" stroke-linejoin="round"/></svg><img loading="lazy" src="{{ 'ww-sa-img-07.png' | asset_url }}" alt="مضخة WeeWonders"></div>
+        <div class="dtitle"><em>{{ section.settings.wee_title_1 }}</em><br>{{ section.settings.wee_title_2 }}</div>
+        <div class="dpump fl"><svg class="fstar s1" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="3" stroke-linejoin="round"/></svg><svg class="fstar s2" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="3.6" stroke-linejoin="round"/></svg><svg class="fstar s3" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" transform="translate(-8 9)"/><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" stroke="var(--navy)" stroke-width="4" stroke-linejoin="round"/></svg><img loading="lazy" src="{% if wim != blank %}{{ wim | image_url: width: 800 }}{% else %}{{ 'ww-sa-img-07.png' | asset_url }}{% endif %}" alt="{{ section.settings.wee_title_1 | escape }}"></div>
       </div>
     </div>
-    <div class="dpairs"><div class="dpair"><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>يومك يدور حولها</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>حرة اليدين، تشتغل لحالها</span></div></div><div class="dpair"><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>مقاس واحد، وما هو مقاسك أنتِ</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>4 مقاسات + أداة قياس تحدد مقاسك</span></div></div><div class="dpair"><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>ضعيفة ما تكفي للحليب</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>لطيفة عليك وقوية بما يكفي للحليب</span></div></div><div class="dpair"><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>ما تحسين إنها خلّصت</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>تفرّغ بالكامل، فما يبقى حليب وراها</span></div></div></div>
+    <div class="dpairs">
+{% if section.blocks.size > 0 %}
+{% for block in section.blocks %}
+      <div class="dpair" {{ block.shopify_attributes }}><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>{{ block.settings.other_text }}</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>{{ block.settings.wee_text }}</span></div></div>
+{% endfor %}
+{% else %}
+      <div class="dpair"><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>يومك يدور حولها</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>حرة اليدين، تشتغل لحالها</span></div></div>
+      <div class="dpair"><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>مقاس واحد، وما هو مقاسك أنتِ</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>4 مقاسات + أداة قياس تحدد مقاسك</span></div></div>
+      <div class="dpair"><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>ضعيفة ما تكفي للحليب</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>لطيفة عليك وقوية بما يكفي للحليب</span></div></div>
+      <div class="dpair"><div class="dcell"><span class="dm x"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span>ما تحسين إنها خلّصت</span></div><div class="dcell"><span class="dm ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>تفرّغ بالكامل، فما يبقى حليب وراها</span></div></div>
+{% endif %}
+    </div>
   </div>
 </section>
 </div>
 {% schema %}
 {
  "name": "WW SA Difference",
- "settings": [],
+ "settings": [
+  {"type": "text", "id": "heading_highlight", "label": "Heading (highlighted)", "default": "الفرق"},
+  {"type": "text", "id": "heading_suffix", "label": "Heading (after)", "default": " اللي تسويه WeeWonders"},
+  {"type": "header", "content": "Left column (other pumps)"},
+  {"type": "text", "id": "other_title_1", "label": "Title line 1", "default": "المضخات"},
+  {"type": "text", "id": "other_title_2", "label": "Title line 2", "default": "الأخرى"},
+  {"type": "image_picker", "id": "other_image", "label": "Image", "info": "Leave empty for the default image."},
+  {"type": "header", "content": "Right column (WeeWonders)"},
+  {"type": "text", "id": "wee_title_1", "label": "Title line 1", "default": "WeeWonders"},
+  {"type": "text", "id": "wee_title_2", "label": "Title line 2", "default": "مضخة"},
+  {"type": "image_picker", "id": "wee_image", "label": "Image", "info": "Leave empty for the default image."}
+ ],
+ "blocks": [
+  {
+   "type": "pair",
+   "name": "Comparison row",
+   "settings": [
+    {"type": "text", "id": "other_text", "label": "Other pumps (X)", "default": "نص"},
+    {"type": "text", "id": "wee_text", "label": "WeeWonders (check)", "default": "نص"}
+   ]
+  }
+ ],
+ "max_blocks": 10,
  "presets": [
   {
-   "name": "WW SA Difference"
+   "name": "WW SA Difference",
+   "blocks": [
+    {"type": "pair", "settings": {"other_text": "يومك يدور حولها", "wee_text": "حرة اليدين، تشتغل لحالها"}},
+    {"type": "pair", "settings": {"other_text": "مقاس واحد، وما هو مقاسك أنتِ", "wee_text": "4 مقاسات + أداة قياس تحدد مقاسك"}},
+    {"type": "pair", "settings": {"other_text": "ضعيفة ما تكفي للحليب", "wee_text": "لطيفة عليك وقوية بما يكفي للحليب"}},
+    {"type": "pair", "settings": {"other_text": "ما تحسين إنها خلّصت", "wee_text": "تفرّغ بالكامل، فما يبقى حليب وراها"}}
+   ]
   }
  ]
 }

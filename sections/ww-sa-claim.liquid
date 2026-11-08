@@ -3,17 +3,34 @@
 <div class="ww-sa" dir="rtl" lang="ar">
 <section class="claim" id="how" style="border-bottom:0">
   <div class="wrap">
-    <p class="lede">القاعدة البسيطة</p>
-    <h2 class="fm-headline">فرّغي بانتظام،<span class="hl-solid">عشان يستمر حليبك</span></h2>
+    <p class="lede">{{ section.settings.lede }}</p>
+    <h2 class="fm-headline">{{ section.settings.heading_prefix }}<span class="hl-solid">{{ section.settings.heading_highlight }}</span></h2>
     <div class="scenario-split">
+{% if section.blocks.size > 0 %}
+{% for block in section.blocks %}
+      {% assign sc_default = 'ww-sa-img-15.png' %}{% if block.settings.side == 'pos' %}{% assign sc_default = 'ww-sa-img-16.png' %}{% endif %}
+      {% if block.settings.image != blank %}{% assign sc_img = block.settings.image | image_url: width: 1280 %}{% else %}{% assign sc_img = sc_default | asset_url %}{% endif %}
+      <div class="scenario {% if block.settings.side == 'pos' %}pos{% else %}neg{% endif %}" {{ block.shopify_attributes }}>
+        <span class="sc-badge">{{ block.settings.badge }}</span>
+        <div class="sc-img"><img src="{{ sc_img }}" alt="{{ block.settings.step1 | escape }}" width="1280" height="720" loading="lazy"></div>
+        <div class="sc-chain">
+          <div class="sc-step">{{ block.settings.step1 }}</div>
+          <div class="sc-arrow">&#8595;</div>
+          <div class="sc-step">{{ block.settings.step2 }}</div>
+          <div class="sc-arrow">&#8595;</div>
+          <div class="sc-result {% if block.settings.side == 'pos' %}good{% else %}bad{% endif %}">{{ block.settings.result }}</div>
+        </div>
+      </div>
+{% endfor %}
+{% else %}
       <div class="scenario neg">
         <span class="sc-badge">😣</span>
         <div class="sc-img"><img src="https://weewonderssa.com/cdn/shop/t/5/assets/ww-sa-img-15.png" alt="تفريغ غير كامل" width="1280" height="720" loading="lazy"></div>
         <div class="sc-chain">
           <div class="sc-step">تفريغ غير كامل</div>
-          <div class="sc-arrow">↓</div>
+          <div class="sc-arrow">&#8595;</div>
           <div class="sc-step">الجسم يقرأها: لا حاجة للمزيد</div>
-          <div class="sc-arrow">↓</div>
+          <div class="sc-arrow">&#8595;</div>
           <div class="sc-result bad">حليب أقل</div>
         </div>
       </div>
@@ -22,12 +39,13 @@
         <div class="sc-img"><img src="https://weewonderssa.com/cdn/shop/t/5/assets/ww-sa-img-16.png" alt="تفريغ كامل" width="1280" height="720" loading="lazy"></div>
         <div class="sc-chain">
           <div class="sc-step">تفريغ كامل</div>
-          <div class="sc-arrow">↓</div>
+          <div class="sc-arrow">&#8595;</div>
           <div class="sc-step">الجسم يقرأها: استمري</div>
-          <div class="sc-arrow">↓</div>
+          <div class="sc-arrow">&#8595;</div>
           <div class="sc-result good">حليب أكثر</div>
         </div>
       </div>
+{% endif %}
     </div>
   </div>
   </section>
@@ -35,10 +53,36 @@
 {% schema %}
 {
  "name": "WW SA Claim",
- "settings": [],
+ "settings": [
+  {"type": "text", "id": "lede", "label": "Small label", "default": "القاعدة البسيطة"},
+  {"type": "text", "id": "heading_prefix", "label": "Heading (before)", "default": "فرّغي بانتظام،"},
+  {"type": "text", "id": "heading_highlight", "label": "Heading (highlighted)", "default": "عشان يستمر حليبك"}
+ ],
+ "blocks": [
+  {
+   "type": "scenario",
+   "name": "Scenario",
+   "settings": [
+    {"type": "select", "id": "side", "label": "Style", "default": "neg", "options": [
+      {"value": "neg", "label": "Negative (red / wrong way)"},
+      {"value": "pos", "label": "Positive (green / right way)"}
+    ]},
+    {"type": "text", "id": "badge", "label": "Emoji badge", "default": "😣"},
+    {"type": "image_picker", "id": "image", "label": "Scenario image", "info": "Leave empty for the default image."},
+    {"type": "text", "id": "step1", "label": "Step 1", "default": "الخطوة الأولى"},
+    {"type": "text", "id": "step2", "label": "Step 2", "default": "الخطوة الثانية"},
+    {"type": "text", "id": "result", "label": "Result", "default": "النتيجة"}
+   ]
+  }
+ ],
+ "max_blocks": 6,
  "presets": [
   {
-   "name": "WW SA Claim"
+   "name": "WW SA Claim",
+   "blocks": [
+    {"type": "scenario", "settings": {"side": "neg", "badge": "😣", "step1": "تفريغ غير كامل", "step2": "الجسم يقرأها: لا حاجة للمزيد", "result": "حليب أقل"}},
+    {"type": "scenario", "settings": {"side": "pos", "badge": "🙂‍↕️", "step1": "تفريغ كامل", "step2": "الجسم يقرأها: استمري", "result": "حليب أكثر"}}
+   ]
   }
  ]
 }

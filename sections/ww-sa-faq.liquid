@@ -3,13 +3,19 @@
 <div class="ww-sa" dir="rtl" lang="ar">
 <section class="section" style="background:var(--sky-soft)" id="faq">
   <div class="wrap">
-    <div class="center"><h2><span class="hl">أسئلة</span> تسألها الأمهات</h2></div>
+    <div class="center"><h2><span class="hl">{{ section.settings.heading_highlight }}</span>{{ section.settings.heading_suffix }}</h2></div>
     <div class="faq">
+{% if section.blocks.size > 0 %}
+{% for block in section.blocks %}
+      <details {{ block.shopify_attributes }}><summary>{{ block.settings.question }}<span class="pm">+</span></summary><p>{{ block.settings.answer }}</p></details>
+{% endfor %}
+{% else %}
       <details><summary>أختار مضخة مفردة أو مزدوجة؟<span class="pm">+</span></summary><p>المفردة تضخ جهة وحدة، وهي أخف وأوفر. المزدوجة تضخ الجهتين مع بعض وتختصر وقتك للنصف، ولهذا أغلب الأمهات اللي يضخون كثير يختارونها.</p></details>
       <details><summary>هل تأثر على إدرار الحليب؟<span class="pm">+</span></summary><p>الجسم ينتج الحليب حسب الطلب. لما يكون المقاس مناسب ويكتمل التفريغ، توصل للجسم إشارة أوضح يكمل. كل جسم مختلف والنتائج تختلف من أم لثانية ولا يمكن ضمانها.</p></details>
       <details><summary>كيف أعرف المقاس المناسب؟<span class="pm">+</span></summary><p>في كل علبة 4 مقاسات (17 و19 و21 و24 مم) مع أداة قياس. مو متأكدة؟ أرسلي لنا صورة على واتساب ونساعدك تختارين.</p></details>
       <details><summary>هل هي هادئة وما تبين؟<span class="pm">+</span></summary><p>أقل من 50 ديسيبل وتنحط داخل حمالة الصدر بدون أنابيب أو أسلاك، تختفي تحت لبسك وهادية في أي غرفة عادية.</p></details>
       <details><summary>كم يستغرق التوصيل؟<span class="pm">+</span></summary><p>توصيل سريع لمدن المملكة، ودعم واتساب 7 أيام في الأسبوع.</p></details>
+{% endif %}
     </div>
   </div>
 </section>
@@ -17,10 +23,31 @@
 {% schema %}
 {
  "name": "WW SA FAQ",
- "settings": [],
+ "settings": [
+  {"type": "text", "id": "heading_highlight", "label": "Heading (highlighted)", "default": "أسئلة"},
+  {"type": "text", "id": "heading_suffix", "label": "Heading (after)", "default": " تسألها الأمهات"}
+ ],
+ "blocks": [
+  {
+   "type": "faq",
+   "name": "Question",
+   "settings": [
+    {"type": "text", "id": "question", "label": "Question", "default": "سؤال؟"},
+    {"type": "textarea", "id": "answer", "label": "Answer", "default": "الإجابة هنا."}
+   ]
+  }
+ ],
+ "max_blocks": 20,
  "presets": [
   {
-   "name": "WW SA FAQ"
+   "name": "WW SA FAQ",
+   "blocks": [
+    {"type": "faq", "settings": {"question": "أختار مضخة مفردة أو مزدوجة؟", "answer": "المفردة تضخ جهة وحدة، وهي أخف وأوفر. المزدوجة تضخ الجهتين مع بعض وتختصر وقتك للنصف، ولهذا أغلب الأمهات اللي يضخون كثير يختارونها."}},
+    {"type": "faq", "settings": {"question": "هل تأثر على إدرار الحليب؟", "answer": "الجسم ينتج الحليب حسب الطلب. لما يكون المقاس مناسب ويكتمل التفريغ، توصل للجسم إشارة أوضح يكمل. كل جسم مختلف والنتائج تختلف من أم لثانية ولا يمكن ضمانها."}},
+    {"type": "faq", "settings": {"question": "كيف أعرف المقاس المناسب؟", "answer": "في كل علبة 4 مقاسات (17 و19 و21 و24 مم) مع أداة قياس. مو متأكدة؟ أرسلي لنا صورة على واتساب ونساعدك تختارين."}},
+    {"type": "faq", "settings": {"question": "هل هي هادئة وما تبين؟", "answer": "أقل من 50 ديسيبل وتنحط داخل حمالة الصدر بدون أنابيب أو أسلاك، تختفي تحت لبسك وهادية في أي غرفة عادية."}},
+    {"type": "faq", "settings": {"question": "كم يستغرق التوصيل؟", "answer": "توصيل سريع لمدن المملكة، ودعم واتساب 7 أيام في الأسبوع."}}
+   ]
   }
  ]
 }

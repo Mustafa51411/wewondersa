@@ -3,13 +3,19 @@
 <div class="ww-sa" dir="rtl" lang="ar">
 <section class="section">
   <div class="wrap">
-    <div class="center"><h2>خمس خطوات، وبعدها <span class="hl-solid dfx">إيديك حرّة</span></h2></div>
+    <div class="center"><h2>{{ section.settings.heading_prefix }}<span class="hl-solid dfx">{{ section.settings.heading_highlight }}</span></h2></div>
     <div class="steps">
+{% if section.blocks.size > 0 %}
+{% for block in section.blocks %}
+      <div class="step" {{ block.shopify_attributes }}><div class="ph sq"><img src="{% if block.settings.image != blank %}{{ block.settings.image | image_url: width: 600 }}{% else %}{%- case forloop.index -%}{% when 1 %}{{ 'ww-sa-img-09.jpg' | asset_url }}{% when 2 %}{{ 'ww-sa-img-03.jpg' | asset_url }}{% when 3 %}{{ 'ww-sa-img-10.jpg' | asset_url }}{% when 4 %}{{ 'ww-sa-img-11.jpg' | asset_url }}{% when 5 %}{{ 'ww-sa-img-12.jpg' | asset_url }}{% else %}{{ 'ww-sa-img-09.jpg' | asset_url }}{% endcase -%}{% endif %}" alt="" loading="lazy"></div><div class="num">{{ forloop.index }}</div><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></div>
+{% endfor %}
+{% else %}
       <div class="step"><div class="ph sq"><img src="{{ 'ww-sa-img-09.jpg' | asset_url }}" alt=""></div><div class="num">1</div><h3>ركّبي القطع</h3><p>ثواني وتصير جاهزة.</p></div>
       <div class="step"><div class="ph sq"><img src="{{ 'ww-sa-img-03.jpg' | asset_url }}" alt=""></div><div class="num">2</div><h3>اختاري مقاسك</h3><p>استخدمي أداة القياس.</p></div>
       <div class="step"><div class="ph sq"><img src="{{ 'ww-sa-img-10.jpg' | asset_url }}" alt=""></div><div class="num">3</div><h3>حطّيها داخل حمالة الصدر</h3><p>خفيفة وما تبيّن.</p></div>
       <div class="step"><div class="ph sq"><img src="{{ 'ww-sa-img-11.jpg' | asset_url }}" alt=""></div><div class="num">4</div><h3>ابدئي</h3><p>اختاري الوضع المريح لك.</p></div>
       <div class="step"><div class="ph sq"><img src="{{ 'ww-sa-img-12.jpg' | asset_url }}" alt=""></div><div class="num">5</div><h3>اسكبي الحليب</h3><p>مباشرة في أكياس الحفظ.</p></div>
+{% endif %}
     </div>
   </div>
 </section>
@@ -17,10 +23,32 @@
 {% schema %}
 {
  "name": "WW SA How to use",
- "settings": [],
+ "settings": [
+  {"type": "text", "id": "heading_prefix", "label": "Heading (before)", "default": "خمس خطوات، وبعدها "},
+  {"type": "text", "id": "heading_highlight", "label": "Heading (highlighted)", "default": "إيديك حرّة"}
+ ],
+ "blocks": [
+  {
+   "type": "step",
+   "name": "Step",
+   "settings": [
+    {"type": "image_picker", "id": "image", "label": "Step image", "info": "Leave empty for the default image for this position."},
+    {"type": "text", "id": "title", "label": "Title", "default": "الخطوة"},
+    {"type": "text", "id": "text", "label": "Short text", "default": "الوصف."}
+   ]
+  }
+ ],
+ "max_blocks": 10,
  "presets": [
   {
-   "name": "WW SA How to use"
+   "name": "WW SA How to use",
+   "blocks": [
+    {"type": "step", "settings": {"title": "ركّبي القطع", "text": "ثواني وتصير جاهزة."}},
+    {"type": "step", "settings": {"title": "اختاري مقاسك", "text": "استخدمي أداة القياس."}},
+    {"type": "step", "settings": {"title": "حطّيها داخل حمالة الصدر", "text": "خفيفة وما تبيّن."}},
+    {"type": "step", "settings": {"title": "ابدئي", "text": "اختاري الوضع المريح لك."}},
+    {"type": "step", "settings": {"title": "اسكبي الحليب", "text": "مباشرة في أكياس الحفظ."}}
+   ]
   }
  ]
 }

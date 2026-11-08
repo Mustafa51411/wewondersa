@@ -3,18 +3,49 @@
 <div class="ww-sa" dir="rtl" lang="ar">
 <section class="section sa" id="sa-day">
   <div class="wrap">
-    <h3 class="sa-sub">جلستك تمشي مع يومك</h3>
-    <ul class="sa-days"><li class="sa-day"><span class="sa-ico"><svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><rect x="9" y="11" width="30" height="20" rx="2.5"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="11" width="30" height="20" rx="2.5"/><path d="M4 37h40M4 37l3-6h34l3 6"/></g></svg></span><b>على مكتبك</b><p>الاجتماع شغّال والشاشة قدامك. إيديك على الكيبورد، وجلستك تمشي معك.</p></li><li class="sa-day"><span class="sa-ico"><svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><path d="M8 20h32v14a6 6 0 01-6 6H14a6 6 0 01-6-6z"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20h32v14a6 6 0 01-6 6H14a6 6 0 01-6-6z"/><path d="M5 20h38M18 14c0-3 2-3 2-6M26 14c0-3 2-3 2-6M8 26H4M40 26h4"/></g></svg></span><b>في مطبخك</b><p>الغدا على النار والعيال حولك. إيديك للطبخ، والمضخة تشتغل لحالها.</p></li><li class="sa-day"><span class="sa-ico"><svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><path d="M16 41h16l3-14c0-5-4-8-11-8s-11 3-11 8z"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 41h16l3-14c0-5-4-8-11-8s-11 3-11 8z"/><path d="M20 19c0-3 1-4 4-4s4 1 4 4M24 11v4M21 11h6M13 27c-5-1-8-4-9-8M35 25c3 0 6-1 8-4M38 41H10"/></g></svg></span><b>والضيوف في المجلس</b><p>زيارة النفاس في البيت؟ صبّي القهوة وكمّلي ضيافتك، وجلستك ماشية.</p></li><li class="sa-day"><span class="sa-ico"><svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><path d="M32 8a17 17 0 100 30 14 14 0 01-12-15A14 14 0 0132 8z"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8a17 17 0 100 30 14 14 0 01-12-15A14 14 0 0132 8z"/><path d="M38 12v6M35 15h6"/></g></svg></span><b>بعد ما ينام البيت</b><p>جلسة هادية بدون أسلاك تتدلّى، وبدون ما تصحين أحد.</p></li></ul>
+    <h3 class="sa-sub">{{ section.settings.heading }}</h3>
+    <ul class="sa-days">
+{% if section.blocks.size > 0 %}
+{% for block in section.blocks %}
+      <li class="sa-day" {{ block.shopify_attributes }}>{% if block.settings.image != blank %}<span class="sa-ico"><img src="{{ block.settings.image | image_url: width: 160 }}" alt="" width="54" height="54" loading="lazy"></span>{% else %}<span class="sa-ico">{%- case forloop.index -%}{% when 1 %}<svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><rect x="9" y="11" width="30" height="20" rx="2.5"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="11" width="30" height="20" rx="2.5"/><path d="M4 37h40M4 37l3-6h34l3 6"/></g></svg>{% when 2 %}<svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><path d="M8 20h32v14a6 6 0 01-6 6H14a6 6 0 01-6-6z"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20h32v14a6 6 0 01-6 6H14a6 6 0 01-6-6z"/><path d="M5 20h38M18 14c0-3 2-3 2-6M26 14c0-3 2-3 2-6M8 26H4M40 26h4"/></g></svg>{% when 3 %}<svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><path d="M16 41h16l3-14c0-5-4-8-11-8s-11 3-11 8z"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 41h16l3-14c0-5-4-8-11-8s-11 3-11 8z"/><path d="M20 19c0-3 1-4 4-4s4 1 4 4M24 11v4M21 11h6M13 27c-5-1-8-4-9-8M35 25c3 0 6-1 8-4M38 41H10"/></g></svg>{% when 4 %}<svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><path d="M32 8a17 17 0 100 30 14 14 0 01-12-15A14 14 0 0132 8z"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8a17 17 0 100 30 14 14 0 01-12-15A14 14 0 0132 8z"/><path d="M38 12v6M35 15h6"/></g></svg>{%- else -%}<svg width="54" height="54" viewBox="-8 -8 116 116" fill="none" aria-hidden="true"><path d="M50 4C54 34 66 46 96 50 66 54 54 66 50 96 46 66 34 54 4 50 34 46 46 34 50 4Z" fill="var(--sky)" stroke="var(--navy)" stroke-width="4" stroke-linejoin="round"/></svg>{%- endcase -%}</span>{% endif %}<b>{{ block.settings.title }}</b><p>{{ block.settings.text }}</p></li>
+{% endfor %}
+{% else %}
+      <li class="sa-day"><span class="sa-ico"><svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><rect x="9" y="11" width="30" height="20" rx="2.5"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="11" width="30" height="20" rx="2.5"/><path d="M4 37h40M4 37l3-6h34l3 6"/></g></svg></span><b>على مكتبك</b><p>الاجتماع شغّال والشاشة قدامك. إيديك على الكيبورد، وجلستك تمشي معك.</p></li>
+      <li class="sa-day"><span class="sa-ico"><svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><path d="M8 20h32v14a6 6 0 01-6 6H14a6 6 0 01-6-6z"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20h32v14a6 6 0 01-6 6H14a6 6 0 01-6-6z"/><path d="M5 20h38M18 14c0-3 2-3 2-6M26 14c0-3 2-3 2-6M8 26H4M40 26h4"/></g></svg></span><b>في مطبخك</b><p>الغدا على النار والعيال حولك. إيديك للطبخ، والمضخة تشتغل لحالها.</p></li>
+      <li class="sa-day"><span class="sa-ico"><svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><path d="M16 41h16l3-14c0-5-4-8-11-8s-11 3-11 8z"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 41h16l3-14c0-5-4-8-11-8s-11 3-11 8z"/><path d="M20 19c0-3 1-4 4-4s4 1 4 4M24 11v4M21 11h6M13 27c-5-1-8-4-9-8M35 25c3 0 6-1 8-4M38 41H10"/></g></svg></span><b>والضيوف في المجلس</b><p>زيارة النفاس في البيت؟ صبّي القهوة وكمّلي ضيافتك، وجلستك ماشية.</p></li>
+      <li class="sa-day"><span class="sa-ico"><svg width="54" height="54" viewBox="0 0 48 48" fill="none" aria-hidden="true"><g fill="var(--sky)" transform="translate(-3 3)"><path d="M32 8a17 17 0 100 30 14 14 0 01-12-15A14 14 0 0132 8z"/></g><g stroke="var(--navy)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8a17 17 0 100 30 14 14 0 01-12-15A14 14 0 0132 8z"/><path d="M38 12v6M35 15h6"/></g></svg></span><b>بعد ما ينام البيت</b><p>جلسة هادية بدون أسلاك تتدلّى، وبدون ما تصحين أحد.</p></li>
+{% endif %}
+    </ul>
   </div>
 </section>
 </div>
 {% schema %}
 {
  "name": "WW SA Four day boxes",
- "settings": [],
+ "settings": [
+  {"type": "text", "id": "heading", "label": "Heading", "default": "جلستك تمشي مع يومك"}
+ ],
+ "blocks": [
+  {
+   "type": "day",
+   "name": "Day box",
+   "settings": [
+    {"type": "text", "id": "title", "label": "Title", "default": "عنوان"},
+    {"type": "textarea", "id": "text", "label": "Text", "default": "النص يظهر هنا."},
+    {"type": "image_picker", "id": "image", "label": "Custom icon (optional)", "info": "Leave empty to use the built-in icon for this position."}
+   ]
+  }
+ ],
+ "max_blocks": 8,
  "presets": [
   {
-   "name": "WW SA Four day boxes"
+   "name": "WW SA Four day boxes",
+   "blocks": [
+    {"type": "day", "settings": {"title": "على مكتبك", "text": "الاجتماع شغّال والشاشة قدامك. إيديك على الكيبورد، وجلستك تمشي معك."}},
+    {"type": "day", "settings": {"title": "في مطبخك", "text": "الغدا على النار والعيال حولك. إيديك للطبخ، والمضخة تشتغل لحالها."}},
+    {"type": "day", "settings": {"title": "والضيوف في المجلس", "text": "زيارة النفاس في البيت؟ صبّي القهوة وكمّلي ضيافتك، وجلستك ماشية."}},
+    {"type": "day", "settings": {"title": "بعد ما ينام البيت", "text": "جلسة هادية بدون أسلاك تتدلّى، وبدون ما تصحين أحد."}}
+   ]
   }
  ]
 }
