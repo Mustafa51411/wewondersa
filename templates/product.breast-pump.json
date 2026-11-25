@@ -80,49 +80,6 @@
         "storage_gift_handle": "milk-storage-bags-50pcs"
       }
     },
-    "ww-sa-carousel": {
-      "type": "ww-sa-carousel",
-      "blocks": {
-        "s_1": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/product1.png"
-          }
-        },
-        "s_2": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/shop-by-bundle.png"
-          }
-        },
-        "s_3": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/Copy_for_LP_Listicle_KSA_10.png"
-          }
-        },
-        "s_4": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/product3.png"
-          }
-        },
-        "s_5": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/breast-pump-wee-wonders-ksa.png"
-          }
-        }
-      },
-      "block_order": [
-        "s_1",
-        "s_2",
-        "s_3",
-        "s_4",
-        "s_5"
-      ],
-      "settings": {}
-    },
     "ww-sa-advantage": {
       "type": "ww-sa-advantage",
       "blocks": {
@@ -166,6 +123,49 @@
         "heading_highlight": "يميّز",
         "heading_suffix": "هذي المضخة؟"
       }
+    },
+    "ww-sa-carousel": {
+      "type": "ww-sa-carousel",
+      "blocks": {
+        "s_1": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/product1.png"
+          }
+        },
+        "s_2": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/shop-by-bundle.png"
+          }
+        },
+        "s_3": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Copy_for_LP_Listicle_KSA_10.png"
+          }
+        },
+        "s_4": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/product3.png"
+          }
+        },
+        "s_5": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/breast-pump-wee-wonders-ksa.png"
+          }
+        }
+      },
+      "block_order": [
+        "s_1",
+        "s_2",
+        "s_3",
+        "s_4",
+        "s_5"
+      ],
+      "settings": {}
     },
     "ww-sa-days": {
       "type": "ww-sa-days",
@@ -551,8 +551,8 @@
   },
   "order": [
     "ww-sa-product",
-    "ww-sa-carousel",
     "ww-sa-advantage",
+    "ww-sa-carousel",
     "ww-sa-days",
     "ww-sa-whatsapp",
     "ww-sa-claim",
