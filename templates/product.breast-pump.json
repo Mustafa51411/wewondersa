@@ -44,118 +44,41 @@
         "show_topbar": false,
         "topbar_text": "عدة المقاسات مجاناً مع كل علبة • توصيل سريع • دعم واتساب 7 أيام",
         "show_nav": false,
+        "rating_text": "محبوبة من آلاف الأمهات في السعودية",
+        "heading": "مضخة تناسب جسمك ويومك",
+        "product_name": "مضخة WeeWonders اللاسلكية حرة اليدين",
+        "promise": "بدون ألم، بدون ساعات ضخ طويلة، وبدون إعدادات معقدة.",
+        "ksp_1": "اضخّي وإنتِ تسوّين كل شي ثاني",
+        "ksp_2": "100% مانعة للتسرب",
+        "ksp_3": "ألم أقل من أول يوم",
+        "ksp_4": "بطارية تكفيك اليوم كله",
+        "spec_1_value": "5–6",
+        "spec_1_label": "جلسات لكل شحنة",
+        "spec_2_value": "180 مل",
+        "spec_2_label": "كوب مانع للتسرب",
+        "spec_3_value": "4 أوضاع",
+        "spec_3_label": "12 مستوى لكل وضع",
         "whatsapp_number": "966593492712",
+        "flag_1": "عرض",
+        "flag_2": "الجمعة البيضاء",
+        "gift1_title": "+ عدة المقاسات مجاناً",
+        "gift1_sub": "4 مقاسات + أداة تساعدك تختارين مقاسك",
+        "gift1_value": "مجاناً",
+        "gift2_title": "+ أكياس حفظ الحليب (50 كيس) مجاناً",
+        "gift2_value": "60 ر.س",
+        "gift3_title": "+ شحن مجاني",
+        "gift3_value": "مجاناً",
+        "atc_label": "أضيفي للسلة",
+        "whatsapp_label": "اطلبي عبر واتساب",
+        "buybar_label": "أضيفي للسلة",
+        "trust_1": "توصيل سريع",
+        "trust_2": "دعم واتساب 7 أيام",
+        "trust_3": "دفع آمن",
         "double_variant": "مضخة مزدوجة",
         "single_variant": "مضخة مفردة",
         "after_add": "cart",
         "storage_gift_handle": "milk-storage-bags-50pcs"
       }
-    },
-    "ww-sa-doctors": {
-      "type": "ww-sa-doctors",
-      "settings": {
-        "heading_prefix": "اسمعيها من أمهات وطبيبات",
-        "heading_highlight": "جرّبن المضخة"
-      },
-      "blocks": {
-        "v_1": {
-          "type": "video_item",
-          "settings": {
-            "author": "د. إيليت سخن",
-            "tag": "الرضاعة والعمل",
-            "video_url": "https://cdn.shopify.com/videos/c/vp/357122ab183d4474973f358529c201ae/357122ab183d4474973f358529c201ae.HD-720p-1.6Mbps-67072483.mp4",
-            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/357122ab183d4474973f358529c201ae.thumbnail.0000000000_700x.jpg",
-            "stars": "★★★★★"
-          }
-        },
-        "v_2": {
-          "type": "video_item",
-          "settings": {
-            "author": "نورة",
-            "tag": "تجربة أم",
-            "video_url": "https://cdn.shopify.com/videos/c/vp/178cd5038c8c4173b650d27296215520/178cd5038c8c4173b650d27296215520.HD-720p-4.5Mbps-71120658.mp4",
-            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/178cd5038c8c4173b650d27296215520.thumbnail.0000000000_700x.jpg",
-            "stars": "★★★★★"
-          }
-        },
-        "v_3": {
-          "type": "video_item",
-          "settings": {
-            "author": "مها",
-            "tag": "تجربتها مع الشفاط",
-            "video_url": "https://cdn.shopify.com/videos/c/vp/f464929baf6f4962884362467b21dd5c/f464929baf6f4962884362467b21dd5c.HD-720p-4.5Mbps-71126738.mp4",
-            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/f464929baf6f4962884362467b21dd5c.thumbnail.0000000000_700x.jpg",
-            "stars": "★★★★★"
-          }
-        },
-        "v_4": {
-          "type": "video_item",
-          "settings": {
-            "author": "أم جديدة",
-            "tag": "تجربة رضاعة",
-            "video_url": "https://cdn.shopify.com/videos/c/vp/4b59e0403d9847caa53dc8e2f5681be2/4b59e0403d9847caa53dc8e2f5681be2.HD-720p-4.5Mbps-71121180.mp4",
-            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/4b59e0403d9847caa53dc8e2f5681be2.thumbnail.0000000000_700x.jpg",
-            "stars": "★★★★★"
-          }
-        },
-        "v_5": {
-          "type": "video_item",
-          "settings": {
-            "author": "جنى",
-            "tag": "تجربة أم",
-            "video_url": "https://cdn.shopify.com/videos/c/vp/316f29ab16b841059ea27a1f0413b3d8/316f29ab16b841059ea27a1f0413b3d8.HD-720p-4.5Mbps-71128905.mp4",
-            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/316f29ab16b841059ea27a1f0413b3d8.thumbnail.0000000000_700x.jpg",
-            "stars": "★★★★★"
-          }
-        }
-      },
-      "block_order": [
-        "v_1",
-        "v_2",
-        "v_3",
-        "v_4",
-        "v_5"
-      ]
-    },
-    "ww-sa-advantage": {
-      "type": "ww-sa-advantage",
-      "settings": {},
-      "blocks": {
-        "a_1": {
-          "type": "item",
-          "settings": {
-            "title": "مقاسك أنتِ",
-            "text": "تجي مع 4 مقاسات + أداة قياس، فما تحتارين في مقاسك."
-          }
-        },
-        "a_2": {
-          "type": "item",
-          "settings": {
-            "title": "هادئة جداً",
-            "text": "أقل من 50 ديسيبل، ما أحد يحس فيها."
-          }
-        },
-        "a_3": {
-          "type": "item",
-          "settings": {
-            "title": "مانعة للتسرب",
-            "text": "محكمة الإغلاق حتى لو انقلبت."
-          }
-        },
-        "a_4": {
-          "type": "item",
-          "settings": {
-            "title": "حرة اليدين فعلاً",
-            "text": "البسيها وسوّي أي شي ثاني."
-          }
-        }
-      },
-      "block_order": [
-        "a_1",
-        "a_2",
-        "a_3",
-        "a_4"
-      ]
     },
     "ww-sa-carousel": {
       "type": "ww-sa-carousel",
@@ -200,9 +123,52 @@
       ],
       "settings": {}
     },
+    "ww-sa-advantage": {
+      "type": "ww-sa-advantage",
+      "blocks": {
+        "a_1": {
+          "type": "item",
+          "settings": {
+            "title": "مقاسك أنتِ",
+            "text": "تجي مع 4 مقاسات + أداة قياس، فما تحتارين في مقاسك."
+          }
+        },
+        "a_2": {
+          "type": "item",
+          "settings": {
+            "title": "هادئة جداً",
+            "text": "أقل من 50 ديسيبل، ما أحد يحس فيها."
+          }
+        },
+        "a_3": {
+          "type": "item",
+          "settings": {
+            "title": "مانعة للتسرب",
+            "text": "محكمة الإغلاق حتى لو انقلبت."
+          }
+        },
+        "a_4": {
+          "type": "item",
+          "settings": {
+            "title": "حرة اليدين فعلاً",
+            "text": "البسيها وسوّي أي شي ثاني."
+          }
+        }
+      },
+      "block_order": [
+        "a_1",
+        "a_2",
+        "a_3",
+        "a_4"
+      ],
+      "settings": {
+        "heading_prefix": "وش اللي",
+        "heading_highlight": "يميّز",
+        "heading_suffix": "هذي المضخة؟"
+      }
+    },
     "ww-sa-days": {
       "type": "ww-sa-days",
-      "settings": {},
       "blocks": {
         "y_1": {
           "type": "day",
@@ -238,7 +204,10 @@
         "y_2",
         "y_3",
         "y_4"
-      ]
+      ],
+      "settings": {
+        "heading": "جلستك تمشي مع يومك"
+      }
     },
     "ww-sa-whatsapp": {
       "type": "ww-sa-whatsapp",
@@ -316,7 +285,6 @@
     },
     "ww-sa-claim": {
       "type": "ww-sa-claim",
-      "settings": {},
       "blocks": {
         "c_1": {
           "type": "scenario",
@@ -342,11 +310,15 @@
       "block_order": [
         "c_1",
         "c_2"
-      ]
+      ],
+      "settings": {
+        "lede": "القاعدة البسيطة",
+        "heading_prefix": "فرّغي بانتظام،",
+        "heading_highlight": "عشان يستمر حليبك"
+      }
     },
     "ww-sa-difference": {
       "type": "ww-sa-difference",
-      "settings": {},
       "blocks": {
         "f_1": {
           "type": "pair",
@@ -382,11 +354,18 @@
         "f_2",
         "f_3",
         "f_4"
-      ]
+      ],
+      "settings": {
+        "heading_highlight": "الفرق",
+        "heading_suffix": "اللي تسويه WeeWonders",
+        "other_title_1": "المضخات",
+        "other_title_2": "الأخرى",
+        "wee_title_1": "WeeWonders",
+        "wee_title_2": "مضخة"
+      }
     },
     "ww-sa-steps": {
       "type": "ww-sa-steps",
-      "settings": {},
       "blocks": {
         "t_1": {
           "type": "step",
@@ -430,18 +409,96 @@
         "t_3",
         "t_4",
         "t_5"
-      ]
+      ],
+      "settings": {
+        "heading_prefix": "خمس خطوات، وبعدها",
+        "heading_highlight": "إيديك حرّة"
+      }
+    },
+    "ww-sa-doctors": {
+      "type": "ww-sa-doctors",
+      "blocks": {
+        "v_1": {
+          "type": "video_item",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/vp/357122ab183d4474973f358529c201ae/357122ab183d4474973f358529c201ae.HD-720p-1.6Mbps-67072483.mp4",
+            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/357122ab183d4474973f358529c201ae.thumbnail.0000000000_700x.jpg",
+            "author": "د. إيليت سخن",
+            "tag": "الرضاعة والعمل",
+            "stars": "★★★★★"
+          }
+        },
+        "v_2": {
+          "type": "video_item",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/vp/178cd5038c8c4173b650d27296215520/178cd5038c8c4173b650d27296215520.HD-720p-4.5Mbps-71120658.mp4",
+            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/178cd5038c8c4173b650d27296215520.thumbnail.0000000000_700x.jpg",
+            "author": "نورة",
+            "tag": "تجربة أم",
+            "stars": "★★★★★"
+          }
+        },
+        "v_3": {
+          "type": "video_item",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/vp/f464929baf6f4962884362467b21dd5c/f464929baf6f4962884362467b21dd5c.HD-720p-4.5Mbps-71126738.mp4",
+            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/f464929baf6f4962884362467b21dd5c.thumbnail.0000000000_700x.jpg",
+            "author": "مها",
+            "tag": "تجربتها مع الشفاط",
+            "stars": "★★★★★"
+          }
+        },
+        "v_4": {
+          "type": "video_item",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/vp/4b59e0403d9847caa53dc8e2f5681be2/4b59e0403d9847caa53dc8e2f5681be2.HD-720p-4.5Mbps-71121180.mp4",
+            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/4b59e0403d9847caa53dc8e2f5681be2.thumbnail.0000000000_700x.jpg",
+            "author": "أم جديدة",
+            "tag": "تجربة رضاعة",
+            "stars": "★★★★★"
+          }
+        },
+        "v_5": {
+          "type": "video_item",
+          "settings": {
+            "video_url": "https://cdn.shopify.com/videos/c/vp/316f29ab16b841059ea27a1f0413b3d8/316f29ab16b841059ea27a1f0413b3d8.HD-720p-4.5Mbps-71128905.mp4",
+            "poster_url": "https://weewonderssa.com/cdn/shop/files/preview_images/316f29ab16b841059ea27a1f0413b3d8.thumbnail.0000000000_700x.jpg",
+            "author": "جنى",
+            "tag": "تجربة أم",
+            "stars": "★★★★★"
+          }
+        }
+      },
+      "block_order": [
+        "v_1",
+        "v_2",
+        "v_3",
+        "v_4",
+        "v_5"
+      ],
+      "settings": {
+        "heading_prefix": "اسمعيها من أمهات وطبيبات",
+        "heading_highlight": "جرّبن المضخة",
+        "subheading": ""
+      }
     },
     "ww-sa-offer-bottom": {
       "type": "ww-sa-offer-bottom",
       "settings": {
+        "heading_prefix": "امنحي حليبك",
+        "heading_highlight": "طريقة أسهل للخروج",
+        "flag_1": "الأكثر",
+        "flag_2": "طلباً",
+        "gifts_text": "عدة المقاسات وأكياس الحفظ والشحن مجاناً",
+        "cta_label": "اطلبيها الآن",
+        "summary_1": "عدة المقاسات مجاناً",
+        "summary_2": "شحن مجاني",
         "double_variant": "مضخة مزدوجة",
         "single_variant": "مضخة مفردة"
       }
     },
     "ww-sa-faq": {
       "type": "ww-sa-faq",
-      "settings": {},
       "blocks": {
         "q_1": {
           "type": "faq",
@@ -485,7 +542,11 @@
         "q_3",
         "q_4",
         "q_5"
-      ]
+      ],
+      "settings": {
+        "heading_highlight": "أسئلة",
+        "heading_suffix": "تسألها الأمهات"
+      }
     }
   },
   "order": [
