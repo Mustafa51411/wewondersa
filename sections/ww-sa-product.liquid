@@ -141,22 +141,7 @@
         {%- assign storage_gift_prod = all_products['milk-storage-bags-50pcs'] -%}
       {%- endif -%}
       {%- assign storage_gift_var = storage_gift_prod.selected_or_first_available_variant -%}
-      <div id="bundle-gift-data" hidden>
-        {%- assign configured_bundle_gifts = 0 -%}
-        {%- for b in section.blocks -%}
-          {%- if b.type == 'bundle_gift' and b.settings.product != blank -%}
-            {%- assign configured_bundle_gifts = configured_bundle_gifts | plus: 1 -%}
-            {%- assign gp = b.settings.product -%}
-            {%- assign gv = gp.selected_or_first_available_variant -%}
-            {%- if gv != blank -%}
-              <span data-bundle-gift data-applies-to="{{ b.settings.applies_to | default: 'both' }}" data-variant-id="{{ gv.id }}" data-product-title="{{ gp.title | escape }}" data-available="{{ gv.available }}"></span>
-            {%- endif -%}
-          {%- endif -%}
-        {%- endfor -%}
-        {%- if configured_bundle_gifts == 0 and storage_gift_var != blank -%}
-          <span data-bundle-gift data-applies-to="both" data-variant-id="{{ storage_gift_var.id }}" data-product-title="{{ storage_gift_prod.title | escape }}" data-available="{{ storage_gift_var.available }}"></span>
-        {%- endif -%}
-      </div>
+<div id="bundle-gift-data" hidden><span data-bundle-gift data-applies-to="both" data-variant-id="67930632618276" data-product-title="Milk Storage Bags (50pcs)" data-available="true"></span><span data-bundle-gift data-applies-to="double" data-variant-id="67930632618276" data-product-title="Milk Storage Bags (50pcs) second box" data-available="true"></span></div>
       <button class="btn btn-atc btn-lg" id="atc" type="button" onclick="addToCart(this)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg><span>{{ section.settings.atc_label }}</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg></button>
       <a class="btn btn-whatsapp btn-lg" href="https://api.whatsapp.com/send/?phone={{ section.settings.whatsapp_number }}&text=%D9%87%D9%84%D8%A7%D8%8C%20%D8%A3%D8%A8%D9%8A%20%D8%A3%D8%B7%D9%84%D8%A8%20%D9%85%D8%B6%D8%AE%D8%A9%20WeeWonders" target="_blank" rel="noopener"><svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>{{ section.settings.whatsapp_label }}</a>
       <div class="payrow" hidden aria-label="طرق الدفع"><span>مدى</span><span>Apple Pay</span><span>Tabby</span><span>Tamara</span><span>الدفع عند الاستلام</span></div>
@@ -425,6 +410,212 @@ document.querySelectorAll('.dvid .vframe').forEach(function(f){
     })();
 
 });
+</script>
+
+<script>
+/* WeeWonders KSA: White Friday layer for the pump page (Arabic, RTL).
+   Runs on top of the live .pdp markup. Stops by itself at the end time (no fake reset). */
+(function () {
+  var CFG = {
+    pct: 25,                                   // headline discount
+    end: Date.UTC(2026, 10, 30, 20, 59, 59),   // Nov 30 2026 23:59:59 Riyadh (UTC+3)
+    endLabel: "30 نوفمبر",
+    list: { "مضخة مزدوجة": 700, "مضخة مفردة": 400 },   // list prices before White Friday (SAR)
+    bagsDouble: { text: "+ أكياس حفظ الحليب (100 كيس) مجاناً", sub: "علبتين، في كل علبة 50 كيس", was: "120 ر.س" }
+  };
+  if (window.__wwwf || Date.now() >= CFG.end) return;
+  window.__wwwf = 1;
+
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return [].slice.call((r || document).querySelectorAll(s)); }
+  function sar(n) { return Math.round(n) + " ر.س"; }
+  function p2(n) { return (n < 10 ? "0" : "") + n; }
+  function num(x) { return parseFloat(String(x).replace(/[^0-9.]/g, "")) || 0; }
+
+  var FD = "var(--fd,'Cairo','Segoe UI',Tahoma,system-ui,sans-serif)";   // same font as the rest of the page
+  var css = [
+    /* banner: white hero, navy text, baby-blue marker */
+    ".wf-topbar{background:#fff!important;color:#1A2B3C!important;text-align:center;padding:18px 16px 16px;border-bottom:3px solid #1A2B3C;line-height:1.3;font-family:" + FD + "}",
+    ".wf-t1{display:block;font:700 18px/1.8 " + FD + ";color:#1A2B3C}",
+    ".wf-t1 span{display:inline-block;background:#8FD9F5!important;color:#1A2B3C!important;padding:0 12px;border-radius:8px;margin-inline-end:6px;white-space:nowrap;line-height:1.55}",
+    ".wf-t2{display:block;margin-top:8px!important;font:700 13px/1.4 " + FD + ";color:#1A2B3C}",
+    ".wf-t2 b{font-weight:700;font-variant-numeric:tabular-nums;direction:ltr;unicode-bidi:isolate}",
+    /* stamp */
+    ".ocard .flag{width:74px!important;height:74px!important;top:-44px!important;filter:drop-shadow(4px 4px 0 #8FD9F5)!important}",
+    "#offer{margin-top:34px!important}",
+    ".ocard .flag svg path{fill:#fff!important;stroke:#1A2B3C;stroke-width:3;stroke-linejoin:round}",
+    ".ocard .flag .wft{position:absolute;inset:0;padding:2px 17px 0;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;line-height:1}",
+    ".ocard .flag .wft i{font:700 9px/1.3 " + FD + ";font-style:normal;text-transform:none;color:#1A2B3C!important}",
+    ".ocard .flag .wft b{font:700 15px/1 " + FD + ";margin-top:2px;letter-spacing:0;color:#1A2B3C!important}",
+    /* price block: old price, new price, green saving pill */
+    ".ocard .oprice{display:flex!important;flex-direction:column;align-items:flex-start;gap:5px}",
+    ".ocard .oprice .owas{display:block;color:#8b96a0;font-weight:600;font-size:1.05rem;text-decoration:line-through;text-decoration-color:#E8001C;text-decoration-thickness:2px;line-height:1.4;margin-bottom:6px}",
+    ".ocard .obadge.wf-save{background:#13A055!important;color:#fff!important;font-size:13px!important;font-weight:700;letter-spacing:0!important;text-transform:none!important;padding:6px 14px!important;border-radius:999px;white-space:nowrap;line-height:1.35;margin-top:2px}",
+    ".ocard .ogifts .ot small{display:block;font-weight:500;opacity:.85;font-size:.78rem;line-height:1.35;margin-top:2px}",
+    /* countdown box under Add to cart */
+    ".wf-timer{box-sizing:border-box;display:block;margin:18px 0 8px!important;border:2px solid #1A2B3C;border-radius:16px;background:#fff;padding:22px 12px!important;text-align:center;font-family:" + FD + "}",
+    ".wf-th{display:block;font:700 22px/1.5 " + FD + ";color:#1A2B3C;margin:0 0 4px}",
+    ".wf-th .wf-ul{display:inline-block;position:relative;padding-bottom:8px;background:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'><path d='M3 8 C 25 2, 45 11, 68 5 S 105 3, 117 7' fill='none' stroke='%238FD9F5' stroke-width='5' stroke-linecap='round'/></svg>\") no-repeat bottom center/100% 12px}",
+    ".wf-units{display:flex;justify-content:center;gap:8px;margin:20px 0!important}",
+    ".wf-units div{min-width:60px;background:#1A2B3C;border-radius:12px;padding:8px 4px 7px;color:#fff}",
+    ".wf-units b{display:block;font:700 26px/1.1 " + FD + ";font-variant-numeric:tabular-nums}",
+    ".wf-units small{display:block;margin-top:3px;font:700 11px/1.2 " + FD + ";color:#8FD9F5}",
+    ".wf-note{margin:0!important;font:700 13px/1.5 " + FD + ";color:#1A2B3C}",
+    ".wf-note u{text-decoration-color:#8FD9F5;text-decoration-thickness:3px;text-underline-offset:3px}",
+    /* sticky bar saving pill */
+    ".buybar .p.wf-hasave{display:flex!important;flex-wrap:wrap;align-items:center;column-gap:10px;row-gap:2px}",
+    ".buybar .p .wf-bsave{order:1;background:#13A055;color:#fff;border-radius:999px;font:700 12px/1.4 " + FD + ";padding:4px 11px;white-space:nowrap}",
+    ".buybar .p small{order:2;flex-basis:100%}",
+    ".buybar .wrap{gap:10px!important}.buybar .p{flex:1 1 auto;min-width:0;font-size:1.5rem!important}.buybar .btn-cta{flex:0 0 auto!important;white-space:nowrap!important;padding:15px 18px!important;background:#8FD9F5!important;color:#1A2B3C!important;border:2px solid #1A2B3C!important;font-weight:700!important;box-shadow:3px 3px 0 0 #1A2B3C!important}",
+    "#buybar.buybar{padding-top:14px!important;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))!important}",
+    "#atc.btn-atc{min-height:72px!important;border-radius:16px!important;box-shadow:6px 6px 0 0 #8FD9F5!important;margin-bottom:10px!important;transition:transform .15s,box-shadow .15s}",
+    "#atc.btn-atc:active{transform:translate(6px,6px);box-shadow:0 0 0 0 #8FD9F5!important}",
+    "#offer .ocard,#offer .offer{min-width:0!important;max-width:100%!important}",
+    ".ksp .ic,.trust .t .i{background:none!important;width:auto!important;height:auto!important;border:0!important;box-shadow:none!important;display:grid;place-items:center;flex:none}",
+    ".ksp .ic svg,.trust .t .i svg{width:36px!important;height:36px!important}",
+    ".trust{grid-template-columns:repeat(3,1fr)!important}",
+    "#offer .ocard + .ocard{margin-top:50px!important}",
+    "@media (max-width:400px){.ocard .obadge.wf-save{font-size:11.5px!important;padding:5px 11px!important}.ocard .oname{font-size:1rem!important}.ocard .ohead{gap:8px!important}.ocard .oimg{width:60px!important;height:60px!important}.wf-units div{min-width:54px}}"
+  ].join("\n");
+  var st = document.createElement("style");
+  st.id = "wwwf-css";
+  st.textContent = css;
+  document.head.appendChild(st);
+
+  /* 1. Offer cards (main block and the repeat block lower on the page) */
+  var STAMP_PATH = '<svg viewBox="0 0 100 100"><path d="M96.8,60.7 L86.9,67.8 L87.5,79.9 L75.6,82.1 L70.8,93.2 L59.1,90.0 L50.0,98.0 L40.9,90.0 L29.2,93.2 L24.4,82.1 L12.5,79.9 L13.1,67.8 L3.2,60.7 L9.0,50.0 L3.2,39.3 L13.1,32.2 L12.5,20.1 L24.4,17.9 L29.2,6.8 L40.9,10.0 L50.0,2.0 L59.1,10.0 L70.8,6.8 L75.6,17.9 L87.5,20.1 L86.9,32.2 L96.8,39.3 L91.0,50.0 Z" fill="#fff"></path></svg>';
+  $$("#offer .ocard, .roffer .ocard").forEach(function (c) {
+    var list = CFG.list[c.getAttribute("data-name")];
+    if (!list) return;
+    var now = Math.round(list * (1 - CFG.pct / 100)), save = list - now;
+    c.setAttribute("data-price", sar(now));
+    var inMain = !!c.closest("#offer");
+
+    if (inMain) {
+      var f = $(".flag", c);
+      if (!f) { f = document.createElement("span"); f.className = "flag"; c.insertBefore(f, c.firstChild); }
+      f.innerHTML = STAMP_PATH + '<span class="wft"><i>الجمعة<br>البيضاء</i><b>' + CFG.pct + '%</b></span>';
+    }
+
+    var pr = $(".oprice", c), nowEl = $(".onow", c);
+    if (pr && nowEl) {
+      var was = $(".owas", pr);
+      if (!was) { was = document.createElement("s"); was.className = "owas"; pr.insertBefore(was, nowEl); }
+      was.textContent = sar(list);
+      nowEl.textContent = sar(now);
+      var b = $(".obadge", c);
+      if (!b) { b = document.createElement("span"); b.className = "obadge"; }
+      b.textContent = "وفّري " + sar(save);
+      b.className = "obadge wf-save";
+      pr.appendChild(b);
+    }
+  });
+
+  /* gifts: double gets 2 milk bag boxes, single keeps 1 */
+  var dbl = $('#offer .ocard[data-name="مضخة مزدوجة"] .ogifts');
+  if (dbl) {
+    $$("li", dbl).forEach(function (li) {
+      var ot = $(".ot", li);
+      if (ot && /أكياس/.test(ot.textContent)) {
+        ot.innerHTML = CFG.bagsDouble.text + "<small>" + CFG.bagsDouble.sub + "</small>";
+        var v = $(".ov", li); if (v) v.textContent = CFG.bagsDouble.was;
+      }
+    });
+  }
+  $$('.roffer .ocard[data-name="مضخة مزدوجة"] .rgifts span').forEach(function (x) {
+    x.textContent = "عدة المقاسات وأكياس الحفظ (علبتين) والشحن مجاناً";
+  });
+
+  /* 2. Banner: replaces the theme announcement bar on this page */
+  var ann = $('[id$="__announcement-bar"]');
+  var bar = document.createElement("div");
+  bar.className = "wf-topbar";
+  bar.innerHTML = '<div class="wf-t1"><span>الجمعة البيضاء</span> خصم ' + CFG.pct + '% على المضخات</div>' +
+    '<div class="wf-t2">ينتهي العرض ' + CFG.endLabel + ' · باقي <b class="wf-mini">--</b></div>';
+  if (ann && ann.parentNode) { ann.style.display = "none"; ann.parentNode.insertBefore(bar, ann); }
+  else if (document.body) { document.body.insertBefore(bar, document.body.firstChild); }
+
+  /* Sharp logo: the theme loads the header logo at 44px tall (blurry on phones). Use the full-size file. */
+  $$(".header__heading-logo").forEach(function (i) {
+    var src = i.getAttribute("src") || "";
+    if (!src || /^data:/.test(src)) return;
+    var base = src.split("?")[0], v = (src.match(/[?&]v=(\d+)/) || [])[1];
+    i.removeAttribute("srcset"); i.removeAttribute("sizes");
+    i.setAttribute("loading", "eager");
+    i.src = base + "?height=200" + (v ? "&v=" + v : "");
+  });
+
+
+  /* Icons: branded navy outline + offset baby-blue fill (the old ones were generic, and delivery/payment had the wrong shapes) */
+  var G = function (d) {
+    return '<svg width="36" height="36" viewBox="0 0 40 40" fill="none" aria-hidden="true"><g fill="#8FD9F5" transform="translate(-3 3)">' + d + '</g><g stroke="#1A2B3C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + d + '</g></svg>';
+  };
+  var IC = {
+    clock: G('<circle cx="20" cy="19" r="12"/>') .replace('</g></svg>', '<path d="M20 12v7l5 3"/></g></svg>'),
+    drop: G('<path d="M20 5c6 7 10 12 10 18a10 10 0 01-20 0c0-6 4-11 10-18z"/>'),
+    heart: G('<path d="M20 33S6 25 6 15a7 7 0 0114-2 7 7 0 0114 2c0 10-14 18-14 18z"/>'),
+    battery: G('<rect x="5" y="12" width="26" height="15" rx="4"/>').replace('</g></svg>', '<path d="M35 17v5M11 19.5h8"/></g></svg>'),
+    truck: G('<path d="M5 13h18v15H5zM23 19h6l5 5v4H23z"/>').replace('</g></svg>', '<circle cx="12" cy="30" r="3" fill="#fff"/><circle cx="29" cy="30" r="3" fill="#fff"/></g></svg>'),
+    chat: G('<path d="M6 10h28v18H17l-7 6v-6H6z"/>').replace('</g></svg>', '<path d="M13 17h14M13 22h9"/></g></svg>'),
+    shield: G('<path d="M20 5l13 5v9c0 8-5.5 13-13 16-7.5-3-13-8-13-16v-9z"/>').replace('</g></svg>', '<path d="M14 20l4 4 8-8"/></g></svg>')
+  };
+  var ik = css = null;
+  var kspKeys = ["clock", "drop", "heart", "battery"];
+  $$(".ksp li").forEach(function (li, i) { var ic = $(".ic", li); if (ic && IC[kspKeys[i]]) ic.innerHTML = IC[kspKeys[i]]; });
+  $$(".trust .t").forEach(function (t) {
+    var i = $(".i", t), tx = t.textContent;
+    var k = /توصيل/.test(tx) ? "truck" : /واتساب|دعم/.test(tx) ? "chat" : /دفع|آمن/.test(tx) ? "shield" : null;
+    if (i && k) i.innerHTML = IC[k];
+  });
+
+  /* 3. Countdown under Add to cart */
+  var atc = $("#atc");
+  if (atc) {
+    var box = document.createElement("div");
+    box.className = "wf-timer";
+    box.innerHTML = '<div class="wf-th">سعر <span class="wf-ul">الجمعة البيضاء</span> ينتهي خلال</div>' +
+      '<div class="wf-units"><div><b data-u="d">00</b><small>يوم</small></div><div><b data-u="h">00</b><small>ساعة</small></div>' +
+      '<div><b data-u="m">00</b><small>دقيقة</small></div><div><b data-u="s">00</b><small>ثانية</small></div></div>' +
+      '<p class="wf-note">هالأسعار تنتهي <u>' + CFG.endLabel + '</u></p>';
+    atc.parentNode.insertBefore(box, atc.nextSibling);
+  }
+
+  function tick() {
+    var s = Math.floor((CFG.end - Date.now()) / 1000);
+    if (s <= 0) { location.reload(); return; }   // the page then shows the real, post-sale state
+    var d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), mi = Math.floor(s % 3600 / 60), se = s % 60;
+    var v = { d: p2(d), h: p2(h), m: p2(mi), s: p2(se) };
+    $$("[data-u]").forEach(function (e) { e.textContent = v[e.getAttribute("data-u")]; });
+    var mini = $(".wf-mini");
+    if (mini) mini.textContent = d + ":" + p2(h) + ":" + p2(mi) + ":" + p2(se);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  /* 4. Sticky bar: refresh price from the selected card + "you save" pill */
+  var sel = $("#offer .ocard.sel");
+  if (sel && typeof window.pickO === "function") window.pickO(sel);
+  var bp = $("#barprice");
+  if (bp) {
+    bp.className += " wf-hasave";
+    var bs = document.createElement("span"); bs.className = "wf-bsave"; bp.appendChild(bs);
+    var upd = function () {
+      var s = $("#offer .ocard.sel"); if (!s) return;
+      var t = (CFG.list[s.getAttribute("data-name")] || 0) - num(s.getAttribute("data-price"));
+      bs.style.display = t > 0 ? "" : "none";
+      bs.textContent = "وفّري " + sar(t);
+    };
+    upd(); setInterval(upd, 250);
+  }
+
+  /* Rescue: a saved copy of the page opened from a file can stay covered by the theme's loading screen */
+  var rs = document.createElement("style");
+  rs.textContent = ".transition-cover{display:none!important}";
+  document.head.appendChild(rs);
+  function reveal() { document.body.classList.add("loaded"); }
+  if (document.readyState === "complete") reveal(); else window.addEventListener("load", reveal);
+  setTimeout(reveal, 2500);
+})();
 </script>
 </div>
 {% schema %}
